@@ -3,12 +3,9 @@
 		<a href="/about/">{{ site.title }}</a>
 	</div>
 	<p class="lead">{{ site.description }}</p>
-	{%- if social.github -%}
-		<a rel="me" href="https://github.com/{{ social.github | cgi_escape | escape }}" title="{{ social.github | escape }}">
-			<svg class="svg-icon grey">
-				<use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}" />
-			</svg></a></li>
-	{%- endif -%}
+	
+
+
 </div>
 
 <div class="sidebar-item sidebar-nav">
@@ -46,7 +43,9 @@
 	  </nav>
 	</ul>
 </div>
-
+<div class="social-links">
+	{%- include social.html -%}
+  </div>
 <div class="sidebar-item sidebar-footer">
-	<p>Powered by <a href="https://github.com/jekyll/jekyll">Jekyll</a></p>
+	<p>hhPowered by <a href="https://github.com/jekyll/jekyll">Jekyll</a></p>
 </div>
