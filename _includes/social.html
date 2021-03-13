@@ -1,7 +1,30 @@
+<style>
+  .orange {
+  color: #f66a0a;
+}
+
+
+.svg-icon {
+  width: 60px;
+  height: 60px;
+  fill: currentColor;
+  display: inline-block;
+  padding: 5px 3px 2px 5px;
+  vertical-align: text-bottom;
+  background-size: 50% 3em;
+}
+.social-media-list li{
+  float: left; 
+}
+</style>
 
 <ul class="social-media-list">
     {%- if site.github_username -%}<li><a href="https://github.com/{{ site.github_username | cgi_escape | escape }}" title="{{ site.github_username | escape }}">
-      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" preserveAspectRatio="none" class="svg-icon orange"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg>
     </a></li>{%- endif -%}
-    
+    <li>
+      {%- if site.email -%}
+      <a href="mailto: {{{site.email}}" title="{{site.email}}"><img src="/assets/emailcon.png" class="svg-icon" style="width: 52px;height: 52px;"></a>
+    </li>
+    {%- endif -%}
 </ul>
