@@ -1,23 +1,33 @@
+
+
 <article class="post">
 	<header class="post-header home">
-		<div class="post-title">Category - <span id='category-name'></span></div>
+		<div class="post-title"><span id='category-name'></span></div>
 	</header>
+</article>
 
+<article class="post">
 	<div class="post-content">
 		{%- if site.posts.size > 0 -%}
-		<ul class="post-list">
-			{%- for post in site.posts -%}
-			<li class="post-list-item post-category-{{post.categories}}">
+		{%- for post in site.posts -%}
+		<div class="post-list">
+{{post.categories[1]}}
+			<div class="mypost post-list-item post-category-{{post.categories}}">
+				{% if post.img %}
+    			<a class="mypost-thumbnail" style="background-image: url({{"/assets/img/" | prepend: site.url | append : post.img}})" href="{{post.url | prepend: site.url}}"></a>
+  				{% else %}
+  				{% endif %}
+				  <div class="mypost-content">
+				  <h2 class="mypost-title"><a href="{{post.url | prepend: site.url}}">{{post.title}}</a></h2>
+				  <p>{{ post.content | strip_html | truncatewords: 15 }}</p>
+				  {%- assign date_format = "%Y/%m/%d" -%}
+				  <div class="mypost-date">{{post.date | date: '%Y, %b %d'}}&nbsp;&nbsp;&nbsp;-&nbsp;{% capture words %}{{ post.content | number_of_words }}{% endcapture %}{% unless words contains "-" %}{{ words | plus: 250 | divided_by: 250 | append: " minute read" }}{% endunless %}</span>
+				  {%- if site.show_excerpts -%}{{ post.excerpt }}{%- endif -%}</div>&nbsp;
+					</div>
 				<!-- {%- assign date_format = site.date_format | default: "%b %-d, %Y" -%} -->
-				{%- assign date_format = "%Y/%m/%d" -%}
-				<span class="post-date">{{ post.date | date: date_format }}</span>
-				<a class="post-link" href="{{ post.url | relative_url }}">
-					{{ post.title | escape }}
-				</a>
-				{%- if site.show_excerpts -%}{{ post.excerpt }}{%- endif -%}
-			</li>
-		  	{%- endfor -%}
-		</ul>
+			</div>
+		</div>
+		{%- endfor -%}
 	  	{%- endif -%}
 	</div>
 </article>

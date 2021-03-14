@@ -30,6 +30,7 @@
 </div>
 
 <div class="sidebar-item sidebar-nav">
+
   	<ul class="nav">
 			<li class="nav-title">Categories</li>
 	    {% for category in site.categories %}
@@ -37,12 +38,14 @@
 	    	<a class="nav-item" href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}">
 				<span class="name">{{ category | first }}</span>
 				<span class="badge">{{ category | last | size }}</span>
+
 	    	</a>
  		</li>
 	    {% endfor %}
 	  </nav>
 	</ul>
 </div>
+
 
 <div class="social-links">
 	&nbsp;

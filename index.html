@@ -1,0 +1,26 @@
+---
+layout: default
+---
+
+<article class="post">
+  <header class="post-header home">
+    <div class="post-title">전체 글 목록</div>
+  </header>
+</article>
+{% for post in paginator.posts %}
+<article class="mypost">
+  {% if post.img %}
+    <a class="mypost-thumbnail" style="background-image: url({{"/assets/img/" | prepend: site.url | append : post.img}})" href="{{post.url | prepend: site.url}}"></a>
+  {% else %}
+  {% endif %}
+  <div class="mypost-content">
+    <h2 class="mypost-title"><a href="{{post.url | prepend: site.url}}">{{post.title}}</a></h2>
+    <p>{{ post.content | strip_html | truncatewords: 15 }}</p>
+    <span class="mypost-date">{{post.date | date: '%Y, %b %d'}}&nbsp;&nbsp;&nbsp;—&nbsp;</span>
+    <span class="mypost-words">{% capture words %}{{ post.content | number_of_words }}{% endcapture %}{% unless words contains "-" %}{{ words | plus: 250 | divided_by: 250 | append: " minute read" }}{% endunless %}</span>
+  </div>
+</article>
+{% endfor %}
+
+
+{% include pagination.html %}
