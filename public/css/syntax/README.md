@@ -9,7 +9,7 @@ You can generate these yourself, but this git repository has already generated t
 build
 -----
 
-These css files were generated using pygmentize on the command line like so::
+Theset css files were generated using pygmentize on the command line like so::
 
     pygmentize -S default -f html -a .highlight > default.css
 

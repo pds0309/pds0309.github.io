@@ -1,17 +1,17 @@
 
-
 <article class="post">
 	<header class="post-header home">
 		<div class="post-title"><span id='category-name'></span></div>
 	</header>
 </article>
 
+
 <article class="post">
 	<div class="post-content">
 		{%- if site.posts.size > 0 -%}
 		{%- for post in site.posts -%}
+
 		<div class="post-list">
-{{post.categories[1]}}
 			<div class="mypost post-list-item post-category-{{post.categories}}">
 				{% if post.img %}
     			<a class="mypost-thumbnail" style="background-image: url({{"/assets/img/" | prepend: site.url | append : post.img}})" href="{{post.url | prepend: site.url}}"></a>
@@ -31,6 +31,7 @@
 	  	{%- endif -%}
 	</div>
 </article>
+
 
 <script src="/public/js/jquery-3.4.1.slim.min.js"></script>
 <script>

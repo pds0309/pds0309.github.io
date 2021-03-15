@@ -1,6 +1,6 @@
 
 
-title: seokcceeding
+title: Seokcceeding
 email: ehd0309@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   seok study
@@ -21,6 +21,7 @@ paginate: 10
 paginate_path: "/page/:num"
 category_dir: category/
 tag_dir: tag/
+my_list: [study , hobby , else]
 
 
 # exclude:

@@ -1,6 +1,6 @@
 <div class="sidebar-item sidebar-header">
 	<div class='sidebar-brand'>
-		<a href="/about/">{{ site.title }}</a>
+		<a href="{{root_url}}">{{ site.title }}</a>
 	</div>
 	<p class="lead">{{ site.description }}</p>
 	
@@ -9,10 +9,13 @@
 </div>
 
 <div class="sidebar-item sidebar-nav">
+
 	<ul class="nav">
       <li class="nav-title">Pages</li>
 	  <li>
-	  	<a class="nav-item" href="/">Articles</a>
+	  	<a class="nav-item" href="/">All
+			<span class="badge">{{site.posts|size}}</span>
+		</a>
 	  </li>
 	  {% assign pages_list = site.pages %}
 	  {% for node in pages_list %}
@@ -29,25 +32,43 @@
 	</ul>
 </div>
 
+
+
+
+{% assign l = site.posts | sort %} 
+{% assign temp = null %}
+{% for list in site.my_list %}
 <div class="sidebar-item sidebar-nav">
-
   	<ul class="nav">
-			<li class="nav-title">Categories</li>
-	    {% for category in site.categories %}
+			<li class="nav-title">{{ list }}</li>
+	    {% for post in l %}	
+		{% if post.tag == list %}
+		{% if post.category != temp %}
 	    <li>
-	    	<a class="nav-item" href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}">
-				<span class="name">{{ category | first }}</span>
-				<span class="badge">{{ category | last | size }}</span>
-
-	    	</a>
+	    	<a class="nav-item" href="{{ root_url }}/{{ site.category_dir }}#{{ post.category }}">
+				<span class="name">{{ post.category }}</span>
+				<span class="badge">
+					{% for i in site.categories %}
+					{% assign ifirst = i|first %}
+						{% if post.category == ifirst %}
+							{{i|last|size}}
+						{% endif %}
+					{% endfor %}
+				</span>
+	    	</a> 
  		</li>
-	    {% endfor %}
+		 {% assign temp = post.category %}
+		 {% endif %}
+		 {% endif %}
+		 {% endfor %}
 	  </nav>
 	</ul>
 </div>
+{% endfor %}
 
 
 <div class="social-links">
 	&nbsp;
 	{%- include social.html -%}
   </div>
+
