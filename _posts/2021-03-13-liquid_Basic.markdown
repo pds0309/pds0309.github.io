@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Liquid 기초 문법 (1)
-date: 2021-02-26 09:40:15 +0900
+date: 2021-03-13 09:40:15 +0900
 category: liquid_Basic
 tag: study
 

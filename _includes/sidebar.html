@@ -1,6 +1,60 @@
-<div class="sidebar-item sidebar-header">
+<style>
+@media (max-width:550px) {
+  .custom_nav {
+    display: none;
+	
+  }
+}
+
+@media (max-width:550px) {
+  .sidebar-brand a{
+	  font-size: 2em;
+  }
+  #sidemain{
+    width: 70px;
+  }
+  
+}
+@media (min-width:550px){
+	.side-menu-button {
+		display: none;
+	}
+}
+.ham_img:hover{
+	background-color: rgb(78, 76, 76);
+	width: 3.5em;
+	height: 3.5em;
+	
+}
+.side-menu-button{
+	margin-top: 1.5em;
+	margin-left: 1em;
+	
+}
+.side-menu-bar{
+	margin-right: 2em;
+}
+
+#my_ul {
+	
+border: 1px solid black;
+  position: absolute;
+  right:1.2em;
+  background-color: rgb(78, 76, 76);
+}
+#my_ul div{
+	padding: 1.2em;
+}
+.side-menu-box{
+	margin-right: 1em;
+	
+}
+</style>
+
+
+<div id="sidemain" class="sidebar-item sidebar-header">
 	<div class='sidebar-brand'>
-		<a href="{{root_url}}">{{ site.title }}</a>
+		<a href="{{ site.url }}">{{ site.title }}</a>
 	</div>
 	<p class="lead">{{ site.description }}</p>
 	
@@ -8,6 +62,7 @@
 
 </div>
 
+<div class="custom_nav">
 <div class="sidebar-item sidebar-nav">
 
 	<ul class="nav">
@@ -32,9 +87,6 @@
 	</ul>
 </div>
 
-
-
-
 {% assign l = site.posts | sort %} 
 {% assign temp = null %}
 {% for list in site.my_list %}
@@ -45,7 +97,7 @@
 		{% if post.tag == list %}
 		{% if post.category != temp %}
 	    <li>
-	    	<a class="nav-item" href="{{ root_url }}/{{ site.category_dir }}#{{ post.category }}">
+	    	<a class="nav-item" href="{{ root_url }}/{{ site.category_dir }}#{{ post.category }}" >
 				<span class="name">{{ post.category }}</span>
 				<span class="badge">
 					{% for i in site.categories %}
@@ -66,9 +118,82 @@
 </div>
 {% endfor %}
 
-
+</div>
 <div class="social-links">
-	&nbsp;
 	{%- include social.html -%}
+</div>
+
+<div class="side-menu-button">
+	<div class="ham_img">
+	  <img src="/public/img/hamburger.png" alt="" style="width: 3.5em; height: 3.5em;" onclick="cl()"  class="img_btn">
+	</div>
+	<div class="side-menu-bar">
+	  <nav class="side-menu-box">
+		<ul id="my_ul">
+			
+		</ul>
+	  </nav>
+	</div>
   </div>
 
+
+  <script src="/public/js/jquery-3.4.1.slim.min.js"></script>
+  <script>
+	  let h = `<div class="sidebar-item sidebar-nav">
+
+<ul class="nav">
+  <li class="nav-title">Pages</li>
+  <li>
+	  <a class="nav-item" href="/">All
+	</a>
+  </li>
+  {% assign pages_list = site.pages %}
+  {% for node in pages_list %}
+	{% if node.title != null %}
+	  {% if node.layout == "page" %}
+		<li>
+			<a class="nav-item" href="{{ node.url }}">
+				{{ node.title }}
+			</a>
+		</li>
+	  {% endif %}
+	{% endif %}
+  {% endfor %}
+</ul>
+</div>
+
+{% assign l = site.posts | sort %} 
+{% assign temp = null %}
+{% for list in site.my_list %}
+<div class="sidebar-item sidebar-nav">
+  <ul class="nav">
+		<li class="nav-title">{{ list }}</li>
+	{% for post in l %}	
+	{% if post.tag == list %}
+	{% if post.category != temp %}
+	<li>
+		<a class="nav-item" href="{{ root_url }}/{{ site.category_dir }}#{{ post.category }}" >
+			<span class="name">{{ post.category }}</span>
+			
+		</a> 
+	 </li>
+	 {% assign temp = post.category %}
+	 {% endif %}
+	 {% endif %}
+	 {% endfor %}
+  </nav>
+</ul>
+</div>
+{% endfor %}`;
+	  let i = 0;
+	  function cl(){
+		if(i == 0){
+			$('#my_ul').append(h);
+			i = 1;
+		} 
+		else{
+			$('#my_ul').empty();
+			i = 0;
+		} 
+	  }
+  </script>
