@@ -7,6 +7,13 @@ permalink: /about/
 ## Hello!
 > 안녕하세요
 
+#### 이메일
+> ehd0309@naver.com  <br> ehd0309@gmail.com
+
+#### 깃허브
+> [github.com/pds0309](https://github.com/pds0309)
+
+
 ### 목록
 - 코드 올리기
 - 이미지 올리기

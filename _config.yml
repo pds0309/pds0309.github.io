@@ -3,7 +3,7 @@
 title: Seokcceeding
 email: ehd0309@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  seok study
+  seok study memo
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://pds0309.github.io" 
 github_username: pds0309
