@@ -87,7 +87,9 @@ border: 1px solid black;
 	</ul>
 </div>
 
-{% assign l = site.posts | sort %} 
+
+{% assign l = site.posts | sort: "category"  %}
+
 {% assign temp = null %}
 {% for list in site.my_list %}
 <div class="sidebar-item sidebar-nav">
@@ -97,6 +99,7 @@ border: 1px solid black;
 		{% if post.tag == list %}
 		{% if post.category != temp %}
 	    <li>
+			
 	    	<a class="nav-item" href="{{ root_url }}/{{ site.category_dir }}#{{ post.category }}" >
 				<span class="name">{{ post.category }}</span>
 				<span class="badge">

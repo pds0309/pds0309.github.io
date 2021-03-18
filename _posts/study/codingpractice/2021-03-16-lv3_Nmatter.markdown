@@ -1,0 +1,192 @@
+---
+layout: post
+title: 프로그래머스-lv3 N으로 표현 (java)
+date: 2021-03-16 11:12:15 +0900
+category: 111CP
+tag: study
+---
+
+## [프로그래머스] level 3 - N으로 표현
+
+---
+### [문제설명링크   ](https://programmers.co.kr/learn/courses/30/lessons/42895)
+<br>
+### 요약
+* N (1,9) 가 주어지고 number (1,32000) 가 주어질 때 사칙연산으로 N을 최소 몇번 사용해서 number 를 만들 수 있는가 구하기
+* N은 8번 이하로만 사용 가능하다.
+
+<br>
+### 제한사항
+* N은 1 이상 9 이하입니다.
+* number는 1 이상 32,000 이하입니다.
+* 수식에는 괄호와 사칙연산만 가능하며 나누기 연산에서 나머지는 무시합니다.
+* 최솟값이 8보다 크면 -1을 return 합니다.
+
+<br>
+
+
+<br>
+### 입출력 예시
+
+| N | number | return |
+|------|------|-----|
+| 5 |&nbsp;&nbsp; 12 |&nbsp; 4 |
+| 2 |&nbsp;&nbsp; 11 |&nbsp; 3 |
+
+
+
+<br>
+
+### 나의 해석
+
+#### 차근 차근 N을 1번 사용할 때 부터 생각해보기로 했다.  
+
+* ##### N = 5 : 1번 
+> 5
+
+* ##### N = 5 : 2번 
+> 55<br>
+5 + 5 = 10<br>
+5 - 5 = 0<br>
+5 * 5 = 25<br>
+5 / 5 = 1<br>
+-> N이 1번일 때와 N이 1번일 때의 연산 + <em>NN</em>  
+ 
+  
+* ##### N = 5 : 3번
+> 555<br>
+5 + (2번의 값 모두)<br>
+5 - (2번의 값 모두)<br>
+5 * (2번의 값 모두)<br>
+5 / (2번의 값 모두)<br>
+(2번의 값 모두) + 5<br>
+(2번의 값 모두) - 5<br>
+(2번의 값 모두) * 5<br>
+(2번의 값 모두) / 5<br>
+-> N이 1번일 때와 N이 2번일 때의 연산 + N이 2번일 떄와 N이 1번일 때의 연산 + <em>NNN</em><br>
+-> 여기서 + 와 * 는 값이 같을 것  
+
+* ##### N = 5 : 4번
+> (N1 연 N3) + (N3 연 N1) + (N2 연 N2) +  <em>NNNN</em> ...<br>
+-> 즉 N을 5번 사용할 때의 경우는 c(1,2,3,4) 에서 **두개**를 선택해 합이 5가 되는 경우의 수를 순서를 적용해 구하는 원리라고 할 수 있음<br>
+-> (1,4) , (4,1) , (2,3) , (3,2)<br>
+* ###### <em>??? : 1 , 2 , 2 도 합치면 5인데요 ? </em><br>
+	-> 1 + 2 + 2 를 다시 조합하면 4 + 1 또는 1 + 4 또는 3 + 2 또는 2 + 3 이다.<br>
+	-> N을 5번 사용할 경우에 이미 1,2,3,4 번 사용할 경우는 구해져 있으니 불필요한 연산임. 이미 다 포함되어 있다.
+* 문제에서 만약 N을 4번 사용했다면 N을 1,2,3,4번 사용했을 때의 결과 값이 모두 존재한다는 것
+
+
+<br>
+### 나의 풀이
+
+1. 값 저장할 구조 선택 
+```java
+//key : N을 사용한 횟수 , value : 사용한 횟수에서 가능한 모든 값<br>
+HashMap<Integer, List<Integer>> hs = new HashMap<>();
+```
+>  key 가 1일 때 value : {N} 으로로 초기 설정
+
+2. count 변수 (2~8) 를 기준으로 루프를 돌면서 hs.put(count , list) : list 에는 N 값만 할당 ex) count = 3 -> NNN<br>
+
+3. 이중 루프를 돌면서 i,j 합이 count (N을 사용한 횟수) 가 될 때 key: i , j 인 경우의 list 들을 연산하여 key: count 의 list에 할당
+```java
+for (int i = 1; i < count; i++) {
+                for (int j = 1; j < count; j++) {
+                    if (i + j == count) {
+//DP : HashMap , count: 키 , List , List 
+                        DP(hs, count, hs.get(i), hs.get(j));
+                    }
+                }
+            }
+```  
+4. count 마다 number 가 HashMap에 있는 지 확인하고 있을 경우 루프 종료, 8까지 없으면 -1 리턴<br>  
+
+
+  
+
+5. 연산 함수  
+<br>
+```java
+public void DP(HashMap<Integer, List<Integer>> l, int key, List<Integer> lx, List<Integer> ly) {
+        for (int i = 0; i < lx.size(); i++) {
+            for (int j = 0; j < ly.size(); j++) {
+                l.get(key).add(lx.get(i) + ly.get(j));
+                l.get(key).add(lx.get(i) - ly.get(j));
+                l.get(key).add(lx.get(i) * ly.get(j));
+                if (ly.get(j) != 0) {
+                    l.get(key).add(lx.get(i) / ly.get(j));
+                }
+            }
+        }
+    }
+```
+> 사실 HashMap<Integer, List<Integer>> l, int key 를 List <Integer> list 로 해서 hs.get(count)를 사용하면 될 것 같다.  
+
+<br>
+<br>  
+
+### 자바 풀이 코드  
+
+<br>
+```java
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+class Solution {
+    public void DP(HashMap<Integer, List<Integer>> l, int key, List<Integer> lx, List<Integer> ly) {
+
+        for (int i = 0; i < lx.size(); i++) {
+            for (int j = 0; j < ly.size(); j++) {
+                l.get(key).add(lx.get(i) + ly.get(j));
+                l.get(key).add(lx.get(i) - ly.get(j));
+                l.get(key).add(lx.get(i) * ly.get(j));
+                if (ly.get(j) != 0) {
+                    l.get(key).add(lx.get(i) / ly.get(j));
+                }
+            }
+        }
+    } 
+    public int solution(int N, int number) {
+        int answer = 0;
+        if (N == number) {
+            answer = 1;
+            return answer;
+        }
+        HashMap<Integer, List<Integer>> hs = new HashMap<>();
+        String n = N + "";
+        List<Integer> list = new ArrayList<>();
+        list.add(N);
+        hs.put(1, list);
+        int count = 2;
+        while (true) {
+            list = new ArrayList<>();
+            hs.put(count, list);
+            if (count == 9) {
+                answer = -1;
+                break;
+            }
+            n += N + "";
+            hs.get(count).add(Integer.parseInt(n));
+            for (int i = 1; i < count; i++) {
+                for (int j = 1; j < count; j++) {
+                    if (i + j == count) {
+                        DP(hs, count, hs.get(i), hs.get(j));
+                    }
+                }
+            }
+            if (hs.get(count).contains(number)) {
+                answer = count;
+                break;
+            }
+            count++;
+        }
+        return answer;
+    }
+}
+
+```
+<br>
+#### 체감 난이도 :  상
+* 해석하기가 어려웠다.
+* 문제 태그 - 동적 프로그래밍
+* HashMap 을 안 쓰고 Map 을 써서 시간을 아껴도 될 것 같다.
