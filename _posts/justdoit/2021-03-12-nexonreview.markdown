@@ -4,7 +4,7 @@ title: 뒤늦게쓰는 넥슨 인텔리전스 랩스 인턴 지원 리뷰
 date: 2021-03-18 12:37:11 +0900
 category: review
 tag: justdoit
-img: nexonresult.png
+img: nexonresult.PNG
 ---
 # 뒤늦게 쓰는 넥슨 인텔리전스 랩스 인턴 지원 불합격 리뷰<br>
 
