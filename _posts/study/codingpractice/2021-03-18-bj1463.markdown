@@ -1,0 +1,144 @@
+---
+layout: post
+title: 백준-1463-1로 만들기 (java)
+date: 2021-03-18 11:01:54 +0900
+category: 111CP
+tag: study
+---
+
+## 백준-1463-1로 만들기
+
+---
+### [문제설명링크   ](https://www.acmicpc.net/problem/1463)
+<br>
+### 요약
+* 10^6 보다작은 숫자를 입력받았을 때 세가지 연산을 할 수 있다.
+* 3으로 나누어 떨어지면 3으로 나눌 수 있다.
+* 2로 나누어 떨어지면 2로 나눌 수 있다.
+* 1을 뺄 수 있다.
+* 세 가지 연산으로 1을 만들 때 연산 횟수의 최솟값을 구하라.
+
+<br>
+### 제한사항
+* 주어지는 N 은 (1<= N <= 10^6)
+
+<br>
+### 입력
+
+10
+
+### 출력
+
+3
+
+
+<br>
+
+### 나의 풀이
+
+* 이전에 공부했었던 메모이제이션이다.<br> 이전 과정에서 풀 수 있는 문제를 저장해서 큰 과정으로 확대되었을 때 과정으로써 재사용할 수 있어야 겠다는 생각을 했다.<br>  
+
+1. **1부터 N 까지 숫자들 중 2와 3 각각의 거듭제곱일 때의 연산 횟수를 저장해둔다.**
+	* ex ) 8 = 2^3 -> 3 
+2. **그 외의 숫자들일 때**
+	* **A** : 이전 숫자의 연산횟수 + 1
+	* **B** : 2로 나누어진다면 2로 나눴을 때 숫자의 연산횟수 + 1 -> **min(A,B)** 를 저장한다.
+	* **C** : 3으로 나누어진다면 3으로 나눴을 때 숫자의 연산횟수 + 1 -> **min(A,C)** 를 저장한다.<br>
+여기서 이미 B를 거쳤다면(2와 3 모두로 나누어진다면) 더 작은 연산횟수가 할당 될 것이다. <br>반드시 3으로 나눈다고 연산횟수가 적은 것은 아니다. 
+
+3. N의 연산횟수를 출력한다.
+
+
+
+<br>
+
+
+### 나의 자바 풀이 코드  
+
+<br>
+```java
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int input = s.nextInt();
+//key : 숫자       value : 연산횟수 
+        HashMap<Integer, Integer> hs = new HashMap<>();
+        hs.put(0, 0);
+        hs.put(1, 0);
+        int i = 0 ;
+        int j = 0 ;
+// 2의 거듭제곱일 경우를 할당
+        while(Math.pow(2,i)<=input){
+            hs.put((int)Math.pow(2,i) , i);
+            i++;
+        }
+// 3의 거듭제곱일 경우를 할당 
+        while(Math.pow(3,j)<=input){
+            hs.put((int)Math.pow(3,j) , j);
+            j++;
+        }
+        for(int k = 2; k <= input; k++){
+            if(!hs.containsKey(k)){
+                hs.put(k , hs.get(k-1)+1);
+                if(k % 2 == 0 ){
+                    hs.put(k , Math.min(hs.get(k/2) + 1 , hs.get(k)));
+                }
+                if(k % 3 == 0){
+                    hs.put(k , Math.min(hs.get(k/3) + 1 , hs.get(k)));
+                }
+            }
+        }
+        System.out.println(hs.get(input));
+    }
+}
+
+```
+<br>
+
+### 풀이 확인 후
+
+* 다른사람의 풀이를 보고 나의 풀이 1번은 불필요한 부분임을 알게 되었다. O(n)으로 끝낼 수 있었다.
+
+### 다시 푼 자바 코드
+```java
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int input = s.nextInt();
+
+        HashMap<Integer, Integer> hs = new HashMap<>();
+        hs.put(0, 0);
+        hs.put(1, 0);
+        hs.put(2, 1);
+        hs.put(3, 1);
+        for (int i = 4; i <= input; i++) {
+            hs.put(i , hs.get(i-1) + 1);
+            if (i % 2 == 0) {
+                hs.put(i, Math.min(hs.get(i / 2) + 1, hs.get(i)));
+            }
+            if (i % 3 == 0) {
+                hs.put(i, Math.min(hs.get(i / 3) + 1, hs.get(i)));
+            }
+
+        }
+        System.out.println(hs.get(input));
+    }
+}
+```
+
+
+<br>
+#### 3으로 나누는 게 당연히 우선일거라고 생각해 푸는데 오래걸렸다. 반례를 찾으면서 다시 풀었던 것 같다. <br>  
+  
+ 
+<br>
+![](/assets/img/1463.png)
