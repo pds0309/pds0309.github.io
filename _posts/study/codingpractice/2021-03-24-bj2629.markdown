@@ -1,0 +1,151 @@
+---
+layout: post
+title: 백준-2629 양팔저울 (java)
+date: 2021-03-24 10:50:20 +0900
+category: 111CP
+tag: study
+---
+
+## 백준-2629-양팔저울
+
+---
+### [문제설명링크   ](https://www.acmicpc.net/problem/2629)
+<br>  
+
+### 문제요약
+양팔 저울에 올릴 추가 몇개 주어지는데 이 추들로 주어진 구슬들 각각의 무게를 확인할 수 있는지 구하는 문제.
+
+<br>  
+
+ 
+<br>
+
+
+
+<br>
+### 제한사항
+* 추는 30개 이하 , 무게는 500 이하.
+* 무게확인용 추는 7개 이하, 무게는 40000이하.
+* 추는 가벼운 순서대로 주어지고 중복 값이 있을 수 있다.
+  
+<br>
+### 입력
+
+2<br>
+1 4<br>
+2<br>
+3 2<br>
+
+
+<br>
+  
+
+### 출력  
+
+Y N
+
+
+<br>
+
+### 나의 풀이<br>  
+  
+* 입출력 예시에서 2개의 추 1, 4 가 주어지고 이 추들로 2개의 (구슬 3,2) 의 무게를 확인할 수 있는지 여부를 리턴하는 것이다.
+* **무게를 확인 할 수 있다** 라는 말은 양팔 저울에 올려서 수평을 만들 수 있는가를 말하는 것인데<br>
+주어진 3,2 구슬의 무게를 모른다고 가정하고 주어진 추들을 이용해 무게를 알아 낼 수 있는가를 말한다. <br>
+입출력 예시에서 추4와 추1+(구슬3) 을 각각 저울에 올려두면 수평이되어 (구슬3)이 무게가 3이라는 것을 알아 낼 수 있다.<br>
+  
+![](/assets/img/2629.PNG)
+
+* 확인해야할 구슬의 무게를 X라고 할 때 (X + 1 = 4)  ==  (X = 4 - 1) 라고 할 수 있다.
+* **1,4** 의 추가 주어진다면 확인할 수 있는 무게는
+	* 0
+	* 1
+	* 4
+	* 5 = 1 + 4  == (4 + 1 = 5)
+	* 3 = 4 - 1   == ( ABS(1 - 4 = -3))<br>  
+
+* 확장해서 **1 , 4 , 5** 의 추가 주어진다면 확인할 수 있는 무게는
+	* 0
+	* case : 1
+		* 1 
+	* case : 4
+		* case1 + ((case1) **연산** 4) + 4  =>{1} +  {5 , 3} + {4}
+	* case : 5
+		* case4 + ((case4) **연산** 5) + 5  =>{1,3,4,5} + {6,10,8,2,9,0} + {5}  
+
+* 위와 같이 순서대로 확장해나가면 주어진 추들로 확인할 구슬의 무게에 대한 모든 경우를 찾을 수 있을 것이라고 판단했다.
+
+
+### 자바 풀이 코드  
+
+<br>
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class Main{
+
+    public static void main(String args[]) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+
+//추의 개수
+        int len = Integer.parseInt(b.readLine());
+// 가능한 무게를 저장할 리스트
+        List<Integer> list = new ArrayList<>();
+
+        StringTokenizer st = new StringTokenizer(b.readLine(), " ");
+        int arr[] = new int[len];
+        for(int i = 0 ; i < len; i ++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+//첫번째 추의 값을 할당
+        list.add(arr[0]);
+
+
+        for(int i = 1 ; i < len ; i ++){
+
+            int listSize = list.size();
+// 이전의 추들로 부터 구했던 리스트에서의 값들을 현재 추와 연산
+            for(int j = 0 ; j < listSize; j ++){
+                if(!list.contains(list.get(j)+arr[i])){
+                    list.add(list.get(j)+arr[i]);
+                }
+                if(!list.contains(Math.abs(list.get(j)-arr[i]))){
+                    list.add(Math.abs(list.get(j)-arr[i]));
+                }
+            }
+            list.add(arr[i]);
+        }
+
+
+        list.add(0);
+
+        len = Integer.parseInt(b.readLine());
+        st = new StringTokenizer(b.readLine(), " ");
+        StringBuilder sb = new StringBuilder();
+
+//리스트에 구슬의 무게와 일치하는 값이 있다면 Y 출력
+// -> 주어진 추들로 해당 구슬의 무게를 찾을 수 있다.
+        for(int i = 0 ; i < len; i ++){
+            int temp = Integer.parseInt(st.nextToken());
+            if(list.contains(temp)){
+                sb.append("Y").append(" ");
+            }
+            else{
+                sb.append("N").append(" ");
+            }
+        }
+
+        System.out.println(sb);
+    }
+}
+
+
+```
+
+
+#### 체감 난이도 : 하<br> 
+ 
+* 동적계획법을 잘 사용한 것인지는 모르겠다.
