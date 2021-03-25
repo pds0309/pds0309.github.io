@@ -1,0 +1,93 @@
+---
+layout: post
+title: 백준-1904-01타일 (java)
+date: 2021-03-25 12:50:20 +0900
+category: 111CP
+tag: study
+---
+
+## 백준-1904-01타일
+
+---
+### [문제설명링크   ](https://www.acmicpc.net/problem/1904)
+<br>  
+
+### 문제요약 
+
+* N자리의 이진 수열을 만들건데 1또는 00을 사용해야한다.  <br>  
+
+> ex) 1100 1001 100  -> 가능 &nbsp; 110 1011 -> 불가능<br>  
+
+
+* 이 때 가능한 이진 수열의 가짓수를 구하는 것.  
+
+<br>  
+
+ 
+
+
+<br>
+### 제한사항
+* 첫 번째 줄에 자연수 N이 주어진다. (1 ≤ N ≤ 1,000,000)
+
+<br>
+### 입력
+
+4
+
+
+<br>
+  
+
+### 출력  
+
+5
+
+
+<br>
+
+### 나의 풀이<br>  
+  
+* N = 1
+	* 1 : {1}
+* N = 2
+	* 2 : { 11 , 00 }
+* N = 3
+	* 3 : { 111 , 100 , 001}
+* N = 4
+	* 5 : {1111 , 0000 , 1100 , 0011 , 1001 }
+
+* 이전값들을 자릿수에 맞게 합치는 구조이다.
+> N = 5 면 N이 1 일때와 N이 4일 때 , N이 2일 때와 3일때를 합쳐서 5자리를 만들 수 있다.  
+ 만약 N에 대한 모든 경우를 구하는 문제라면 이렇게 풀 수 있을 것이다.
+
+* 가짓수로만 보면 1 .. 2 .. 3 ... 5 .. 의 패턴을 찾을 수 있다.<br>
+ &nbsp;**count(N) = count(N-1)+count(N-2)**
+
+
+### 자바 풀이 코드  
+
+<br>
+```java
+import java.io.*;
+public class q1904 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+        int num = Integer.parseInt(b.readLine());
+        int arr[] = new int[1000001];
+        arr[0] = 0;
+        arr[1] = 1;
+        arr[2] = 2;
+        for(int i = 3; i <= num; i ++){
+            arr[i] = (arr[i-1]+arr[i-2])%15746;
+        }
+        System.out.println(arr[num]);
+    }
+}
+
+
+```
+
+
+#### 체감 난이도 : 하<br> 
+ 
