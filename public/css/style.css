@@ -407,3 +407,39 @@ footer {
 .mypost .mypost-content p {
   margin-top: 0;
 }
+
+
+	.btn-gradient {
+	text-decoration: none;
+	color: gray;
+	padding: 10px 30px;
+	display: inline-block;
+	position: relative;
+	border: 1px solid rgba(0,0,0,0.21);
+	border-bottom: 4px solid;
+	padding: 4px 12px;  
+    font-size: 12px;
+	margin: 5px;}
+
+	a.button2 {
+		-webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+	-moz-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+	-ms-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+	-o-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+	transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+	display: block;
+	margin: 5px auto;
+	display: inline-block;
+	position: relative;
+
+	text-decoration: none;
+	border-radius: 4px;
+	padding: 4px 12px;  
+	color: rgba(30, 22, 54, 0.6);
+	box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+	font-size: 12px;
+	}
+	a.button2:hover {
+	color: rgba(255, 255, 255, 0.85);
+	box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
+	}
