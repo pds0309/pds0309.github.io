@@ -4,6 +4,7 @@ title: 메모이제이션 (Memoization)
 date: 2021-03-15 11:25:00 +0900
 category: algorithm
 tag: study
+mytag: [dp]
 ---
 
 ## 메모이제이션이란?

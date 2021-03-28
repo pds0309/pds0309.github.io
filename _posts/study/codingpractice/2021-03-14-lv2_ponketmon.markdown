@@ -4,6 +4,7 @@ title: 프로그래머스-lv2 폰켓몬 (java)
 date: 2021-03-14 09:17:45 +0900
 category: 111CP
 tag: study
+mytag: [프로그래머스]
 ---
 
 ## [프로그래머스] level 2 - 폰켓몬

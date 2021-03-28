@@ -4,6 +4,8 @@ title: 백준-7579-앱
 date: 2021-03-23 09:55:18 +0900
 category: 111CP
 tag: study
+mytag: [dp, 백준]
+
 ---
 
 ## 백준-7579-앱
