@@ -22,7 +22,7 @@ paginate_path: "/page/:num"
 category_dir: category/
 tag_dir: tag/
 my_list: [study , justdoit , else]
-mytag: [dp, 백준, 프로그래머스]
+
 
 # exclude:
 #   - .sass-cache/
