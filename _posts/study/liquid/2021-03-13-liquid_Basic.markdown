@@ -2,9 +2,9 @@
 layout: post
 title: Liquid 기초 문법 (1)
 date: 2021-03-13 09:40:15 +0900
-category: liquid_Basic
+category: github_blog
 tag: study
-
+mytag: [liquid]
 
 ---
 
