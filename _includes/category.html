@@ -49,6 +49,7 @@
 		var b = str.substring(0,a);
 		return b;
 	}
+	
 	function removeCategory() {
 		if (window.location.hash) {
 			
@@ -78,17 +79,17 @@
 			$('#addTag').html('');
 			
         	for(i in allTemp){$('#addTag').append(
-			'<a href="#" class="button2" id='+i+' onclick="filterTag(this)">'+i.toUpperCase()+' (' + map.get(i) + ')</button>'
+			'<a href="#'+hash+'" class="button2" id='+i+' onclick="filterTag(this)">'+i.toUpperCase()+' (' + map.get(i) + ')</button>'
 			).append("   ")} 
 		}
 		
-        
-
 	}
+	
 	$(window).on('hashchange', () => {
 		removeCategory();
 	});
-	$(document).ready(() => {
+	
+	$(document).ready(() => {	
 		removeCategory();
 	})
 	
@@ -150,5 +151,4 @@
 				}
 		});
 	}
-	
 </script>
