@@ -4,6 +4,7 @@ title: 프로그래머스-lv3 정수삼각형 (java)
 date: 2021-03-15 09:35:41 +0900
 category: 111CP
 tag: study
+mytag: [프로그래머스 , dp]
 ---
 
 ## [프로그래머스] level 3 - 정수삼각형

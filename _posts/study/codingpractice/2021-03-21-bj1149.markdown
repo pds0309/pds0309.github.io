@@ -4,6 +4,7 @@ title: 백준-1149-RGB거리
 date: 2021-03-21 12:57:15 +0900
 category: 111CP
 tag: study
+mytag: [백준 , dp]
 ---
 
 ## 백준-1149-RGB거리

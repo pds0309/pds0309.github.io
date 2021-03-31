@@ -4,6 +4,7 @@ title: 백준-12865-평범한배낭 (java)
 date: 2021-03-17 10:01:54 +0900
 category: 111CP
 tag: study
+mytag: [백준, dp]
 ---
 
 ## 백준-12865-평범한 배낭

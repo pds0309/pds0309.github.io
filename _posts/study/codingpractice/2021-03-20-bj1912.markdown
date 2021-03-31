@@ -4,6 +4,7 @@ title: 백준-1912-연속합 (java)
 date: 2021-03-20 11:35:44 +0900
 category: 111CP
 tag: study
+mytag: [백준 , dp]
 ---
 
 ## 백준-1912 연속합
