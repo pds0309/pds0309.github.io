@@ -4,9 +4,13 @@ _site
 .jekyll-metadata
 vendor
 
+
+##
+*.gem
+.bundle
+Gemfile.lock
+
+
+
 ## 
 assets/
-*.PNG
-*.png
-*.JPG
-*.jpg
