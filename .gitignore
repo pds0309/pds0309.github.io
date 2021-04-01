@@ -3,4 +3,10 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
+
+## 
 assets/
+*.PNG
+*.png
+*.JPG
+*.jpg
