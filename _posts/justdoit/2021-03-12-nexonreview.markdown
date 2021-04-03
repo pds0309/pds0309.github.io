@@ -3,7 +3,7 @@ layout: post
 title: 뒤늦게쓰는 넥슨 인텔리전스 랩스 인턴 지원 리뷰
 date: 2021-03-18 12:37:11 +0900
 category: review
-tag: justdoit
+tag: doit
 img: nexonresult.PNG
 mytag: [넥슨 , 리뷰]
 ---
