@@ -6,7 +6,7 @@ permalink: /about/
 
 ## Hello!
 > 안녕하세요 하루에 10cm라도 전진하기 위해 공부하고 겪었던 것을 기록합니다.  
-> XX석놈이 앞으로 나아간다고 하여 Seokcceeding 입니다.
+> XX석이 앞으로 나아간다고 하여 Seokcceeding 입니다.
 
 #### 이메일
 > ehd0309@naver.com  <br> ehd0309@gmail.com
