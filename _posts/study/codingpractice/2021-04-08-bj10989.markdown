@@ -1,0 +1,154 @@
+---
+layout: post
+title: 백준-10989-수 정렬하기3 (java)
+date: 2021-04-08 10:05:10 +0900
+category: 111CP
+tag: study
+mytag: [백준 , 정렬 ]
+---
+
+## 백준-10989-수 정렬하기3
+
+---
+### [문제설명링크   ](https://www.acmicpc.net/problem/10989)
+<br>  
+  
+* [풀이](#나의-풀이)
+* [코드](#자바-풀이-코드)  
+
+<br>  
+
+### 문제요약 
+
+* N개의 수가 주어졌을 때 오름차순 정렬하는 프로그램
+<br>  
+
+
+<br>
+### 입력<br>
+*  N(1 ≤ N ≤ 10,000,000)
+* 숫자는 <= 10000
+
+
+### 출력  <br>   
+
+* 첫째 줄부터 N개의 줄에 오름차순으로 정렬한 결과를 한 줄에 하나씩 출력한다.
+
+
+
+### 입력예시<br>  
+
+10<br>
+5<br>
+2<br>
+3<br>
+1<br>
+4<br>
+2<br>
+3<br>
+5<br>
+1<br>
+7<br>
+
+### 출력예시<br>    
+
+1<br>
+1<br>
+2<br>
+2<br>
+3<br>
+3<br>
+4<br>
+5<br>
+5<br>
+7<br>
+
+ 
+
+<br>
+
+### 풀이<br>
+
+#### 자바의 Arrays.sort() 를 이용  <br>  
+
+* 배열을 입력받고 정렬 후 출력하면 됨
+* java.util.Arrays 에서 정수는 병합정렬을 한다고 함.
+* 병합정렬의 최악의 시간복잡도는 O(n log n)
+
+```java
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+        int len = Integer.parseInt(b.readLine());
+        int arr[] = new int[len];
+        for(int i = 0 ; i < len ; i ++){
+            arr[i] = Integer.parseInt(b.readLine());
+        }
+        Arrays.sort(arr);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < len ; i ++){
+            sb.append(arr[i]).append("\n");
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+**결과**
+
+![](/assets/img/10989_1.PNG)
+  
+
+<br>
+
+#### 계수 정렬 이용 (Counting sort)
+
+* 입력 될 숫자의 개수는 천만개 이하이고 숫자 하나하나는 만보다 작다.
+	* 정렬해야될 숫자의 개수에 비해 수의 범위가 작다.
+	* 시간복잡도는 O(n + k) 로 k는 정렬할 수들 중 최대값이다.
+		* k가 정렬할 수의 개수보다 작다면 O(n) 이 된다. 
+
+
+```java
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+        int len = Integer.parseInt(b.readLine());
+        int arr[] = new int[len];
+// 정렬할 숫자 배열
+        for(int i = 0 ; i < len ; i ++){
+            arr[i] =  Integer.parseInt(b.readLine());
+        }
+// 정렬할 숫자들 중 최대값
+        int max = Arrays.stream(arr).max().getAsInt();
+// 숫자의 개수에 대한 배열
+        int cnt[] = new int[max+1];
+        for(int i = 0 ; i < len; i ++){
+            cnt[arr[i]]++;
+        }
+// 숫자 개수의 누적합을 구함
+        for(int i = 1 ; i < max + 1; i ++){
+            cnt[i] += cnt[i-1];
+        }
+        int A[] = new int[len+1];
+// 정렬
+        for(int i = 0 ; i < len ; i ++){
+            A[--cnt[arr[i]]] = arr[i];
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < len ; i ++){
+            sb.append(A[i]).append("\n");
+        }
+        System.out.println(sb);
+    }
+}
+
+```  
+
+<br>  
+
+**결과**
+
+![](/assets/img/10989_2.PNG)
+
+#### 체감 난이도 : 하<br>
