@@ -20,16 +20,11 @@ permalink: /about/
 - 이미지 올리기
   
 
-### 코드 올리기
-> 코드올리는 방법
-```yml
-highlighter-theme: monokai //you can change your syntax color scheme.
-date_format: "%Y-%M-%D" //and date format.
-```
-  
-
-### 이미지 올리기
-> 이미지 올리는 방법
-```java
-// 예시 : ![alt text](/ppublic/img/screenshot-1.png)
-```
+### 메모 (2021.04.09)
+* 해당 블로그를 갈아엎을 예정임
+	* 네비게이션은 왼쪽이 아니라 상단에 작게.
+	* 카테고리는 미리 노출되어있는게 아니라 클릭하면 나오게.  
+	* 태그수정 - 모든페이지에 노출되게 하고 클릭하면 해당 태그 페이지 나오게.
+	* 게시글 자체 구성 바꾸기.
+	
+	
