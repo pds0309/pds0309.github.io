@@ -1,0 +1,140 @@
+---
+layout: post
+title: Lambda 기초활용 - API 만들기
+date: 2021-03-31 13:10:22 +0900
+category2: cloud
+category: Study Note
+tag: [aws,lambda]
+img: lambdaimg.png 
+---
+<br>
+
+<br>  
+
+
+
+
+### 목차  
+
+[1. 람다함수 생성](#P1)    
+
+[2. API Gateway 생성](#P2)  
+
+[3. API Gateway 리소스. 메서드 생성](#P3)
+
+[4. Lambda 코드 수정](#P4)
+
+[5. API 배포](#P5)
+<br>  
+  
+
+# AWS 람다란?
+
+#### [ 자세한 설명 ](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/welcome.html)<br>  
+#### 서버에 대한 구축, 관리 필요없이 애플리케이션과 서비스를 만들고 실행할 수 있는 서버리스 컴퓨팅
+#### 호출한 만큼만 비용을 지불한다.<br>  
+#### .NET core , Go , Java , Node.js , Python , Ruby 등의 언어로 코드만 작성하면 된다.
+
+<br>  
+
+<br>  
+
+
+## API Gateway 와 Lambda를 이용해 API 만들고 조회 해보기 <br>  
+
+
+  
+<br>  
+<p id="P1" style="color:white">P1</p>
+
+### 1. 먼저 lambda 함수를 기본 권한으로 생성한다. - 해당 함수에 대한 기본적인 실행 정책이 생성됨 <br>  
+
+  
+<br>  
+
+![](/assets/img/lambdaex1/1.PNG)
+  
+
+<br><br>  
+
+<p id="P2" style="color:white">P2</p>
+### **2. API Gateway 생성**<br>  
+
+<br>  
+
+![](/assets/img/lambdaex1/api1.PNG)<br>  
+
+<br>  
+<br>
+<p id="P3" style="color:white">P3</p>  
+### **3. 리소스를 생성하고 조회 테스트를 위해 GET 방식 메서드 생성**
+
+<p style="color:blue;font-size:1.2em;"> /myapps/{app-no}/contents/ 리소스 생성 후 GET 메서드에 생성해놓은 lambda 함수명 입력 </p>
+<br>  
+
+![](/assets/img/lambdaex1/api5.PNG)<br>  
+
+<br>  
+  
+<p style="color:blue;font-size:1.2em;">해당 api gateway 에 대한 권한이 생성했던 lambdaexam1 에 부여된다. </p>
+<br>  
+
+![](/assets/img/lambdaex1/api6.PNG)<br>  
+
+<br>  
+ 
+
+
+<p style="color:blue;font-size:1.2em;">메서드 요청에서 보낸 URL 경로 부분을 매핑해서 통신 방식 지정</p>  
+    
+```method.request.{"path" | "querystring" | "header"}.{param_name}```
+
+<br>  
+ 
+![](/assets/img/lambdaex1/api6_2.PNG)<br>  
+  
+<br><br>  
+
+<p style="color:blue;font-size:1.2em;">매핑 템플릿 -> 템플릿 생성 -> 메서드 요청 패스스루 </p> <br>  
+  
+  
+![](/assets/img/lambdaex1/api6_3.PNG)  
+<br>  
+
+<br>  
+
+<p style="color:blue;font-size:1.2em;">람다에서 event["params"] 를 출력해본 결과이다. 앞서 지정한 통신 방식에 맞게 나온다.</p>
+    
+
+![](/assets/img/lambdaex1/api6_4.PNG)
+  
+<br><br>  
+
+<p id="P4" style="color:white">P4</p>
+### **4. lambda 코드 수정**  <br>  
+
+* 쉬운 get용 예제를 만들어보았다.   
+
+![](/assets/img/lambdaex1/2.PNG) <br>  
+
+<br>  
+
+<p id="P5" style="color:white">P5</p>
+### **5. API 배포하기**  
+
+<p style="color:blue;font-size:1.2em;">작업 -> API 배포 -> 스테이지 생성 과정을 거치면  </p>
+
+![](/assets/img/lambdaex1/api7.PNG) <br>  
+  
+<p style="color:blue;font-size:1.2em;">API 호출을 위한 주소가 생성된다.  </p>
+
+![](/assets/img/lambdaex1/api8.PNG) <br>  
+
+<br>  
+
+<br>  
+
+### 6. 결과<br>  
+<br>  
+
+![](/assets/img/lambdaex1/3.PNG) <br>

@@ -1,4 +1,41 @@
 ---
-layout: default
+layout: main
 ---
-{%- include category.html -%}
+{% for post in site.posts %}
+<article class="post post-{{post.category}} post-{{post.category2}}">
+  {% if post.img %}
+  <a class="post-thumbnail" style="background-image: url({{" /assets/img/" | prepend: site.baseurl | append :
+    post.img}})" href="{{post.url | prepend: site.baseurl}}"></a>
+  {% else %}
+  {% endif %}
+  <div class="post-content">
+    <h2 class="post-title"><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h2>
+    <p>{{ post.content | strip_html | truncatewords: 15 }}</p>
+    <span class="post-date">{{post.date | date: "%Y-%m-%d"}}&nbsp;&nbsp;&nbsp;—&nbsp;</span><span
+      style="color:rgb(141, 141, 192)">{% for t in post.tags %} #{{t}}&nbsp; {% endfor %}</span>
+  </div>
+</article>
+{% endfor %}
+<script>
+  $(document).ready(() => {
+  $('#addTags').hide();
+   removeCategory();
+  });
+  $(window).on('hashchange', () => {
+    removeCategory();
+  });
+
+  function removeCategory() {
+    if (window.location.hash) {
+      let hash = window.location.hash.substring(1);
+      $('#id-post-title').text(hash.substring(0, 1).toUpperCase() + hash.substring(1));
+      let items = $('.post').each((i, e) => {
+        if (!$(e).hasClass('post-' + hash)) {
+          $(e).hide();
+        } else {
+          $(e).show();
+        }
+      });
+    }
+  }
+</script>

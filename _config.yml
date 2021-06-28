@@ -1,37 +1,33 @@
+title: DSlog
+description: > # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+permalink: ':title/'
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
+# Author Settings
+author: DSlog # add your name
+author-img: ds.jpg # add your photo
+about-author: 강해지고 싶습니다. 응애!
+social-github: https://github.com/pds0309 # add your Github handle
+social-email: ehd0309@naver.com
 
-title: Seokcceeding
-email: ehd0309@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
-  seok study memo
-baseurl: "/" # the subpath of your site, e.g. /blog
-url: "http://pds0309.github.io" 
-github_username: pds0309
-highlighter: rouge
-svg:
-  optimize: true
-# Build settings
+# Disqus
+# discus-identifier: mr-brown # add your discus identifier
 
-highlighter-theme: monokai
-date_format: "%Y-%M-%D"
+# Tracker
+analytics: # Google Analytics
+
+# Build Settings
+markdown: kramdown
 plugins:
-  - jekyll-feed
-  - jekyll-paginate
-paginate: 10
+  - jekyll-sitemap
+  - jekyll-paginate 	
+  - jemoji
+
+paginate: 8
 paginate_path: "/page/:num"
 category_dir: category/
-tag_dir: tag/
-my_list: [study , doit , else]
-
-
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+exclude: ["node_modules", "gulpfile.js", "package.json", "yarn.lock"]

@@ -1,0 +1,145 @@
+I"�=<h2 id="백준-1463-1로-만들기">백준-1463-1로 만들기</h2>
+
+<hr />
+
+<h3 id="문제설명링크---"><a href="https://www.acmicpc.net/problem/1463">문제설명링크   </a></h3>
+<p><br /></p>
+<h3 id="요약">요약</h3>
+<ul>
+  <li>10^6 보다작은 숫자를 입력받았을 때 세가지 연산을 할 수 있다.</li>
+  <li>3으로 나누어 떨어지면 3으로 나눌 수 있다.</li>
+  <li>2로 나누어 떨어지면 2로 나눌 수 있다.</li>
+  <li>1을 뺄 수 있다.</li>
+  <li>세 가지 연산으로 1을 만들 때 연산 횟수의 최솟값을 구하라.</li>
+</ul>
+
+<p><br /></p>
+<h3 id="제한사항">제한사항</h3>
+<ul>
+  <li>주어지는 N 은 (1&lt;= N &lt;= 10^6)</li>
+</ul>
+
+<p><br /></p>
+<h3 id="입력">입력</h3>
+
+<p>10</p>
+
+<h3 id="출력">출력</h3>
+
+<p>3</p>
+
+<p><br /></p>
+
+<h3 id="나의-풀이">나의 풀이</h3>
+
+<ul>
+  <li>이전에 공부했었던 메모이제이션이다.<br /> 이전 과정에서 풀 수 있는 문제를 저장해서 큰 과정으로 확대되었을 때 과정으로써 재사용할 수 있어야 겠다는 생각을 했다.<br /></li>
+</ul>
+
+<ol>
+  <li><strong>1부터 N 까지 숫자들 중 2와 3 각각의 거듭제곱일 때의 연산 횟수를 저장해둔다.</strong>
+    <ul>
+      <li>ex ) 8 = 2^3 -&gt; 3</li>
+    </ul>
+  </li>
+  <li><strong>그 외의 숫자들일 때</strong>
+    <ul>
+      <li><strong>A</strong> : 이전 숫자의 연산횟수 + 1</li>
+      <li><strong>B</strong> : 2로 나누어진다면 2로 나눴을 때 숫자의 연산횟수 + 1 -&gt; <strong>min(A,B)</strong> 를 저장한다.</li>
+      <li><strong>C</strong> : 3으로 나누어진다면 3으로 나눴을 때 숫자의 연산횟수 + 1 -&gt; <strong>min(A,C)</strong> 를 저장한다.<br />
+여기서 이미 B를 거쳤다면(2와 3 모두로 나누어진다면) 더 작은 연산횟수가 할당 될 것이다. <br />반드시 3으로 나눈다고 연산횟수가 적은 것은 아니다.</li>
+    </ul>
+  </li>
+  <li>N의 연산횟수를 출력한다.</li>
+</ol>
+
+<p><br /></p>
+
+<h3 id="나의-자바-풀이-코드">나의 자바 풀이 코드</h3>
+
+<p><br /></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Scanner</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Scanner</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scanner</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">input</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+<span class="c1">//key : 숫자       value : 연산횟수 </span>
+        <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">hs</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span>
+        <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span>
+<span class="c1">// 2의 거듭제곱일 경우를 할당</span>
+        <span class="k">while</span><span class="o">(</span><span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="n">i</span><span class="o">)&lt;=</span><span class="n">input</span><span class="o">){</span>
+            <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">((</span><span class="kt">int</span><span class="o">)</span><span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="n">i</span><span class="o">)</span> <span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="n">i</span><span class="o">++;</span>
+        <span class="o">}</span>
+<span class="c1">// 3의 거듭제곱일 경우를 할당 </span>
+        <span class="k">while</span><span class="o">(</span><span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="n">j</span><span class="o">)&lt;=</span><span class="n">input</span><span class="o">){</span>
+            <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">((</span><span class="kt">int</span><span class="o">)</span><span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="n">j</span><span class="o">)</span> <span class="o">,</span> <span class="n">j</span><span class="o">);</span>
+            <span class="n">j</span><span class="o">++;</span>
+        <span class="o">}</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">input</span><span class="o">;</span> <span class="n">k</span><span class="o">++){</span>
+            <span class="k">if</span><span class="o">(!</span><span class="n">hs</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">k</span><span class="o">)){</span>
+                <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">k</span> <span class="o">,</span> <span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="o">)+</span><span class="mi">1</span><span class="o">);</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">){</span>
+                    <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">k</span> <span class="o">,</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">k</span><span class="o">/</span><span class="mi">2</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">,</span> <span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">k</span><span class="o">)));</span>
+                <span class="o">}</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">k</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="o">){</span>
+                    <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">k</span> <span class="o">,</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">k</span><span class="o">/</span><span class="mi">3</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">,</span> <span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">k</span><span class="o">)));</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">input</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<p><br /></p>
+
+<h3 id="풀이-확인-후">풀이 확인 후</h3>
+
+<ul>
+  <li>다른사람의 풀이를 보고 나의 풀이 1번은 불필요한 부분임을 알게 되었다. O(n)으로 끝낼 수 있었다.</li>
+</ul>
+
+<h3 id="다시-푼-자바-코드">다시 푼 자바 코드</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Scanner</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Scanner</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scanner</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">input</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+
+        <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">hs</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">4</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">input</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">i</span> <span class="o">,</span> <span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span> <span class="o">/</span> <span class="mi">2</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">hs</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span> <span class="o">/</span> <span class="mi">3</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+            <span class="o">}</span>
+
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">input</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+<h4 id="3으로-나누는-게-당연히-우선일거라고-생각해-푸는데-오래걸렸다-반례를-찾으면서-다시-풀었던-것-같다-">3으로 나누는 게 당연히 우선일거라고 생각해 푸는데 오래걸렸다. 반례를 찾으면서 다시 풀었던 것 같다. <br /></h4>
+
+<p><br />
+<img src="/assets/img/1463.png" alt="" /></p>
+:ET

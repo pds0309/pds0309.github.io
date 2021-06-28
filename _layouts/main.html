@@ -1,0 +1,159 @@
+---
+layout: default
+---
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<style>
+  a.btn-tag {
+    -webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+    -moz-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+    -ms-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+    -o-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+    transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+    display: block;
+    margin: 5px auto;
+    display: inline-block;
+    position: relative;
+
+    text-decoration: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    color: rgba(30, 22, 54, 0.6);
+    box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+    font-size: 12px;
+  }
+
+  a.btn-tag:hover {
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
+  }
+
+  .img-category:hover {
+    transform: scale(1.1);
+  }
+</style>
+{% assign categ2 = "" %}
+<div id="categ-list" style="display: none;">{% for i in site.posts %}{% if i.category == 'Study Note' %}{% assign categ2
+  = categ2 | append: "," | append: i.category2 %}{% endif %}{{i.category}},{% endfor %}</div>
+<aside id="id-sidebar" class="sidebar" style="display: none;">
+  <header>
+    <div class="mycategory"><span><button id="btn">
+          <span></span><span></span><span></span>
+        </button></span><span></span></div><br>
+    <div class="categ" style="display: none;">
+      <div><a>CATEGORIES</a></div>
+      <div id="categ-child1" style="font-size: 15px;"></div>
+    </div>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="{{site.baseurl}}/"><img
+            src="{{site.baseurl}}/assets/img/{% if site.author-img %}{{site.author-img}}{% endif %}"
+            alt="{{site.author}}"></a>
+      </div>
+      <div class="author-name"><a href="{{site.baseurl}}/">{{site.author}}</a></div>
+      <p>{{site.about-author}}</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer class='f-footer'>
+    <section class="contact">
+      <h3 class="contact-title">-</h3>
+      <ul>
+        {% if site.social-github %}
+        <li class="github"><a href="http://github.com/{{site.social-github}}" target="_blank"><i
+              class="fa fa-github"></i></a></li>
+        {% else %}
+        <li class="github"><a href="http://github.com/" target="_blank"><i class="fa fa-github"
+              aria-hidden="true"></i></a></li>
+        {% endif %}
+        {% if site.social-email %}
+        <li class="email"><a href="mailto:{{site.social-email}}"><i class="fa fa-envelope-o"></i></a></li>
+        {% else %}
+        <li class="email"><a href="mailto:example.david@blog.com"><i class="fa fa-envelope-o"
+              aria-hidden="true"></i></a></li>
+        {% endif %}
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>{{site.time | date: '%Y'}} &copy; {{site.author}}</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+{% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor%}{% endcapture %}
+{% assign tag_words = site_tags | split:',' | sort %}
+<div id="myheader" class="content-box myheader">
+  <h2 id="id-post-title" class="post-title">전체 글</h2>
+  <div id="addTags">
+    {% for this_word in tag_words %}
+    <a id="id-{{this_word}}" href="#{{this_word}}" class="btn-tag" onclick="filterTag(id)">{{this_word}}
+      <span>({{site.tags[this_word].size }})</span>
+    </a>
+    {% endfor %}
+    <a id="all" href="/" class="btn-tag">All<span>({{site.posts | size}})</span></a>
+  </div>
+</div>
+<div id="id-contents" class="content-box clearfix">
+  {{ content }}
+</div>
+<script>
+  $(document).ready(function () {
+    $('.sidebar').fadeIn(1000);
+    let categoryList = Array.from(new Set($('#categ-list').text().split(',').filter(o => o.length > 1)));
+    let categoryList2 = Array.from(new Set(('{{categ2}}').split(',').filter(o => o.length > 1)));
+    for (let i = 0; i < categoryList.length; i++) {
+      $('#categ-child1').append(`<p id="categ-child1-${categoryList[i].split(" ")[0]}"><a class="categ-a" style='text-decoration: none; color:black' href='{{ root_url }}/{{ site.category_dir }}#${categoryList[i].split(" ")[0]}'>&nbsp;  ${categoryList[i]}</a></p>`);
+
+    }
+    for (let i = 0; i < categoryList2.length; i++) {
+      $(`#categ-child1-Study`).append(`<p id="categ-child2-${categoryList2[i]}">
+          <a class='categ-a' style='text-decoration: none; color:black' href='{{ root_url }}/{{ site.category_dir }}#${categoryList2[i]}'>&nbsp;&nbsp;&nbsp; - ${categoryList2[i].replace(/\b[a-z]/, letter => letter.toUpperCase())}</a>
+          </p>`);
+    }
+    var catA = document.getElementsByClassName('categ-a');
+    for (let i = 0; i < catA.length; i++) {
+      catA.item(i).addEventListener('mouseover', function () { this.style.color = 'red'; });
+      catA.item(i).addEventListener('mouseout', function () { this.style.color = 'black'; });
+    }
+
+  });
+  $(document).ready(() => {
+    if (window.location.hash && location.href.indexOf('cate')==-1) {
+      let hash = window.location.hash.substring(1);
+      filterTag('id-' + decodeURI(hash));
+    }
+  });
+  var e = document.getElementById('btn');
+
+  e.addEventListener('click', function () {
+    if (this.className == 'on') {
+      this.classList.remove('on');
+      $('.about').fadeIn(500);
+      $('.categ').fadeOut(500);
+      $('.f-footer').fadeIn(500);
+
+    }
+    else {
+      this.classList.add('on');
+      $('.about').fadeOut(500);
+      $('.categ').fadeIn(500);
+      $('.f-footer').fadeOut(400);
+    }
+  });
+  function filterTag(id) {
+    let tag = id.split('-')[1];
+    // 태그 선택 시 타이틀을 태그이름으로 변경
+    $('#id-post-title').empty();
+    $('#id-post-title').append(tag);
+    // 페이지네이션은 우선 비활성화 하자! - 추후 수정할 예정
+    $('#id-mypagenation').hide();
+    // 선택한 태그를 가진 모든 글만 나타나게 합니다.
+    let items = $('.post').each((i, e) => {
+      if ($(e).text().indexOf('#' + tag) != -1) {
+        $(e).show();
+      }
+      else {
+        $(e).hide();
+      }
+    });
+  }
+</script>

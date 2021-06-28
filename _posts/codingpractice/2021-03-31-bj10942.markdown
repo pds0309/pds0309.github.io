@@ -1,0 +1,157 @@
+---
+layout: post
+title: 백준-10942-팰린드롬? (java)
+date: 2021-03-31 11:28:10 +0900
+category2: codingpractice
+category: Study Note
+tag: [백준 , dp]
+---
+
+## 백준-11053-가장 긴 증가하는 부분 수열
+
+---
+### [문제설명링크   ](https://www.acmicpc.net/problem/10942)
+<br>  
+  
+* [풀이](#나의-풀이)
+* [코드](#자바-풀이-코드)  
+
+<br>  
+
+### 문제요약 
+
+* 수열이 주어졌을 때  수열의 일부에 대해서 팰린드롬인지 아닌지 출력하라.
+* 팰린드롬이란 ?
+	* 스콜스는 거꾸로해도 스콜스
+	* 12321 은 거꾸로해도 12321
+
+   
+<br>  
+
+<br>
+
+<br>
+### 입력<br>
+* N (1<= N <= 2000) : 수열의 크기
+* N 길이의 수열
+* M (1 <= M <= 1000000) : 질문의 개수
+* 질문 S , E 
+
+### 출력  <br>   
+
+* M 개의 질문에 대해 팰린드롬이면 1 아니면 0 출력
+
+
+
+### 입력예시<br>  
+
+7<br>
+1 2 1 3 1 2 1<br>
+4<br>
+1 3<br>
+2 5<br>
+3 3<br>
+5 7<br>
+
+### 출력예시<br>    
+
+1<br>
+0<br>
+1<br>
+1<br>
+ 
+
+
+
+<br>
+
+### 나의 풀이<br>  
+
+* 수열에 대한 질문의 개수가 많아서 수열에 대해 팰린드롬 여부를 dp로 저장해두고 풀지 않으면 시간초과가 나왔다.  
+
+* N 길이의 수열에 대해 1 ~ N 길이의 팰린드롬 여부를 찾을 수 있다.
+* 길이가 1일 때 모든 숫자가 팰린드롬이다.
+* 길이가 2일 때 두 값이 같으면 팰린드롬이다.
+* 길이가 3일 때 첫 값과 마지막 값이 같으면 팰린드롬이다.
+* 길이가 4일 때 첫 값과 마지막 값이 같고 안의 두 수가 같으면 팰린드롬이다.
+	* 안의 두 수는 길이가 2일 때 구해져있다.
+* 길이가 5일 때 첫 값과 마지막 값이 같고 안의 세 수가 팰린드롬이면 팰린드롬이다.
+	* 안의 세 수는 길이가 3일 때 구해져있다.
+* 길이가 6일 때 첫 값과 마지막 값이 같고 안의 네 수가 팰린드롬이면 팰린드롬이다.
+	* 안의 네 수는 길이가 4일 때 구해져있다.
+
+* 따라서
+	* A[] : 주어진 수열 
+	* **Boolean D[M][N]**  : 수열 일부분에 대해 팰린드롬인지 아닌지 여부 일 때 ( 1<=M<=N)
+	* ex) D[1][3] = true : 121
+	* ex) D[1][1] = true : 1
+	* ex) D[2][5] = false : 2131
+* 식은  
+
+  	> D[M][N] = (A[M]==A[N]) AND D[M+1][N-1]
+
+<br>  
+ 	
+ 
+### 자바 풀이 코드  
+
+<br>
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+        int len = Integer.parseInt(b.readLine());
+        StringTokenizer st = new StringTokenizer(b.readLine());
+// 수열
+        int A[] = new int[len+1];
+        for(int i = 1 ; i < len + 1; i ++){
+            A[i] = Integer.parseInt(st.nextToken());
+        }
+// d[m][n] : A[] 에 대해 m번째에서 n번째 까지의 부분수열이 팰린드롬인가 아닌가 여부
+        boolean d[][] = new boolean[len+1][len+1];
+        // 부분수열의 길이가 1이면 반드시 팰린드롬이다.
+        for(int i = 1 ; i < d.length; i ++){
+            d[i][i] = true;
+        }
+        // 부분수열의 길이가 2이면 두 값이 같을 때 팰린드롬이다.
+        for(int i = 2 ; i < d.length - 1; i ++){
+            if(A[i-1] == A[i]){
+                d[i-1][i] = true;
+            }
+        }
+        // 부분수열의 길이가 3이상일 때
+        for(int i = 2 ; i < d.length; i ++){
+//길이가 3일때.. 4일때.. 5일때 ... 순서대로 팰린드롬 여부를 찾아나간다.
+            for(int j = 1; j < d.length - i ; j ++){
+	// 첫값과 마지막 값이 같은지 여부와 첫 값과 마지막 값을 뺀 부분수열이 팰린드롬이었는지 여부를 and 연산.
+                if(A[j] == A[j+i] && d[j+1][j+i-1]){
+                    d[j][j+i] = true;
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        len = Integer.parseInt(b.readLine());
+        for(int i = 0 ; i < len; i ++){
+            st = new StringTokenizer(b.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            if(d[start][end]){
+                sb.append("1").append("\n");
+            }
+            else{
+                sb.append("0").append("\n");
+            }
+        }
+        System.out.println(sb);
+    }
+}
+
+```
+
+
+#### 체감 난이도 : 중<br>  

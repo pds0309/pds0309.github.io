@@ -1,0 +1,127 @@
+---
+layout: post
+title: 백준-2579-계단오르기 (java)
+date: 2021-03-27 10:50:20 +0900
+category2: codingpractice
+category: Study Note
+tag: [백준 , dp]
+---
+
+## 백준-2579-계단오르기  
+
+---
+### [문제설명링크   ](https://www.acmicpc.net/problem/2579)
+<br>  
+
+### 문제요약 
+
+* 1층부터 주어진 층수까지 각 층의 점수가 주어지고 계단을 오를건데<br>
+한번에 한 계단 또는 건너뛰고 다음계단을 오를 수 있고 연속으로 세 개의 계단은 밟을 수 없다.
+* 마지막 계단은 반드시 밟아야 한다.
+* 이 때 가장 높은 점수를 얻는 방법을 구한다.  
+
+<br>  
+
+ 
+
+
+<br>
+### 제한사항
+* 계단은 300개 이하의 자연수, 점수는 10000이하의 자연수
+
+<br>
+### 입력<br>
+* 첫 줄은 계단의 수
+* 밑으로는 각 계단의 점수
+
+6<br>
+10<br>
+20<br>
+15<br>
+25<br>
+10<br>
+20<br>
+
+<br>
+  
+
+### 출력  
+
+75
+
+
+<br>
+
+### 나의 풀이<br>  
+  
+* 입력 예시로 6개의 계단이 주어졌는데 N : 1~6 개의 계단이 주어졌다고 생각하고 차근차근 생각해보기로 했다.<br>
+* N = 주어진 계단 수 <br>
+* A[6] = {10,20,15,25,10,20} &nbsp; **ex) A[2] = 20 = 2층의 점수**<br>
+* M[N] = N층 까지 올라갈 때의 최대값 &nbsp; **ex) M[3] = 3층까지 올라갈 때 최대값**
+
+* N = 1
+	* M[1] : 6
+* N = 2
+	* M[2] : A[1] + A[2] = 30
+* N = 3
+	* M[3] : MAX(1층 + 3층 , 2층 + 3층) = 35
+* N = 4
+	* M[4] : A[4] + MAX( 1층+2층 , 1층+3층) = 25 + MAX( 30, 25 ) = 55
+* N = 5
+	* M[5] : A[5] + MAX( 3층까지올랐을 때 최대값 : M[3], 4층 : A[4] + 2층까지의 최대값: M[2] )
+	* 5층을 반드시 올라야 할 때 4층을 방문했다고 가정한다면 3층은 건너뛰었어야만 했다. <br>
+따라서 4층과 2층까지올랐을 때의 최대값이 후보에 들어간다.
+	* 5층을 반드시 올라야 할 때 4층을 건너뛰었다고 가정한다면 3층을 반드시 올랐어야한다.<br>
+따라서 3층까지 올랐을 때의 최대값이 후보에 들어간다.
+* N = 6
+	* M[6] : A[6] + MAX( M[4] , A[5] + M[3] )   
+
+<br>  
+
+* 식 :  N층까지 오를 때 최대값 :  **M[N]  =  MAX( (A[N] + M[N-2)  , A[N] + A[N-1] + M[N-3] )** <br>  
+
+
+### 자바 풀이 코드  
+
+<br>
+```java
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+// 주어진 계단의 수
+        int len = Integer.parseInt(b.readLine());
+// 계단 최대점수 리스트 : ex) list.get(3) = 1층까지 오를 때 점수의 최대값
+        ArrayList<Integer> list = new ArrayList<>();
+
+// 식을 위해서 첫 3개의 값을 0으로 할당. 따라서 list.get(3) = 1층에 대한 최대값이다.
+        list.add(0);
+        list.add(0);
+        list.add(0);
+// 현재 계단 이전 층 계단의 점수
+        int prev = 0;
+        for(int i = 3 ; i < len+3; i ++){
+// 현재 계단의 값 : i = 3일 때 주어진 계단의 첫 층이다.
+            int now = Integer.parseInt(b.readLine());
+// 식 대입
+            list.add(Math.max(now + list.get(i-2) , now + prev + list.get(i-3)));
+// 현재 계단은 다음계단의 이전 계단이다. 다음 층을 위해 현재 층의 점수를 할당해준다.
+            prev = now;
+        }
+// 리스트의 마지막 인덱스의 값은 마지막 계단 도달까지 점수의 최대값이다.
+        System.out.println(list.get(list.size()-1));
+    }
+}
+
+```
+
+
+#### 체감 난이도 : 중<br>  
+* 점화식을 생각해내는데 오래걸렸다.
+* 마지막 계단에 반드시 방문해야하기 때문에 처음에 거꾸로 풀어나가려 했지만<br>
+위의 식대로라면 반드시 마지막 층을 거치기 때문에 상관없었다. 
+ 

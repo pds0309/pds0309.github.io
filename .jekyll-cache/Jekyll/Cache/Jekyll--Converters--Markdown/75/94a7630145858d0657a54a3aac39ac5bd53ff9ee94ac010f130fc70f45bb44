@@ -1,0 +1,225 @@
+I"�<h2 id="백준-12865-평범한-배낭">백준-12865-평범한 배낭</h2>
+
+<hr />
+<h3 id="문제설명링크---"><a href="https://www.acmicpc.net/problem/12865">문제설명링크   </a></h3>
+<p><br /></p>
+<h3 id="요약">요약</h3>
+<ul>
+  <li>배낭 무게, 물품들의 무게와 가치가 주어졌을 때 배낭에 넣을 수 있는 물건의 최대의 가치를 리턴.</li>
+</ul>
+
+<p><br /></p>
+<h3 id="제한사항">제한사항</h3>
+<ul>
+  <li>N(1 ≤ N ≤ 100)</li>
+  <li>K(1 ≤ K ≤ 100,000)</li>
+  <li>W(1 ≤ W ≤ 100,000)</li>
+  <li>V(0 ≤ V ≤ 1,000)</li>
+</ul>
+
+<p><br /></p>
+<h3 id="입력">입력</h3>
+
+<p>4 7  -&gt; 물품의수 N  가방의 무게 K <br />
+6 13 -&gt; 물품의 무게 W  물품의 가치 V<br />
+4 8<br />
+3 6<br />
+5 12<br /></p>
+
+<h3 id="출력">출력</h3>
+
+<p>14</p>
+
+<p><br /></p>
+
+<h3 id="풀이">풀이</h3>
+
+<ul>
+  <li>동적계획법 배낭문제이다.</li>
+</ul>
+
+<blockquote>
+  <p>K(가방무게) 길이의 가치에 대한 배열을 생성하고 입력 값 (W,V)들로 최댓값을 찾는다.<br />
+여기서 K = 7</p>
+</blockquote>
+
+<blockquote>
+  <p>배열을 뒤에서부터 입력받은 W(물품의 무게) 까지 순회하면서 값을 저장한다.<br />
+배열을 A, i 의 범위가 K~W 라고할 떄 ( A[i-W] 의 가치 + V ) &gt; A[i] 이면 A[i]에 해당 값을 저장한다.<br />
+-&gt; (A[i] &lt; A[i-W]) A[i] = A[i-W]</p>
+</blockquote>
+
+<p><br /></p>
+<blockquote>
+  <p>W : 6       V : 13</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>무게:</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>가치:</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>13</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p>W : 4       V : 8</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>무게:</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>가치:</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8</td>
+      <td>8</td>
+      <td>13</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p>W : 3       V : 6<br />
+위의 배열을 기준으로 i = 7 일 때 A[i] = 13<br />
+현재 W = 3 V = 6 으로 (A[i] = 13) &lt; (A[i-W] + V) = 8 + 6 = 14<br />
+따라서 A[7] 은 14 로 대체된다.</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>무게:</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>가치:</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6</td>
+      <td>8</td>
+      <td>8</td>
+      <td>13</td>
+      <td><a href="#">14</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p>W : 5       V : 12</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>무게:</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>가치:</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6</td>
+      <td>8</td>
+      <td><a href="#">12</a></td>
+      <td>13</td>
+      <td>14</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h3 id="자바-풀이-코드">자바 풀이 코드</h3>
+
+<p><br /></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.Scanner</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="nc">Scanner</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scanner</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+        <span class="kt">int</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+        <span class="kt">int</span> <span class="no">W</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="no">V</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">res</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">weight</span><span class="o">+</span><span class="mi">1</span><span class="o">];</span>
+        <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="n">count</span><span class="o">){</span>
+            <span class="no">W</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+            <span class="no">V</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">weight</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="no">W</span><span class="o">;</span> <span class="n">i</span> <span class="o">--){</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">res</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">res</span><span class="o">[</span> <span class="n">i</span> <span class="o">-</span> <span class="no">W</span> <span class="o">]</span> <span class="o">+</span> <span class="no">V</span> <span class="o">){</span>
+                    <span class="n">res</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">[</span> <span class="n">i</span> <span class="o">-</span> <span class="no">W</span> <span class="o">]</span> <span class="o">+</span> <span class="no">V</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">c</span><span class="o">++;</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">res</span><span class="o">[</span><span class="n">weight</span><span class="o">]);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<p><br /></p>
+:ET

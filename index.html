@@ -1,25 +1,41 @@
 ---
-layout: default
+layout: main
 ---
 
-<article class="post">
-  <header class="post-header home">
-    <div class="post-title">전체 글 목록</div>
-  </header>
-</article>
-{% for post in paginator.posts %}
-<article class="mypost">
+
+{% for post in site.posts %}
+{% assign position = forloop.index0 | divided_by:8 | plus: 1 %}
+
+<article class="post post-{{position}}">
   {% if post.img %}
-    <a class="mypost-thumbnail" style="background-image: url({{"/assets/img/" | prepend: site.url | append : post.img}})" href="{{post.url | prepend: site.url}}"></a>
+  <a class="post-thumbnail" style="background-image: url({{" /assets/img/" | prepend: site.baseurl | append :
+    post.img}})" href="{{post.url | prepend: site.baseurl}}"></a>
   {% else %}
   {% endif %}
-  <div class="mypost-content">
-    <h2 class="mypost-title"><a href="{{post.url | prepend: site.url}}">{{post.title}}</a></h2>
+  <div class="post-content">
+    <h2 class="post-title"><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h2>
     <p>{{ post.content | strip_html | truncatewords: 15 }}</p>
-    <span class="mypost-date">{{post.date | date: '%Y, %b %d'}}&nbsp;&nbsp;&nbsp;</span>
+    <span class="post-date">{{post.date | date: "%Y-%m-%d"}}&nbsp;&nbsp;&nbsp;—&nbsp;</span><span
+      style="color:rgb(141, 141, 192)">{% for t in post.tags %} #{{t}}&nbsp; {% endfor %}</span>
   </div>
 </article>
 {% endfor %}
-
-
-{% include pagination.html %}
+<div id="id-mypagenation">
+  {% include pagination.html %}
+</div>
+<script>
+  $(function () {
+    initPage();
+  });
+  function initPage() {
+    let currPage = '{{paginator.page}}';
+    let items = $('.post').each((i, e) => {
+      if ($(e).hasClass(`post-${currPage}`)) {
+        $(e).show();
+      }
+      else {
+        $(e).hide();
+      }
+    });
+  }
+</script>

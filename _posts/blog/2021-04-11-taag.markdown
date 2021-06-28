@@ -1,0 +1,113 @@
+---
+layout: post
+title: <블로그> 태그 활용해보기
+date: 2021-04-11 12:11:25 +0900
+category2: blog
+category: Study Note
+tag: [blog , jekyll]
+
+---
+<br>  
+
+## **전체 글 목록에 태그버튼을 만들어보자**
+  
+<br>  
+
+
+현재 사용중인 jekyll 템플릿에 모든 태그를 보여주는 페이지가 있긴 하지만  
+ 전체 글 목록에 태그버튼을 만들고  
+클릭 할 때 해당 태그의 글만 보여줄 수 있도록 만들고 싶었습니다.
+
+블로그 템플릿 - [flexible-jekyll](https://jekyllthemes.io/theme/flexible-jekyll)
+
+<br>  
+
+
+#### 블로그의 모든 태그 목록 불러오기
+* tag_words 변수에 모든 태그 목록을 할당합니다.   
+
+```liquid
+{% raw %}
+{% capture site_tags %}
+{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}
+{% endfor%}
+{% endcapture %}
+{% assign tag_words = site_tags | split:',' | sort %}
+{% endraw %}
+```
+
+#### 원하는 위치에 태그 버튼 만들기
+```liquid
+<div id="addTags">{%raw%}
+    {% for this_word in tag_words %}
+    <a id="id-{{this_word}}" href="#{{this_word}}" class="btn-tag" onclick="filterTag(id)">{{this_word}}<span>({{
+        site.tags[this_word].size}})</span></a>
+    {% endfor %}
+    <a id="all" href="/" class="btn-tag">All<span>({{site.posts | size}})</span></a>{% endraw %}
+  </div>
+```
+
+<br>  
+
+#### 자바스크립트 filterTag 함수 만들기
+
+```javascript
+  function filterTag(id) {
+    let tag = id.split('-')[1];
+    // 태그 선택 시 타이틀을 태그이름으로 변경
+    $('#id-post-title').empty();
+    $('#id-post-title').append(tag);
+    // 페이지네이션은 우선 비활성화 하자! - 추후 수정할 예정
+    $('#id-mypagenation').hide();
+    // 선택한 태그를 가진 모든 글만 나타나게 합니다.
+    let items = $('.post').each((i, e) => {
+      if ($(e).text().indexOf('#' + tag) != -1) {
+        $(e).show();
+      }
+      else {
+        $(e).hide();
+      }
+    });
+  }
+```
+
+#### 해시를 이용해서 새로고침 시에도 선택한 태그에 대한 상태 유지하기
+```javascript
+  $(document).ready(() => {
+    if (window.location.hash) {
+      let hash = window.location.hash.substring(1);
+      filterTag('id-' + decodeURI(hash));
+    }
+  });
+```
+
+#### 현재 페이지일 때 강조해주기
+```javascript
+<script>
+  var curPage = '{{paginator.page}}';
+  var A = document.getElementById('p-'+curPage+'');
+  A.style.backgroundColor = 'rgb(198, 219, 228)';
+  A.style.fontWeight = 'bolder';
+  A.style.color = 'black';
+</script>
+```
+  
+#### index.html 페이지에 삽입
+
+```liquid
+// index.html
+{% raw %}
+{% include pagination.html %}
+{% endraw %}
+```
+
+<br>  
+   
+#### 결과  
+
+![](/assets/img/tag1.PNG)
+
+#### 앞으로 할 것
+* 카테고리 만들기
+* utterances 댓글 기능 만들기
+* 검색 엔진에 노출시키기

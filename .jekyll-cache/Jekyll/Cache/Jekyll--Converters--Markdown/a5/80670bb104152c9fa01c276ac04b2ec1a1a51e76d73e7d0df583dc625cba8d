@@ -1,0 +1,156 @@
+I"�.<p><br /></p>
+
+<h2 id="전체-글-목록에-최소한의-페이징-기능을-추가해보자"><strong>전체 글 목록에 최소한의 페이징 기능을 추가해보자</strong></h2>
+
+<p><br /></p>
+
+<p>현재 사용중인 jekyll 템플릿에 페이징 기능이 있지만 마음에 안들어 살짝 바꿔보기로 하였습니다.</p>
+
+<p>블로그 템플릿 - <a href="https://jekyllthemes.io/theme/flexible-jekyll">flexible-jekyll</a></p>
+
+<p><br /></p>
+
+<h4 id="gemfile-추가">Gemfile 추가<br /></h4>
+
+<p><img src="/assets/img/paging.PNG" alt="" /></p>
+
+<p><br /></p>
+
+<h4 id="_configyml--추가">_config.yml  추가<br /></h4>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">plugins</span><span class="pi">:</span>
+<span class="c1"># 기존에 있던것들~~</span>
+  <span class="pi">-</span> <span class="s">jekyll-paginate</span>
+<span class="na">paginate</span><span class="pi">:</span> <span class="m">8</span>
+<span class="na">paginate_path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/page/:num"</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<h4 id="bundle-install--">bundle install  <br /></h4>
+
+<pre><code class="language-cmd">user&gt; bundle install
+
+...
+
+</code></pre>
+<p><br /></p>
+
+<h4 id="paginationhtml-만들기">pagination.html 만들기</h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"pagination"</span> <span class="na">role=</span><span class="s">"pagination"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+      {% if paginator.previous_page %}
+        {% if paginator.previous_page == 1 %}
+        <span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"float: left;"</span><span class="nt">&gt;&lt;a</span> <span class="na">class=</span><span class="s">"newer-posts"</span> <span class="na">href=</span><span class="s">"{{ site.baseurl }}/"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"arrowl"</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;&lt;/p&gt;</span>
+        {% else %}
+        <span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"float: left;"</span><span class="nt">&gt;&lt;a</span> <span class="na">class=</span><span class="s">"newer-posts"</span> <span class="na">href=</span><span class="s">"{{ site.baseurl }}/page/{{ paginator.previous_page }}/"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"arrowl"</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;&lt;/p&gt;</span>
+        {% endif %}
+      {% endif %}
+      <span class="ni">&amp;nbsp;&amp;nbsp;</span>
+      {% if paginator.total_pages &gt; 1 %}
+      <span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"float: left;"</span><span class="nt">&gt;&lt;span</span> <span class="nt">&gt;&lt;a</span> <span class="na">id=</span><span class="s">"p-1"</span> <span class="na">class=</span><span class="s">"page-number"</span> <span class="na">href=</span><span class="s">"{{ site.url }}/"</span><span class="nt">&gt;</span><span class="ni">&amp;nbsp;&amp;nbsp;</span>1<span class="ni">&amp;nbsp;&amp;nbsp;</span><span class="nt">&lt;/a&gt;</span>{% for i in (2..paginator.total_pages) %}
+        <span class="nt">&lt;a</span> <span class="na">id=</span><span class="s">"p-{{i}}"</span> <span class="na">class=</span><span class="s">"page-number"</span> <span class="na">href=</span><span class="s">"{{ site.url }}/page/{{i}}/"</span><span class="nt">&gt;</span><span class="ni">&amp;nbsp;&amp;nbsp;</span>{{i}}<span class="ni">&amp;nbsp;&amp;nbsp;</span><span class="nt">&lt;/a&gt;</span>{% endfor %}<span class="nt">&lt;/span&gt;&lt;/p&gt;</span><span class="ni">&amp;nbsp;&amp;nbsp;</span>
+      {% endif %}
+      {% if paginator.next_page %}
+      <span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"float: left;"</span><span class="nt">&gt;&lt;a</span> <span class="na">class=</span><span class="s">"older-posts"</span> <span class="na">href=</span><span class="s">"{{ site.baseurl }}/page/{{ paginator.next_page }}/"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"arrowr"</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;&lt;/p&gt;</span>
+      {% endif %}
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/nav&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<h4 id="간단한-속성-추가">간단한 속성 추가</h4>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">i</span><span class="nc">.arrowr</span> <span class="p">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">0.7em</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">0.7em</span><span class="p">;</span>
+    <span class="nl">border-right</span><span class="p">:</span> <span class="m">0.2em</span> <span class="nb">solid</span> <span class="no">black</span><span class="p">;</span>
+    <span class="nl">border-top</span><span class="p">:</span> <span class="m">0.2em</span> <span class="nb">solid</span> <span class="no">black</span><span class="p">;</span>
+    <span class="nl">transform</span><span class="p">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">45deg</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nt">i</span><span class="nc">.arrowl</span> <span class="p">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">0.7em</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">0.7em</span><span class="p">;</span>
+    <span class="nl">border-left</span><span class="p">:</span> <span class="m">0.2em</span> <span class="nb">solid</span> <span class="no">black</span><span class="p">;</span>
+    <span class="nl">border-bottom</span><span class="p">:</span> <span class="m">0.2em</span> <span class="nb">solid</span> <span class="no">black</span><span class="p">;</span>
+    <span class="nl">transform</span><span class="p">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">45deg</span><span class="p">);</span>
+<span class="p">}</span>
+  <span class="nc">.page-number</span><span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">gray</span><span class="p">;</span>
+    <span class="nl">text-decoration</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="nl">border-radius</span><span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nc">.page-number</span><span class="nd">:hover</span><span class="p">{</span>
+    <span class="nl">font-weight</span><span class="p">:</span> <span class="nb">bolder</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">black</span><span class="p">;</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">22px</span><span class="p">;</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="nb">rgb</span><span class="p">(</span><span class="m">198</span><span class="p">,</span> <span class="m">219</span><span class="p">,</span> <span class="m">228</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nc">.page-number</span><span class="nd">:active</span><span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="현재-페이지일-때-강조해주기">현재 페이지일 때 강조해주기</h4>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+  <span class="kd">var</span> <span class="nx">curPage</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">A</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">p-</span><span class="dl">'</span><span class="o">+</span><span class="nx">curPage</span><span class="o">+</span><span class="dl">''</span><span class="p">);</span>
+  <span class="nx">A</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">rgb(198, 219, 228)</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">A</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">fontWeight</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bolder</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">A</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">black</span><span class="dl">'</span><span class="p">;</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<h4 id="indexhtml-페이지에-삽입">index.html 페이지에 삽입</h4>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// index.html
+
+<span class="p">{%</span><span class="w"> </span><span class="nt">include</span><span class="w"> </span>pagination.html<span class="w"> </span><span class="p">%}</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h4 id="결과">결과</h4>
+<p><img src="/assets/img/paging2.PNG" alt="" /></p>
+<ul>
+  <li>글 수가 많아질 때 한번 더 수정을 해줘야 할 것이다.</li>
+</ul>
+
+<h4 id="liquid-paginate-속성">Liquid Paginate 속성</h4>
+<ul>
+  <li>변수이름 : paginator</li>
+  <li>
+    <p>속성</p>
+
+    <ul>
+      <li>paginator.page - 현재 페이지 번호</li>
+      <li>paginator.per_page - 페이지 당 포스트 수</li>
+      <li>paginator.posts - 현재 페이지의 포스트들</li>
+      <li>paginator.total_posts - 전체 포스트 개수</li>
+      <li>paginator.total_pages - 전체 페이지 개수</li>
+      <li>paginator.previous_page - 이전 페이지 번호. 이전 페이지가 없는 경우 nil</li>
+      <li>paginator.previous_page_path - 이전 페이지 경로. 이전 페이지가 없는 경우 nil</li>
+      <li>paginator.next_page - 다음 페이지 번호. 다음 페이지가 없는 경우 nil</li>
+      <li>paginator.next_page_path - 다음 페이지 경로. 다음 페이지가 없는 경우 nil</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="reference">Reference</h4>
+<ul>
+  <li><a href="https://jekyllrb-ko.github.io/docs/pagination/">https://jekyllrb-ko.github.io/docs/pagination/</a></li>
+</ul>
+
+<h4 id="앞으로-할-것">앞으로 할 것</h4>
+<ul>
+  <li>전체 글 목록에 태그 박스 만들기</li>
+  <li>utterances 댓글 기능 만들기</li>
+  <li>검색 엔진에 노출시키기</li>
+</ul>
+:ET

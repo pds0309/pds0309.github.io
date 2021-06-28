@@ -1,0 +1,211 @@
+I"v9<h2 id="백준-2293-동전1">백준-2293-동전1</h2>
+
+<hr />
+
+<h3 id="문제설명링크---"><a href="https://www.acmicpc.net/problem/2293">문제설명링크   </a></h3>
+<p><br /></p>
+
+<ul>
+  <li><a href="#나의-풀이">풀이</a></li>
+  <li><a href="#자바-풀이-코드">코드</a></li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="문제요약">문제요약</h3>
+
+<ul>
+  <li>서로 가치가 다른 n개의 동전을 자유롭게 사용해 가치의 합 k를 얻는 경우의 수를 구하라.</li>
+  <li>순서는 상관없음.</li>
+</ul>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p><br /></p>
+<h3 id="입력">입력<br /></h3>
+<ul>
+  <li>1 &lt;= n &lt;= 100</li>
+  <li>1 &lt;= k &lt;= 10000</li>
+  <li>다음 줄에는 동전의 가치가 주어짐.</li>
+</ul>
+
+<h3 id="출력--">출력  <br /></h3>
+<ul>
+  <li>경우의 수 출력</li>
+</ul>
+
+<h3 id="입력예시">입력예시<br /></h3>
+
+<p>3 10<br />
+1<br />
+2<br />
+5<br /></p>
+
+<h3 id="출력예시">출력예시<br /></h3>
+
+<p>10<br /></p>
+
+<p><br /></p>
+
+<h3 id="나의-풀이">나의 풀이<br /></h3>
+
+<ul>
+  <li>N개의 동전 중 1개만 사용할 때 2개만 사용할 때 … ~ N개 사용할 때  1~k 를 구하는 경우의 수를 생각해보기로 했다.</li>
+  <li>A[1,2,5] : 주어진 동전</li>
+  <li>K : 구해야할 가치</li>
+  <li>DP[A.length+1][K+1] :  ex) DP[2][5] : 2번째 동전까지 사용할 때 합으로 5를 만들 수 있는 모든 경우의 수</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>N = 1</strong>
+    <ul>
+      <li>
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//     K :  0 1 2 3 4 5 6 7 8 9 10</span>
+<span class="no">A</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span>  <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> 
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><strong>N = 2</strong>
+    <ul>
+      <li>
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//     K :  0 1 2 3 4 5 6 7 8 9 10</span>
+<span class="no">A</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span>  <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> 
+<span class="no">A</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">:</span>  <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">5</span> <span class="mi">6</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><strong>N = 3</strong>
+    <ul>
+      <li>
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//     K :  0 1 2 3 4 5 6 7 8 9 10</span>
+<span class="no">A</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span>  <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> 
+<span class="no">A</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">:</span>  <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">5</span> <span class="mi">6</span>
+<span class="no">A</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">:</span>  <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">10</span>
+</code></pre></div>        </div>
+      </li>
+      <li>DP[3][7] :( 3번째숫자까지 썼을 때 7을 만드는 모든 경우의 수) 을 예로 모든 경우의 수를 보면
+        <ul>
+          <li>[1,1,1,1,1,1,1]</li>
+          <li>[1,1,1,1,1,2]</li>
+          <li>[1,1,1,2,2]</li>
+          <li>[1,2,2,2]</li>
+          <li>[1,1,5]</li>
+          <li>[2,5]</li>
+        </ul>
+      </li>
+      <li>5가 들어간 부분을 제외하면
+        <ul>
+          <li>[1,1,1,1,1,1,1]</li>
+          <li>[1,1,1,1,1,2]</li>
+          <li>[1,1,1,2,2]</li>
+          <li>[1,2,2,2]</li>
+          <li><a href="#">[1,1]</a></li>
+          <li><a href="#">[2]</a></li>
+        </ul>
+      </li>
+      <li>
+        <p>5를 뺀 파란부분이 2를 만들 때의 경우의 수이다.<br /></p>
+      </li>
+      <li>DP[3][10] 을 예로 모든 경우의 수를 보면
+        <ul>
+          <li>[1 * 10]</li>
+          <li>[1 * 8] , [2]</li>
+          <li>[1 * 6] , [2 * 2]</li>
+          <li>[1 * 4] , [2 * 3]</li>
+          <li>[1 * 2] , [2 * 4]</li>
+          <li>[2 * 5]</li>
+          <li>[1,1,1,1,1,5]</li>
+          <li>[1,1,1,2,5]</li>
+          <li>[1,2,2,5]</li>
+          <li>[5,5]</li>
+        </ul>
+      </li>
+      <li>5를 하나씩 빼보자
+        <ul>
+          <li>[1,1,1,1,1,1,1,1,1,1,1]</li>
+          <li>[1,1,1,1,1,1,1,1] , [2]</li>
+          <li>[1,1,1,1,1,1] , [2,2]</li>
+          <li>[1,1,1,1,] , [2,2,2]</li>
+          <li>[1,1] , [2,2,2,2]</li>
+          <li>[2,2,2,2,2]</li>
+          <li><a href="#">[1,1,1,1,1]</a></li>
+          <li><a href="#">[1,1,1,2]</a></li>
+          <li><a href="#">[1,2,2]</a></li>
+          <li><a href="#">[5]</a></li>
+        </ul>
+      </li>
+      <li>1,2,5 를 사용했을 때 5를 구하는 경우의 수들임을 알 수 있다.</li>
+      <li>즉 1,2,5를 사용했을 때 합이 10인 경우의 수는
+        <ul>
+          <li><strong>{1,2} 를 사용했을 때 10을만드는 경우의 수</strong> + <br />
+<strong>{1,2,5} 를 사용했을 때 10-5를 만드는 경우의 수</strong> 임을 알 수 있다. 
+<br /></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>식
+    <ul>
+      <li>n : A[N] ( A[i] : i번째 동전의 가치 )
+        <ul>
+          <li><strong>DP[N][K] = DP[N-1][K] + DP[N][K-n]</strong>    ( 단 n &lt;= K )</li>
+        </ul>
+      </li>
+      <li>동전 1,2,5 를 사용하는데 합이 4인 경우의 수를 구할 때 동전5는 사용하지 못하니까 1,2를 사용했을 때 경우의 수와 같다.
+        <ul>
+          <li><strong>DP[N][K] = DP[N-1][K]</strong>   ( n &gt; K )</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="자바-풀이-코드">자바 풀이 코드</h3>
+
+<p><br /></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">BufferedReader</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">InputStreamReader</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">));</span>
+        <span class="nc">StringTokenizer</span> <span class="n">st</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringTokenizer</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">readLine</span><span class="o">());</span>
+<span class="c1">//동전 수</span>
+        <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">st</span><span class="o">.</span><span class="na">nextToken</span><span class="o">());</span>
+<span class="c1">// 구해야 할 합</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">st</span><span class="o">.</span><span class="na">nextToken</span><span class="o">());</span>
+<span class="c1">// 동전 가치 배열</span>
+        <span class="kt">int</span> <span class="n">coin</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">len</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">coin</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">readLine</span><span class="o">());</span>
+        <span class="o">}</span>
+<span class="c1">// len 개의 동전을 사용해서 sum 을 만드는 경우의 수에 대한 배열</span>
+        <span class="kt">int</span> <span class="n">dp</span><span class="o">[][]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">sum</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+        <span class="n">dp</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">dp</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">sum</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+<span class="c1">// 식</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">j</span> <span class="o">&gt;=</span> <span class="n">coin</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">])</span> <span class="o">{</span>
+                    <span class="n">dp</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">dp</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">+</span> <span class="n">dp</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span> <span class="o">-</span> <span class="n">coin</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]];</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">dp</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">dp</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span><span class="o">];</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dp</span><span class="o">[</span><span class="n">len</span><span class="o">][</span><span class="n">sum</span><span class="o">]);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h4 id="체감-난이도--중">체감 난이도 : 중<br /></h4>
+<ul>
+  <li>식을 생각하는데 시간이 좀 걸렸다.</li>
+</ul>
+:ET

@@ -1,0 +1,100 @@
+I"5<h2 id="백준-1904-01타일">백준-1904-01타일</h2>
+
+<hr />
+
+<h3 id="문제설명링크---"><a href="https://www.acmicpc.net/problem/1904">문제설명링크   </a></h3>
+<p><br /></p>
+
+<h3 id="문제요약">문제요약</h3>
+
+<ul>
+  <li>N자리의 이진 수열을 만들건데 1또는 00을 사용해야한다.  <br /></li>
+</ul>
+
+<blockquote>
+  <p>ex) 1100 1001 100  -&gt; 가능   110 1011 -&gt; 불가능<br /></p>
+</blockquote>
+
+<ul>
+  <li>이 때 가능한 이진 수열의 가짓수를 구하는 것.</li>
+</ul>
+
+<p><br /></p>
+
+<p><br /></p>
+<h3 id="제한사항">제한사항</h3>
+<ul>
+  <li>첫 번째 줄에 자연수 N이 주어진다. (1 ≤ N ≤ 1,000,000)</li>
+</ul>
+
+<p><br /></p>
+<h3 id="입력">입력</h3>
+
+<p>4</p>
+
+<p><br /></p>
+
+<h3 id="출력">출력</h3>
+
+<p>5</p>
+
+<p><br /></p>
+
+<h3 id="나의-풀이">나의 풀이<br /></h3>
+
+<ul>
+  <li>N = 1
+    <ul>
+      <li>1 : {1}</li>
+    </ul>
+  </li>
+  <li>N = 2
+    <ul>
+      <li>2 : { 11 , 00 }</li>
+    </ul>
+  </li>
+  <li>N = 3
+    <ul>
+      <li>3 : { 111 , 100 , 001}</li>
+    </ul>
+  </li>
+  <li>N = 4
+    <ul>
+      <li>5 : {1111 , 0000 , 1100 , 0011 , 1001 }</li>
+    </ul>
+  </li>
+  <li>이전값들을 자릿수에 맞게 합치는 구조이다.
+    <blockquote>
+      <p>N = 5 면 N이 1 일때와 N이 4일 때 , N이 2일 때와 3일때를 합쳐서 5자리를 만들 수 있다.<br />
+ 만약 N에 대한 모든 경우를 구하는 문제라면 이렇게 풀 수 있을 것이다.</p>
+    </blockquote>
+  </li>
+  <li>가짓수로만 보면 1 .. 2 .. 3 … 5 .. 의 패턴을 찾을 수 있다.<br />
+  <strong>count(N) = count(N-1)+count(N-2)</strong></li>
+</ul>
+
+<h3 id="자바-풀이-코드">자바 풀이 코드</h3>
+
+<p><br /></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">q1904</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">BufferedReader</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">InputStreamReader</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">));</span>
+        <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">readLine</span><span class="o">());</span>
+        <span class="kt">int</span> <span class="n">arr</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">1000001</span><span class="o">];</span>
+        <span class="n">arr</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="n">arr</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="n">arr</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span> <span class="o">++){</span>
+            <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">]+</span><span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="o">])%</span><span class="mi">15746</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">num</span><span class="o">]);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<h4 id="체감-난이도--하">체감 난이도 : 하<br /></h4>
+
+:ET

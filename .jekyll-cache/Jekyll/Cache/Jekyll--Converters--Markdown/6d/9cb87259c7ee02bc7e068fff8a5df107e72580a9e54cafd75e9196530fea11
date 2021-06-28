@@ -1,0 +1,101 @@
+I"�,<p><br /></p>
+
+<h2 id="전체-글-목록에-태그버튼을-만들어보자"><strong>전체 글 목록에 태그버튼을 만들어보자</strong></h2>
+
+<p><br /></p>
+
+<p>현재 사용중인 jekyll 템플릿에 모든 태그를 보여주는 페이지가 있긴 하지만<br />
+ 전체 글 목록에 태그버튼을 만들고<br />
+클릭 할 때 해당 태그의 글만 보여줄 수 있도록 만들고 싶었습니다.</p>
+
+<p>블로그 템플릿 - <a href="https://jekyllthemes.io/theme/flexible-jekyll">flexible-jekyll</a></p>
+
+<p><br /></p>
+
+<h4 id="블로그의-모든-태그-목록-불러오기">블로그의 모든 태그 목록 불러오기</h4>
+<ul>
+  <li>tag_words 변수에 모든 태그 목록을 할당합니다.</li>
+</ul>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">{%</span><span class="w"> </span><span class="nt">capture</span><span class="w"> </span><span class="nv">site_tags</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">tag</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">site.tags</span><span class="w"> </span><span class="p">%}{{</span><span class="w"> </span><span class="nv">tag</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">first</span><span class="w"> </span><span class="p">}}{%</span><span class="w"> </span><span class="kr">unless</span><span class="w"> </span><span class="nb">forloop.last</span><span class="w"> </span><span class="p">%}</span>,<span class="p">{%</span><span class="w"> </span><span class="kr">endunless</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">endfor</span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">endcapture</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">assign</span><span class="w"> </span><span class="nv">tag_words</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">site_tags</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">split</span><span class="p">:</span><span class="s1">','</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">sort</span><span class="w"> </span><span class="p">%}</span>
+
+</code></pre></div></div>
+
+<h4 id="원하는-위치에-태그-버튼-만들기">원하는 위치에 태그 버튼 만들기</h4>
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div id="addTags"&gt;
+    <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">this_word</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">tag_words</span><span class="w"> </span><span class="p">%}</span>
+    &lt;a id="id-<span class="p">{{</span><span class="nv">this_word</span><span class="p">}}</span>" href="#<span class="p">{{</span><span class="nv">this_word</span><span class="p">}}</span>" class="btn-tag" onclick="filterTag(id)"&gt;<span class="p">{{</span><span class="nv">this_word</span><span class="p">}}</span>&lt;span&gt;(<span class="p">{{</span><span class="w">
+        </span><span class="nv">site</span><span class="p">.</span><span class="nv">tags</span><span class="p">[</span><span class="nv">this_word</span><span class="p">].</span><span class="nf">size</span><span class="p">}}</span>)&lt;/span&gt;&lt;/a&gt;
+    <span class="p">{%</span><span class="w"> </span><span class="nt">endfor</span><span class="w"> </span><span class="p">%}</span>
+    &lt;a id="all" href="/" class="btn-tag"&gt;All&lt;span&gt;(<span class="p">{{</span><span class="nv">site</span><span class="p">.</span><span class="nv">posts</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">size</span><span class="p">}}</span>)&lt;/span&gt;&lt;/a&gt;
+  &lt;/div&gt;
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h4 id="자바스크립트-filtertag-함수-만들기">자바스크립트 filterTag 함수 만들기</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">filterTag</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">tag</span> <span class="o">=</span> <span class="nx">id</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">-</span><span class="dl">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="c1">// 태그 선택 시 타이틀을 태그이름으로 변경</span>
+    <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#id-post-title</span><span class="dl">'</span><span class="p">).</span><span class="nx">empty</span><span class="p">();</span>
+    <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#id-post-title</span><span class="dl">'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">tag</span><span class="p">);</span>
+    <span class="c1">// 페이지네이션은 우선 비활성화 하자! - 추후 수정할 예정</span>
+    <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#id-mypagenation</span><span class="dl">'</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+    <span class="c1">// 선택한 태그를 가진 모든 글만 나타나게 합니다.</span>
+    <span class="kd">let</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">.post</span><span class="dl">'</span><span class="p">).</span><span class="nx">each</span><span class="p">((</span><span class="nx">i</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">#</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">tag</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="해시를-이용해서-새로고침-시에도-선택한-태그에-대한-상태-유지하기">해시를 이용해서 새로고침 시에도 선택한 태그에 대한 상태 유지하기</h4>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">hash</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+      <span class="nx">filterTag</span><span class="p">(</span><span class="dl">'</span><span class="s1">id-</span><span class="dl">'</span> <span class="o">+</span> <span class="nb">decodeURI</span><span class="p">(</span><span class="nx">hash</span><span class="p">));</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+</code></pre></div></div>
+
+<h4 id="현재-페이지일-때-강조해주기">현재 페이지일 때 강조해주기</h4>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+  <span class="kd">var</span> <span class="nx">curPage</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">A</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">p-</span><span class="dl">'</span><span class="o">+</span><span class="nx">curPage</span><span class="o">+</span><span class="dl">''</span><span class="p">);</span>
+  <span class="nx">A</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">rgb(198, 219, 228)</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">A</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">fontWeight</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bolder</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">A</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">black</span><span class="dl">'</span><span class="p">;</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<h4 id="indexhtml-페이지에-삽입">index.html 페이지에 삽입</h4>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// index.html
+
+<span class="p">{%</span><span class="w"> </span><span class="nt">include</span><span class="w"> </span>pagination.html<span class="w"> </span><span class="p">%}</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h4 id="결과">결과</h4>
+
+<p><img src="/assets/img/tag1.PNG" alt="" /></p>
+
+<h4 id="앞으로-할-것">앞으로 할 것</h4>
+<ul>
+  <li>카테고리 만들기</li>
+  <li>utterances 댓글 기능 만들기</li>
+  <li>검색 엔진에 노출시키기</li>
+</ul>
+:ET

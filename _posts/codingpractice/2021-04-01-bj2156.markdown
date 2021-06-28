@@ -1,0 +1,105 @@
+---
+layout: post
+title: 백준-2156-포도주 시식 (java)
+date: 2021-04-01 11:00:10 +0900
+category2: codingpractice
+category: Study Note
+tag: [백준 , dp]
+---
+
+## 백준-2156-포도주 시식
+
+---
+### [문제설명링크   ](https://www.acmicpc.net/problem/2156)
+<br>  
+  
+* [풀이](#나의-풀이)
+* [코드](#자바-풀이-코드)  
+
+<br>  
+
+### 문제요약 
+
+* 양이 다른 포도주 잔이 일렬로 놓여있을 때 연속으로 3잔은 마실수 없다.
+* 이 때 가장 많이 마실 때 양을 구하라.
+* [백준-2579-계단오르기](/111cp/2021/03/27/bj2579.html) 와 유사한 문제이다.
+   
+<br>  
+
+
+<br>
+### 입력<br>
+* N (1<= N <= 10000) : 포도주 잔의 개수
+
+
+### 출력  <br>   
+
+* 최대로 마실 수 있는 포도주의 양 출력
+
+
+
+### 입력예시<br>  
+
+6<br>
+6<br>
+10<br>
+13<br>
+9<br>
+8<br>
+1<br>
+
+### 출력예시<br>    
+
+33
+ 
+
+
+
+<br>
+
+### 나의 풀이<br>  
+
+* 이전에 풀었던 계단오르기와 매우 유사하지만 다른점은 
+	* 계단오르기는 배열의 마지막을 반드시 방문해야했지만 이 문제에서는 아니다.
+	* 계단오르기에서는 다음 층 또는 다다음층을 반드시 방문해야 했지만 이 문제에서는 아니다. **건너뛰어도 됨**.
+<br>
+* M[N] = N개의 포도주를 가장 많이 먹을 때의 값.
+* A[N] = N개의 포도주 각각의 양
+* 식
+	* M[N] = MAX( (A[N] + M[N-2) , A[N] + A[N-1] + M[N-3]  ,  [M[N-1]](#건너) 추가 )
+<br>  
+ 	
+ 
+### 자바 풀이 코드  
+
+<br>
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+        int len = Integer.parseInt(b.readLine());
+        int arr[] = new int[len+3];
+        for(int i = 3 ; i < len+3 ; i ++){
+            arr[i] = Integer.parseInt(b.readLine());
+        }
+
+        int ans[] = new int[len+3];
+
+        for(int i = 3 ; i < len + 3; i ++){
+            ans[i] = Math.max( arr[i] + ans[i-2] , arr[i] + arr[i-1] + ans[i-3] );
+            ans[i] = Math.max( ans[i] , ans[i-1]);
+        }
+        System.out.println(Arrays.stream(ans).max().getAsInt());
+    }
+}
+
+```
+
+
+#### 체감 난이도 : 하<br>  
+* 비슷한 문제를 풀어봐서 괜찮았다.

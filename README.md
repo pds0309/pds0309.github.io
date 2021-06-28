@@ -1,30 +1,31 @@
----
-layout: page
-title: About
-permalink: /about/
----
+# Flexible-Jekyll is a simple and clean theme for Jekyll
 
-## Hello!
-> 안녕하세요 하루에 10cm라도 전진하기 위해 공부하고 겪었던 것을 기록합니다.  
-> XX석이 앞으로 나아간다고 하여 Seokcceeding 입니다.
+![](https://github.com/artemsheludko/flexible-jekyll/blob/master/assets/img/promo-img.jpg?raw=true)
 
-#### 이메일
-> ehd0309@naver.com  <br> ehd0309@gmail.com
+## Demo
 
-#### 깃허브
-> [github.com/pds0309](https://github.com/pds0309)
+Check the theme in action [Demo](https://artemsheludko.github.io/flexible-jekyll/)
 
+The main page would look like this:
 
-### 목록
-- 코드 올리기
-- 이미지 올리기
-  
+![Main page preview](https://github.com/artemsheludko/flexible-jekyll/blob/master/assets/img/home-page.jpg?raw=true)
 
-### 메모 (2021.04.09)
-* 해당 블로그를 갈아엎을 예정임
-	* 네비게이션은 왼쪽이 아니라 상단에 작게.
-	* 카테고리는 미리 노출되어있는게 아니라 클릭하면 나오게.  
-	* 태그수정 - 모든페이지에 노출되게 하고 클릭하면 해당 태그 페이지 나오게.
-	* 게시글 자체 구성 바꾸기.
-	
-	
+The post page would look like this:
+
+![Post page preview](https://github.com/artemsheludko/flexible-jekyll/blob/master/assets/img/post-example.jpg?raw=true)
+
+## Features
+
+- [Google Fonts](https://fonts.google.com/)
+- [Font Awesome](http://fontawesome.io/)
+- [Disqus](https://disqus.com/)
+- [Analytics](https://analytics.google.com/analytics/web/)
+- Support Emoji
+
+## Installation:
+
+Fork the ``master`` branch and follow the [Jekyll Installation Documentation](https://jekyllrb.com/docs/installation/).
+
+## License
+
+GNU General Public License v3.0
