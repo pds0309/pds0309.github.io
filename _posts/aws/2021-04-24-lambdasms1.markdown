@@ -1,0 +1,195 @@
+---
+layout: post
+title: AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(1)
+date: 2021-04-24 15:11:11 +0900
+category2: cloud
+category: Study Note
+tag: [aws,lambda,nodejs]
+img: lambdaimg.png 
+---
+<br>  
+
+  
+## AWS Lambda를 활용해 간단한 코로나 정보 문자메시지 예약 전송 서비스를 만들어보기 1편
+  
+#### 서비스 내용
+  
+* 오전 10시 30분마다 데이터베이스에 등록된 이용자의 전화번호로   
+  일일 코로나 확진자,완치자,지료중인환자,사망자 등의 정보를 메시지로 전송한다.
+  
+
+<br>  
+
+
+----  
+
+**2편 - [AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)](/lambdasms2/)**
+
+----
+
+
+
+
+### 목차  
+
+[1. 코로나 데이터 Open-Api 신청하기](#P1)    
+
+[2. 데이터 조회 람다 함수 작성하기](#P2)  
+
+[3. 메시지 전송을 위한 Dynamo DB 생성하기](#P3)
+
+
+<br>  
+  
+
+  
+<br>  
+<p id="P1" style="color:white;">P1</p>
+<h2 style='color:red'>1. 코로나 데이터 Open-API 신청하기 </h2>   
+* 공공 데이터 포털의 보건복지부 코로나 데이터 Open-API를 활용합시다. <br>  
+[링크](https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15043376) 에서 open-api 활용신청 하여 키를 발급 받습니다.
+  
+![11111](https://user-images.githubusercontent.com/76927397/123718167-6fbae200-d8b9-11eb-8ee1-a3a2a0482165.PNG)
+   
+* 발급받은 키를 데이터 조회 시 쿼리스트링으로 넣어주면 됩니다.  
+* 저는 오늘과 어제의 코로나 데이터를 얻기위해 startCreateDt , endCreateDt 변수를 사용할 예정입니다.  
+  
+![22222](https://user-images.githubusercontent.com/76927397/123718503-3df64b00-d8ba-11eb-9f56-7ef2cc1aba40.PNG)
+  
+* 위와 같이 샘플 코드도 보여줍니다. 저는 제 멋대로 하기로 했습니다.
+
+  
+<br>  
+  
+<p id="P2" style="color:white;">P2</p>
+<h2 style='color:red'>2. 데이터 조회 람다 함수 작성하기 </h2>  
+  
+* 패키지 의존성 등록을 위해 로컬에서 npm을 사용합니다.  
+  * xml-js : 코로나 open api 데이터가 xml 형식이라 친숙한 json 형태로 바꿔주기 위해 사용
+  * moment : 날짜를 쉽게 다루기 위해 사용
+  
+**(1) npm이 설치되어 있지 않다면 [node.js](https://nodejs.org/en/) 설치하기**  
+ 
+```linux  
+C:\>npm -v
+6.14.11
+```  
+
+**(2) 임의의 폴더 하나 생성 후 ``` npm init ```  후 모두 넘어가기**
+  
+```linux  
+C:\lambdacovidinfo>npm init
+```
+**(3) 패키지 설치**
+```linux
+C:\lambdacovidinfo>npm install moment  
+...
+...
+C:\lambdacovidinfo>npm install xml-js  
+...
+...
+```
+**(4) 폴더의 내용 통채로 압축하기**  
+  
+![44444](https://user-images.githubusercontent.com/76927397/123720702-aeec3180-d8bf-11eb-9926-71885a8436ea.PNG)  
+  
+<br>  
+
+**(5) 람다 함수 생성하기** 
+  
+![33333](https://user-images.githubusercontent.com/76927397/123718800-0fc53b00-d8bb-11eb-8cdb-c3e8e093582d.PNG)
+
+* 런타임은 Node.js , 권한은 기본으로 설정해줍니다.  
+  
+<br>  
+
+  
+**(6) 압축파일 올리기**  
+  
+![55555](https://user-images.githubusercontent.com/76927397/123723623-c0d0d300-d8c5-11eb-837e-5a551e464f4a.PNG)
+  
+  
+**(7) 기본 경로에 index.js 만들기**  
+  
+```javascript 
+const https = require('http');
+const convert = require('xml-js');
+const mom = require('moment');
+exports.handler = async (event) => {
+    let today = mom().format("YYYYMMDD");
+    let ysday = mom().subtract(1, 'd').format("YYYYMMDD");
+    let dataString = '';
+    let xmlToJson;
+    let js;
+    let reqq = "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=YOURKEY";
+    reqq = reqq + "&startCreateDt="+ysday +"&endCreateDt="+today;
+    const response = await new Promise((resolve, reject) => {
+         const req = https.get(reqq, function(res) {
+          res.on('data', chunk => {
+            dataString += chunk;
+            xmlToJson = convert.xml2json(dataString, {compact: true, spaces: 4});
+            js = JSON.parse(xmlToJson);
+          });
+          res.on('end', () => {
+            resolve({
+                statusCode: 200,
+                body: js.response.body.items.item,
+                yesterday: js.response.body.items.item[1]
+            });
+          });
+         });
+         req.on('error', (e) => {
+          reject({
+              statusCode: 500,
+              body: '"error"'
+          });
+         });
+    });
+  return response.body;
+};
+
+```  
+* index.js 에 해당 코드 넣고 Deploy 버튼 클릭  
+* Deploy 버튼 옆의 테스트 버튼 클릭으로 데이터가 잘 조회되었는지 확인합니다.
+
+
+<br><br>  
+
+  
+<p id="P3" style="color:white;">P3</p>
+<h2 style='color:red'>3. 메시지 전송을 위한 DynamoDB 생성하기 </h2>  
+
+**메시지를 전송 받을 이용자(전화번호) 에 대한 데이터베이스를 생성합니다.**  
+ * 메시지 전송 람다 함수와 연결해 지정한 데이터베이스 테이블에 존재하는 모든 유저에게 문자를 전송하게끔 할 예정입니다.  
+  
+**(1) DynamoDB 콘솔에서 테이블을 생성합니다.**  
+
+![66666](https://user-images.githubusercontent.com/76927397/123726072-435b9180-d8ca-11eb-93bf-d30068b15274.PNG)
+
+  
+<br>
+  
+**(2) 웹 서비스 등을 통해 서비스에 사용자가 등록했다고 가정하고, 테이블의 항목에 이름과 전화번호를 추가해줍니다.**
+
+![77777](https://user-images.githubusercontent.com/76927397/123726354-c67ce780-d8ca-11eb-8899-e02b7f099bb7.PNG)
+   
+
+## 1편 끝~!  
+
+**지금까지 한 것**  
+1. 코로나 open-api 데이터 신청
+2. 람다함수를 생성해 코로나 데이터 조회
+3. 메시지를 전송할 유저 전화번호-이름 데이터베이스 생성  
+
+**2편에서 할 것**  
+1. 메시지전송 람다함수 생성하기  
+2. 메시지전송 람다함수에 데이터 조회 람다함수 연결하기
+3. 메시지전송 람다함수에 Dynamo DB 테이블 연결하기
+4. 예약 작업 설정하기
+  
+  
+----  
+
+**2편보기 -[AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)](/lambdasms2/)**
+
+----

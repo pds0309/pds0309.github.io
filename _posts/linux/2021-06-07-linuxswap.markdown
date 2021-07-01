@@ -42,6 +42,8 @@ Jun  7 06:08:43 instance-**** kernel: [3906635.391116] oom_reaper: reaped proces
 
 * **오라클 클라우드 평생무료 인스턴스는 하나의 인스턴스에 RAM 1GB까지 밖에 허용이 되지 않아 스왑 파티션으로 하드 디스크 일부를 사용하기로 했습니다.** 
   
+<br>  
+
 ### <span style='color:red'>스왑 파티션?</span>  
   
 * 시스템 메모리가 부족할 경우 하드디스크 일부 공간을 활용하게 해주는 영역입니다.  
@@ -52,6 +54,8 @@ Jun  7 06:08:43 instance-**** kernel: [3906635.391116] oom_reaper: reaped proces
 **[오라클 클라우드 Ubuntu 20.04 인스턴스 기본 설정하기](https://www.wsgvet.com/cloud/6?page=1) 를 참고했습니다.**  
 * RAM이 2GB 미만이면 현재 RAM 의 두 배를 권장한다고 합니다.  
   
+<br>  
+
 
 <span style='color:blue'>   (1) 2GB 의 스왑공간 생성 및 권한 조정  </span>
 
@@ -60,6 +64,7 @@ Jun  7 06:08:43 instance-**** kernel: [3906635.391116] oom_reaper: reaped proces
 sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
 ```
+<br>  
 
 <span style='color:blue'>   (2) 스왑파일 생성  </span>	 
 
@@ -73,6 +78,7 @@ sudo mkswap /swapfile
 Setting up swapspace version 1, size = 2 GiB (2147479552 bytes)
 no label, UUID=71432f3c-95eb-4c80-af06-dc0af6848c1b
 ```
+<br>  
 
 <span style='color:blue'>  (3) 스왑 공간 사용  </span>
 
@@ -80,15 +86,17 @@ no label, UUID=71432f3c-95eb-4c80-af06-dc0af6848c1b
 sudo swapon /swapfile
 ```
 
+<br>  
 
 <span style='color:blue'>   (4) 재부팅시 유지되게 세팅하기  </span>
 
-* vi를 쓰든 sftp 를 쓰든  /etc/fstab 파일에 해당 내용을 추가합니다  
+*  /etc/fstab 파일에 해당 내용을 추가합니다  
 
 ```linux
 /swapfile swap swap defaults 0 0
 ```
   
+<br>  
 
 <span style='color:blue'>   (5) 확인 </span>
 ```linux

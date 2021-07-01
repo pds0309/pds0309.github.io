@@ -1,0 +1,317 @@
+---
+layout: post
+title: AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)
+date: 2021-04-25 22:01:21 +0900
+category2: cloud
+category: Study Note
+tag: [aws,lambda,nodejs]
+img: lambdaimg.png 
+---
+<br>  
+
+  
+## AWS Lambda를 활용해 간단한 코로나 정보 문자메시지 예약 전송 서비스를 만들어보기 2편
+  
+#### 서비스 내용
+  
+* 오전 10시 30분마다 데이터베이스에 등록된 이용자의 전화번호로   
+  일일 코로나 확진자,완치자,지료중인환자,사망자 등의 정보를 메시지로 전송한다.
+  
+
+<br>  
+
+
+
+
+----  
+
+**1편 - [AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(1)](/lambdasms1/)**
+
+----
+  
+<br>  
+
+### 목차  
+
+[4. 메시지전송 람다함수에 데이터 조회 람다함수 연결하기  ](#P4)    
+
+[5. 메시지전송 람다함수에 Dynamo DB 테이블 연결하기](#P5)
+
+[6. 메시지전송 코드 추가, 예약 작업 설정하기](#P6)
+
+<br>  
+
+  
+<br>  
+<p id="P4" style="color:white;">P4</p>
+<h2 style='color:red'>4. 메시지전송 람다함수에 데이터 조회 람다함수 연결하기 </h2>   
+**(1) 우선 런타임은 Node.js , 권한은 기본으로 람다함수를 생성합니다.**  
+  
+![88888](https://user-images.githubusercontent.com/76927397/123728106-be727700-d8cd-11eb-9710-ca7b9ed66358.PNG)
+  
+<br>  
+  
+  
+
+  
+<br>  
+<p id="P42" style="color:white;">P42</p>
+**(2) 실행 역할의 역할 이름을 클릭하면 IAM 콘솔로 이동합니다. 그 이후 정책 연결 -> 정책 생성을 클릭합니다.**   
+   
+![99999](https://user-images.githubusercontent.com/76927397/123728555-5d976e80-d8ce-11eb-8d3d-78a7101caf41.PNG)
+![10101010](https://user-images.githubusercontent.com/76927397/123729636-46598080-d8d0-11eb-955b-b3f18a17ca05.PNG)
+
+  
+<br>  
+
+**(3) 정책 생성 창에서 JSON을 선택하고 다음과 같이 입력합니다.**  
+* 아래의 코드로 정책 만들고 람다함수의 역할에 매핑하면 Resource에 등록한 function 에 해당하는 람다함수를 현재 함수에서 호출할 수 있습니다. <br>  
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:InvokeFunction",
+                "lambda:InvokeAsync"
+            ],
+            "Resource": "arn:aws:lambda:ap-northeast-2:YOURS:function:???"
+        }
+    ]
+}
+```    
+### <span style='color:blue'>"Resource"</span> : 1편에서 만든 코로나 데이터 조회 람다 함수의 함수 ARN을 복사하면 됩니다.
+ * YOURS => 당신의 것 그대로 입력하면 됩니다.
+ * function:??? => 1편에서 만든 코로나 데이터 조회 람다 함수의 이름입니다.  
+
+<br>  
+
+  
+**(4) 정책이름을 정해 정책을 생성하고 역할에 매핑해줍니다.** 
+  
+![131313131](https://user-images.githubusercontent.com/76927397/123730810-ec59ba80-d8d1-11eb-8684-567b80c0ef9d.PNG)
+![1414141](https://user-images.githubusercontent.com/76927397/123730999-49557080-d8d2-11eb-86d0-9adef44932dc.PNG)
+  
+  
+<br>  
+  
+**정책이 기존의 기본 람다함수 역할에 연결됨을 확인 할 수 있습니다.**   
+  
+ 
+![151515155](https://user-images.githubusercontent.com/76927397/123731162-95a0b080-d8d2-11eb-94e2-0b664a3259f6.PNG)
+    
+<br>  
+
+
+**(5) 호출 테스트**  
+  
+> index.js  
+  
+```javascript
+var AWS = require('aws-sdk');
+AWS.config.region = 'ap-northeast-2';
+var lambda = new AWS.Lambda();
+
+exports.handler = function(event, context, callback) {
+     var corona = {
+    FunctionName: 'CoronaInfo',
+    InvocationType: 'RequestResponse',
+    LogType: 'Tail'
+  };
+  lambda.invoke(corona, function(err, data ) {
+      if(err){
+          context.fail(err);
+      }
+      else{
+           let coToday = (JSON.parse(data.Payload))[0];
+            const response = {
+                statusCode: 200,
+                body: coToday
+            };
+      callback(null , response);            
+      }
+  });
+};
+
+```  
+> Test result  
+  
+```json
+{
+  "statusCode": 200,
+  "body": {
+    "accDefRate": {
+      "_text": "1.4960125523"
+    },
+    "accExamCnt": {
+      "_text": "10555741"
+    },
+    "accExamCompCnt": {
+      "_text": "10438883"
+    },
+    "careCnt": {
+      "_text": "7073"
+    },
+    "clearCnt": {
+      "_text": "147077"
+    }, ...
+```
+  
+<br>  
+<p id="P5" style="color:white;">P5</p>
+<h2 style='color:red'>5. 메시지전송 람다함수에 DynamoDB 연결하기 </h2>  
+  
+**(1) 다이나모 DB를 연결할 람다 함수를 만들고   
+  조회만 사용하기 때문에 AmazonDynamoDBReadOnlyAccess 정책을 연결합니다.**  
+  
+**(2) 이전에 생성했던 dynamo DB 테이블을 스캔합니다.**  
+
+> CoronaDynamo 람다함수의 index.js
+  
+```javascript
+const AWS = require("aws-sdk");
+const docClient = new AWS.DynamoDB.DocumentClient();
+const tableName = 'covid-sms-user';
+ const scanTable = async (tableName) => {
+    const params = {
+        TableName: tableName,
+    };
+    const scanResults = [];
+    var items;
+    do{
+        items =  await docClient.scan(params).promise();
+        items.Items.forEach((item) => scanResults.push(item));
+        params.ExclusiveStartKey  = items.LastEvaluatedKey;
+    }while(typeof items.LastEvaluatedKey !== "undefined");
+    
+    return scanResults;
+
+};
+exports.handler = async (event) => {
+    return  scanTable(tableName);
+};
+
+```  
+  
+<br>  
+  
+**호출 테스트결과**  
+
+![16161616](https://user-images.githubusercontent.com/76927397/123738842-8b85ae80-d8e0-11eb-9613-3232c791d6f5.PNG)  
+  
+<br>  
+ 
+**(3) 메시지 전송 람다 함수에 <a href='#P42'><span style='color:red'>4-(2)(3)(4)</span></a> 처럼 DB연결 함수를 호출할 수 있게 정책을 생성해서 매핑해줘도 되고<a href='#P42'><span style='color:red'>4-(3)</span></a> 번의 Resource 에 추가해줘도 됩니다.**
+```json  
+"Resource": ["arn:aws:lambda:ap-northeast-2:YOURS:function:CoronaInfo",
+                "arn:aws:lambda:ap-northeast-2:YOURS:function:CoronaDynamo"]
+```
+  
+  
+<p id="P6" style="color:white;">P6</p>
+<h2 style='color:red'>6. 메시지 전송 코드 추가, 예약 전송 작업 설정하기 </h2>    
+  
+**(1) 메시지 전송 기능 사용을 위해  AmazonSNSFullAccess 정책을 연결해줍니다.**  
+ 
+![171717](https://user-images.githubusercontent.com/76927397/123745096-b96ff080-d8ea-11eb-8604-f2ee83669ca1.PNG)  
+ 
+<br>  
+
+**(2) 메시지 전송 람다 함수에 코드 추가**  
+  
+>index.js  
+  
+```javascript
+const AWS = require('aws-sdk');
+AWS.config.region = 'ap-northeast-2';
+const lambda = new AWS.Lambda();
+
+exports.handler = function(event, context, callback) {
+    let corona = {	// 코로나 데이터 조회 람다 함수 호출
+    FunctionName: 'CoronaInfo',
+    InvocationType: 'RequestResponse',
+    LogType: 'Tail'
+  };
+   let user = {  // dynamo DB 유저 전화번호 테이블 조회 람다 함수 호출
+     FunctionName: 'CoronaDynamo',
+     InvocationType: 'RequestResponse',
+     LogType: 'Tail'
+   };
+   let coToday = "";
+   let coysday = "";
+   lambda.invoke(corona, function(err, data ) {
+       if (err) {
+            context.fail(err);
+        }
+        else{
+            //today info
+            coToday = (JSON.parse(data.Payload))[0];
+            coysday = (JSON.parse(data.Payload))[1];
+            var allDecideCnt = coToday.decideCnt._text;
+            var allExamCnt = coToday.examCnt._text;
+            var allClearCnt = coToday.clearCnt._text;
+            var allDeathCnt = coToday.deathCnt._text;
+            var tdDecideCnt = Number(allDecideCnt)- Number(coysday.decideCnt._text) + "";
+            var tdExamCnt = Number(allExamCnt) - Number(coysday.examCnt._text);
+            var tdClearCnt = Number(allClearCnt) - Number(coysday.clearCnt._text);
+            var tdDeathCnt = Number(allDeathCnt) - Number(coysday.deathCnt._text);
+
+            var message = "확진자:"+allDecideCnt+"▲"+tdDecideCnt+
+					" 검사자:"+allExamCnt+"▲"+tdExamCnt+
+					" 격리해제:"+allClearCnt+"▲"+tdClearCnt+
+					" 사망자:"+allDeathCnt+"▲"+tdDeathCnt;
+			var paramsForSMS = [];
+			var publishTextPromise;
+			lambda.invoke(user , function(err,data){
+            if(err){
+                context.fail(err);
+                }
+            else{ 
+                let users  = JSON.parse(data.Payload);
+                // let publishTextPromise;
+                for(let i = 0 ; i < users.length ; i++){
+                    paramsForSMS.push({Message :message , PhoneNumber:"+82" + users[i].phone});
+// sns 서비스는 대한민국 리전에서 사용 불가능
+                    publishTextPromise = new AWS.SNS({ apiVersion: '2010-03-31',region: 'ap-northeast-1'}).publish(paramsForSMS[i]).promise();
+                    publishTextPromise.then(
+                        function(data){
+                            callback(null,data.MessageId);
+                        }
+                        ).catch(function(err){callback(err);});
+                }
+                }
+            });
+        }
+   });
+};
+```    
+<br>  
+
+**(3) 해당 람다 함수 콘솔에서 트리거 추가를 선택하고 EventBridge(CloudWatch Events) 트리거를 추가합니다. 오전 10시 30분에 함수가 호출되게 설정합니다.**  
+  
+![181818](https://user-images.githubusercontent.com/76927397/123754699-21780400-d8f6-11eb-9fb9-6e105f734996.PNG)
+  
+
+  
+<br>  
+  
+
+## 끝~!  
+ 
+* 서버와 같은 부분에 대한 고려 없이 초 간단한 코드 몇줄로 메시지 예약 전송 서비스를 만들어보았습니다.
+   
+### 결과 확인 
+![KakaoTalk_20210629_162516038](https://user-images.githubusercontent.com/76927397/123918973-6451de80-d9bf-11eb-961d-ed4cd298ca56.jpg)
+  
+  
+  
+  
+  
+#### Reference   
+
+* [(StackOverflow) How to fetch/scan all items from `AWS dynamodb` using node.js](https://stackoverflow.com/questions/44589967/how-to-fetch-scan-all-items-from-aws-dynamodb-using-node-js)
+  
+* [(서적) 당신이 지금 알아야 할 AWS - 이영호,한동수](https://book.naver.com/bookdb/book_detail.nhn?bid=14931079)
