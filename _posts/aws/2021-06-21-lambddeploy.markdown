@@ -208,8 +208,10 @@ $ git push origin info
 ![77777](https://user-images.githubusercontent.com/76927397/124060201-80a95600-da67-11eb-984c-1040c7141d8e.PNG)
    
 > info.yml  
-  
+
+
 ```yml  
+{% raw %}
 name: lambda-CoronaInfo-CI  
 # info 브랜치에서 push가 된 경우 실행합니다.
 on:
@@ -251,6 +253,7 @@ jobs:
           aws_region: ap-northeast-2
           function_name: CoronaInfo
           zip_file: bundle.zip
+{% endraw %}
 ```
 
 <br>  

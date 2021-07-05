@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include head.html %}
+
 <body>
+  <div id="simple-bar">
+    <div><span><button id="btn-simple-categ">
+      <span></span><span></span><span></span>
+    </button></span><span></span></div>
+    <div id="simple-thumbnail">
+    <a href="{{site.baseurl}}/"><img
+      src="{{site.baseurl}}/assets/img/{% if site.author-img %}{{site.author-img}}{% endif %}"
+      alt="{{site.author}}"></a>
+    </div>
+    <button id="btn-show-categ" onclick="showCategory()"><span>Show</span></button>
+    <div id="simple-bar-categ" style="height: 100%;  background-color: rgb(48, 44, 44);visibility: hidden;">
+      <div id="simple-categ-list" style="height: 90%;width: 100%;overflow: auto;text-align: left;white-space: nowrap;"><h3 style="font-weight: bolder;">CATEGORIES</h3></div>
+    </div>
+  </div>
+  <div id="empty"> </div>
   <div class="wrapper">
     {{ content }}
-  </div>
-  
-  
-</body>
+  </div></body>
 </html>

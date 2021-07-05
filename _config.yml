@@ -10,8 +10,8 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # Author Settings
 author: DSlog # add your name
 author-img: ds.jpg # add your photo
-about-author: 강해지고 싶습니다. 응애!
-social-github: https://github.com/pds0309 # add your Github handle
+about-author: 강해지고 싶은 애기(예비) 개발자
+social-github: pds0309 # add your Github handle
 social-email: ehd0309@naver.com
 
 # Disqus

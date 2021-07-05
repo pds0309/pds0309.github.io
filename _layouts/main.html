@@ -36,14 +36,16 @@ layout: default
 {% assign categ2 = "" %}
 <div id="categ-list" style="display: none;">{% for i in site.posts %}{% if i.category == 'Study Note' %}{% assign categ2
   = categ2 | append: "," | append: i.category2 %}{% endif %}{{i.category}},{% endfor %}</div>
-<aside id="id-sidebar" class="sidebar" style="display: none;">
+<aside id="id-sidebar" class="sidebar" style="display: none;border-right: solid rgb(243, 242, 239);">
   <header>
-    <div class="mycategory"><span><button id="btn">
+    <div class="mycategory"><span><button id="btn-categ">
           <span></span><span></span><span></span>
         </button></span><span></span></div><br>
-    <div class="categ" style="display: none;">
+    <div class="hide-sidebar"><button id="btn-hide-categ" onclick="hideCategory()"><span>Hide</span></a></div>
+    <div id='id-categ' class="categ" style="display: none;">
+      <div style="margin-bottom: 5px;"><a class="categ-tag" href="{{root_url}}/tags/">TAGS</a></div>
       <div><a>CATEGORIES</a></div>
-      <div id="categ-child1" style="font-size: 15px;"></div>
+      <div id="categ-child1" style="font-size: 18px;"></div>
     </div>
     <div class="about">
       <div class="cover-author-image">
@@ -76,11 +78,40 @@ layout: default
     </section> <!-- End Section Contact -->
     <div class="copyright">
       <p>{{site.time | date: '%Y'}} &copy; {{site.author}}</p>
+      <small>Powered By <a href="https://jekyllrb.com/">Jekyll</a></small><br><small>Theme By <a href="https://github.com/artemsheludko/flexible-jekyll">flexible</a></small>
     </div>
   </footer> <!-- End Footer -->
 </aside> <!-- End Sidebar -->
 {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor%}{% endcapture %}
 {% assign tag_words = site_tags | split:',' | sort %}
+
+<aside class="right-sidebar" style="border-left: solid rgb(243, 242, 239);display: none;">
+  <div>
+      <div id="recent-posts" style="margin-left: 15px;">
+        <h4>최근 게시글 </h4>
+        {% for p in site.posts %}
+        {% assign index = forloop.index0 %}
+        {% if index > 4%}
+        {% break %}
+        {% else %}
+        <small><a href="{{p.url}}">{{ p.title | truncatewords: 4 }}</a></small><br>
+        {% endif %}
+        {% endfor %}
+        
+      </div><br><br>
+      <div style="margin-left: 15px;">
+        <h4>모든 태그</h4>
+        <div id="right-tags">
+          {% for this_word in tag_words %}
+          <a id="idd-{{this_word}}" href="{{ root_url }}/#{{this_word}}" class="btn-tag" onclick="filterTag(id)">{{this_word}}
+            <span>({{site.tags[this_word].size }})</span>
+          </a>
+          {% endfor %}
+          <a href="/" class="btn-tag">All<span>({{site.posts | size}})</span></a>
+        </div>
+      </div>
+  </div>
+</aside>
 <div id="myheader" class="content-box myheader">
   <h2 id="id-post-title" class="post-title">전체 글</h2>
   <div id="addTags">
@@ -89,7 +120,7 @@ layout: default
       <span>({{site.tags[this_word].size }})</span>
     </a>
     {% endfor %}
-    <a id="all" href="/" class="btn-tag">All<span>({{site.posts | size}})</span></a>
+    <a href="/" class="btn-tag">All<span>({{site.posts | size}})</span></a>
   </div>
 </div>
 <div id="id-contents" class="content-box clearfix">
@@ -97,23 +128,73 @@ layout: default
 </div>
 <script>
   $(document).ready(function () {
-    $('.sidebar').fadeIn(1000);
+    $('.right-sidebar').slideDown();
+    if(document.cookie.indexOf('hided=1')!=-1){
+        hideCategory();
+        $(".wrapper").on('mousewheel',function(e){
+          var wheel = e.originalEvent.wheelDelta;
+          if(wheel>0){
+            $('#simple-bar').slideDown();
+
+          } 
+          else {
+            $('#simple-bar').slideUp();
+          }
+      });
+    }
+    else{
+      $('.sidebar').fadeIn(1000);
+    }
     let categoryList = Array.from(new Set($('#categ-list').text().split(',').filter(o => o.length > 1)));
     let categoryList2 = Array.from(new Set(('{{categ2}}').split(',').filter(o => o.length > 1)));
     for (let i = 0; i < categoryList.length; i++) {
-      $('#categ-child1').append(`<p id="categ-child1-${categoryList[i].split(" ")[0]}"><a class="categ-a" style='text-decoration: none; color:black' href='{{ root_url }}/{{ site.category_dir }}#${categoryList[i].split(" ")[0]}'>&nbsp;  ${categoryList[i]}</a></p>`);
+      $('#categ-child1').append(`<p id="categ-child1-${categoryList[i].split(" ")[0]}"><a class="categ-a" style='text-decoration: none; color:gray' href='{{ root_url }}/{{ site.category_dir }}#${categoryList[i].split(" ")[0]}'>&nbsp;  ${categoryList[i]}</a></p>`);
 
     }
     for (let i = 0; i < categoryList2.length; i++) {
       $(`#categ-child1-Study`).append(`<p id="categ-child2-${categoryList2[i]}">
-          <a class='categ-a' style='text-decoration: none; color:black' href='{{ root_url }}/{{ site.category_dir }}#${categoryList2[i]}'>&nbsp;&nbsp;&nbsp; - ${categoryList2[i].replace(/\b[a-z]/, letter => letter.toUpperCase())}</a>
+          <a class='categ-a' style='text-decoration: none; color:gray' href='{{ root_url }}/{{ site.category_dir }}#${categoryList2[i]}'>&nbsp;&nbsp;&nbsp; - ${categoryList2[i].replace(/\b[a-z]/, letter => letter.toUpperCase())}</a>
           </p>`);
     }
     var catA = document.getElementsByClassName('categ-a');
     for (let i = 0; i < catA.length; i++) {
       catA.item(i).addEventListener('mouseover', function () { this.style.color = 'red'; });
-      catA.item(i).addEventListener('mouseout', function () { this.style.color = 'black'; });
+      catA.item(i).addEventListener('mouseout', function () { this.style.color = 'gray'; });
     }
+    if($('body').width()>=1299){
+      $('#addTags').hide();
+    } 
+    $(window).on('resize', function () {
+        if($('body').width()>=1299){
+          $('#addTags').hide();
+        }
+        else{
+          $('#addTags').show();
+        }
+    });
+
+    var cloneCateg = $('#categ-child1').clone();
+    // $('#simple-categ-list').append(document.getElementById('categ-child1').cloneNode());
+    cloneCateg.appendTo('#simple-categ-list');
+    var simpleCateg = document.getElementById('btn-simple-categ');
+    simpleCateg.addEventListener('click', function () {
+    if (this.className == 'on') {
+      this.classList.remove('on');
+      console.log("close");
+      document.getElementById('simple-bar-categ').style.visibility='hidden';
+      document.getElementById('simple-bar-categ').style.height = 50 + 'px';
+      document.getElementById('empty').style.marginBottom = 0 + 'px';
+
+    }
+    else {
+      this.classList.add('on');
+      console.log("open");
+      document.getElementById('simple-bar-categ').style.visibility='visible';
+      document.getElementById('simple-bar-categ').style.height = 300 + 'px';
+      document.getElementById('empty').style.marginBottom = 350 + 'px';
+    }
+  });
+
 
   });
   $(document).ready(() => {
@@ -122,7 +203,7 @@ layout: default
       filterTag('id-' + decodeURI(hash));
     }
   });
-  var e = document.getElementById('btn');
+  var e = document.getElementById('btn-categ');
 
   e.addEventListener('click', function () {
     if (this.className == 'on') {
@@ -155,5 +236,26 @@ layout: default
         $(e).hide();
       }
     });
+  }
+  function hideCategory(){
+        var date = new Date();
+        date.setTime(date.getTime() + 3600000);
+        document.cookie = "hided=1;expires="+date.toUTCString()+";path=/";
+        $('#simple-bar').slideDown(300);
+        $('#id-sidebar').slideUp(300);
+        let contents = document.getElementById('id-contents');
+        let header = document.getElementById('myheader');
+        contents.style.paddingLeft = 5 + 'px';
+        header.style.paddingLeft = 5 + 'px';
+        header.style.marginLeft = 25 +'px';
+        header.style.marginTop = 100 + 'px';
+        $('#id-contents').children('.post').css('margin-left',5+'px');
+  }
+  function showCategory(){
+    var date = new Date();
+    date.setTime(date.getTime() + 3600000);
+    $('#simple-bar').slideUp(300);
+    document.cookie = "hided=0;expires="+date.toUTCString()+";path=/";
+    window.location.reload();
   }
 </script>
