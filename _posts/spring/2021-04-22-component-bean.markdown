@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spring Annotation @Component vs @Bean
+title: Spring @Component vs @Bean
 date: 2021-04-22 17:11:26 +0900
 category2: spring
 category: Study Note

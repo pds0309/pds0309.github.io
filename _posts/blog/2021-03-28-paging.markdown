@@ -1,10 +1,10 @@
 ---
 layout: post
-title: <블로그> 페이징 추가하기
+title: (Jekyll Blog) 페이징 추가하기
 date: 2021-03-28 17:11:49 +0900
 category2: blog
 category: Study Note
-tag: [blog , jekyll]
+tag: [jekyll]
 
 ---
 
@@ -44,7 +44,7 @@ paginate_path: "/page/:num"
 
 #### bundle install  <br>  
   
-```cmd
+```shell
 user> bundle install
 
 ...

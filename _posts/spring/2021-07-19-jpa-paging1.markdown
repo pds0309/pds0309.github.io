@@ -1,0 +1,197 @@
+---
+layout: post
+title: (SpringBoot) JPA로 페이징처리를 해보자
+date: 2021-07-19 14:10:46 +0900
+category2: spring
+category: Study Note
+tag: [spring, thymeleaf,jpa]
+img: spring.png 
+---
+<br>
+
+<br>  
+
+
+
+
+##  스프링부트에서 JPA를 사용하여 간단한 페이징 처리를 해보자. 
+  
+<br>  
+
+
+
+  
+  
+**페이징 처리를 해볼 예시 Player 테이블의 구조는 다음과 같습니다.**  
+
+|-----------|---------------|------------|
+|PLAYER_ID|PLAYER_NAME|SEASON_ID|
+|(PK)INTEGER|VARCHAR|INTEGER|
+  
+ 사용자에게서 선수이름을 입력받으면 입력받은 문자가 포함되어있는 모든 선수의 아이디와 이름을 조회할 것이고 페이지에 모두 보여줄 것입니다.  
+ 
+>PlayerRepository
+ 
+```java
+public interface PlayerRepository extends JpaRepository<Player, Integer> 
+{
+    List<Player> findByPlayerNameContaining(String name);
+}
+``` 
+ 
+ 이 때 사용자가 입력한 문자가 포함된 선수가 너무 많으면..?   
+
+ 제임스, 다비드 같은 흔한 이름 or 성이라면 백명 단위로 보여질 수가 있습니다.  
+따라서 페이징 처리가 필요합니다.  
+  
+<br>  
+
+### 목표  
+
+ 사용자가 선수 검색할 때 조회 결과를 한 페이지에 5명씩 나타내고   
+  Thymeleaf를 통해 간단한 페이지네이션을 해보자!  
+
+<br>  
+
+<h3 style='color:red'>PlayerRepository</h3> 
+ 
+  
+```java
+import org.springframework.data.domain.*;
+public interface PlayerRepository extends JpaRepository<Player, Integer> 
+{
+    Page<Player> findByPlayerNameContaining(String name, Pageable pageable);
+}
+```
+
+<br>  
+
+  
+<h3 style='color:red'>PlayerService</h3> 
+ 
+```java
+@Service
+@RequiredArgsConstructor
+public class PlayerService {
+    public Page<Player> getPlayerList(String playerName, Pageable pageable){
+        Page<Player> playerList = 
+playerRepository.findByPlayerNameContaining(playerName,pageable);
+        return playerList;
+    }
+}
+```
+  
+<br>  
+
+<h3 style='color:red'>PlayerController</h3> 
+
+> Thymeleaf 활용  
+
+```java
+@Controller
+@RequiredArgsConstructor
+public class PlayerController {
+
+    private final PlayerService playerService;
+
+    @GetMapping("/playersearch")
+    public String getPlayerList(
+            Model model , @RequestParam String pname,
+                                @PageableDefault(size=5) Pageable pageable)
+    {
+        Page<Player> playerList = playerService.getPlayerList(pname,pageable);
+        model.addAttribute("playerlist",playerList.getContent());
+        model.addAttribute("next",playerList.hasNext());
+        model.addAttribute("current",playerList.getNumber());
+        model.addAttribute("url","/playersearch?pname="+pname+"&page=");
+        return "playersearch";
+    }
+}
+```  
+**@PageableDefault의 옵션**  
+> page - 현재 페이지. 기본 0  
+
+> size - 한 페이지에 나타낼 데이터 개수  
+
+> sort - 정렬 기준으로 할 컬럼  
+
+> direction - 정렬 방향  
+  
+<br>  
+
+**Page 클래스의 인터페이스**  
+
+> List<T> getContent() - 현재 페이지에 조회된 데이터  
+
+> boolean hasContent() - 조회 데이터 존재 여부  
+
+> int getNumber() - 현재 페이지  
+
+> int getSize() - 페이지 크기  
+
+> int getTotalPages() - 전체 페이지 수  
+
+> long getTotalElements() - 전체 데이터 수  
+
+> boolean hasPrevious() - 이전 페이지 존재 여부  
+
+> boolean hasNextPage() - 다음 페이지 존재 여부  
+
+> Pageable nextPageable() - 다음 페이지 객체, 없으면 null  
+
+> Pageable previousPageable() - 다음 페이지 객체, 없으면 null
+  
+<br>  
+  
+
+<h3 style='color:red'>usersearch.html</h3>  
+  
+**컨트롤러로부터 전달받은 데이터를 뷰에 나타내고 간단한 이전페이지,다음페이지 구현**
+
+```html
+<body>
+
+<div style="text-align: center">
+    <p th:text="|현재페이지 : ${current}|"></p>
+</div>
+<div style="text-align: center" th:each="p:${playerlist}">
+    <p th:text="|${p.playerId} - ${p.playerName}|"></p>
+</div>
+<div style="text-align: center">
+    <a th:if="${current}!=0" th:href="|${url}${current-1}|">뒤로</a>
+    <a th:if="${next}" th:href="|${url}${current+1}|">앞으로</a>
+</div>
+
+</body>
+```
+
+<br>  
+  
+<h3 style='color:red'>결과</h3>  
+  
+**'토니' 를 예시로 검색해보겠습니다.**  
+
+![07191](https://user-images.githubusercontent.com/76927397/126260926-d1a6e807-8f96-4b2f-a29e-c46251c79a1a.PNG)
+  
+<br>  
+
+**페이지당 5개의 데이터가 출력됩니다.**    
+  
+
+![07192](https://user-images.githubusercontent.com/76927397/126261011-2bf270a6-04a4-4e70-9e4b-22c6907a0710.PNG)
+  
+<br>  
+
+**토니가 들어간 선수가 이렇게나 많았군요**  
+  
+![07194](https://user-images.githubusercontent.com/76927397/126261209-c397d73e-e39d-45df-9c7b-fae5a2afc5a4.PNG)
+
+<br>  
+   
+------
+  
+
+정렬을 활용하면  훨씬 깔끔하게 사용자가 조회결과를 볼 수 있겠네요.   
+저 같은 경우는 실제로 구현할 때 선수 기준포지션 오버롤(스탯) 내림차순이나 랭커들이 많이 사용하는 순서대로 정렬을 해볼까합니다.
+  
+  

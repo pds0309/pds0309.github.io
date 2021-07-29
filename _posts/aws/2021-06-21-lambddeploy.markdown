@@ -83,7 +83,7 @@ img: githubactions.png
 **npm 버전**  
 
 
-```linux  
+```shell
 C:\>npm -v
 6.14.11
 ```  
@@ -100,7 +100,7 @@ C:\>npm -v
 
 **(1) 깃허브 레포지토리를 만들고 로컬에 클론한 뒤 info 브랜치를 생성해주고 해당 브랜치로 이동해줍니다**  
   
-```linux  
+```shell
 ehd03@DESKTOP-REGVU7O MINGW64 /c/cinfo
 $ git clone https://github.com/pds0309/aws_lambda_simple_sms_service.git
 ...
@@ -134,7 +134,7 @@ $
   
 **(2) package.json 생성 및 의존 패키지 설치** 
   
-```linux  
+```shell
 $ npm init -y  
 $ npm install moment  
 $ npm install xml-js  
@@ -168,15 +168,16 @@ exports.handler = async (event) => {
 
 **(4) 원격저장소에 푸쉬해줍니다.**  
   
-```linux  
+```shell
+오후 6:50 2021-07-27
 $ git add .  
 $ git commit -m 'commit coronainfo'  
 $ git push origin info  
 ```  
   
-* 잘 되었군요  
+
   
-![4444](https://user-images.githubusercontent.com/76927397/124058293-10e59c00-da64-11eb-90a2-a6a8925a9de9.PNG)
+
 
  
  
@@ -253,7 +254,8 @@ jobs:
           aws_region: ap-northeast-2
           function_name: CoronaInfo
           zip_file: bundle.zip
-{% endraw %}
+{% endraw %}  
+
 ```
 
 <br>  
@@ -312,7 +314,7 @@ jobs:
   
 #### 저장소  
   
-[https://github.com/pds0309/aws_lambda_simple_sms_service](https://github.com/pds0309/aws_lambda_simple_sms_service) 
+&nbsp;[github.com/pds0309](https://github.com/pds0309/aws_lambda_simple_sms_service) 
  
 <br>  
   
@@ -320,9 +322,9 @@ jobs:
   
 #### Reference     
   
-* yml파일 ``` uses: appleboy/lambda-action@master ```에서 알 수 있 듯 [appleboy/lambda-action](https://github.com/appleboy/lambda-action) 에서 정의된 람다코드 배포 action을 활용하였습니다.  
-> 처음에 아 ~ 내 깃헙이름이랑 저장소에 브랜치 쓰면되는구나~~ㅎㅎ 하고 pds0309/aws_lambda_simple_sms_service@main 썻다가 action.yml 또는 도커파일이 없다는 에러를 마주하며 삽질을 했었습니다..  해당 부분에서 action설정 파일을 가져와 사용하겠다는 뜻이었습니다.
-  
-* [npm install 과 npm ci 의 차이점은 무엇입니까?](https://pythonq.com/so/npm/15391)  
+&nbsp;[appleboy/lambda-action](https://github.com/appleboy/lambda-action)   
 
-* Hwasurr's Devlog 님의 [Github Actions를 이용해 CI/CD 파이프라인 구성하기 ](https://hwasurr.io/git-github/github-actions/)  
+  
+&nbsp;[npm install 과 npm ci 의 차이점](https://pythonq.com/so/npm/15391)  
+
+&nbsp;[Github Actions를 이용해 CI/CD 파이프라인 구성하기](https://hwasurr.io/git-github/github-actions/)  

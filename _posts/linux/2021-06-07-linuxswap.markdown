@@ -29,7 +29,7 @@ tag: [linux,cloud]
 
 >kern.log  
 
-```linux 
+```bash
 Jun  7 06:08:42 instance-**** kernel: [3906635.277344] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1001.slice/session-1320.scope,task=java,pid=232693,uid=0
 Jun  7 06:08:42 instance-**** kernel: [3906635.277392] Out of memory: Killed process 232693 (java) total-vm:2684284kB, anon-rss:320384kB, file-rss:0kB, shmem-rss:0kB, UID:0 pgtables:880kB oom_score_adj:0
 Jun  7 06:08:43 instance-**** kernel: [3906635.391116] oom_reaper: reaped process 232693 (java), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
@@ -60,7 +60,7 @@ Jun  7 06:08:43 instance-**** kernel: [3906635.391116] oom_reaper: reaped proces
 <span style='color:blue'>   (1) 2GB 의 스왑공간 생성 및 권한 조정  </span>
 
 
-```linux
+```bash
 sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
 ```
@@ -69,12 +69,12 @@ sudo chmod 600 /swapfile
 <span style='color:blue'>   (2) 스왑파일 생성  </span>	 
 
 
-```linux
+```bash
 sudo mkswap /swapfile
 ```
 > 다음과 같은 메시지가 출력됩니다.  
 
-```linux
+```bash
 Setting up swapspace version 1, size = 2 GiB (2147479552 bytes)
 no label, UUID=71432f3c-95eb-4c80-af06-dc0af6848c1b
 ```
@@ -82,7 +82,7 @@ no label, UUID=71432f3c-95eb-4c80-af06-dc0af6848c1b
 
 <span style='color:blue'>  (3) 스왑 공간 사용  </span>
 
-```linux
+```shell
 sudo swapon /swapfile
 ```
 
@@ -92,14 +92,14 @@ sudo swapon /swapfile
 
 *  /etc/fstab 파일에 해당 내용을 추가합니다  
 
-```linux
+```bash
 /swapfile swap swap defaults 0 0
 ```
   
 <br>  
 
 <span style='color:blue'>   (5) 확인 </span>
-```linux
+```bash
 ubuntu@instance-******:~/ff4$ free -h
               total        used        free      shared  buff/cache   available
 Mem:          974Mi       625Mi        83Mi       1.0Mi       266Mi       200Mi

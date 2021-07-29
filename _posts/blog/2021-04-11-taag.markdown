@@ -1,10 +1,10 @@
 ---
 layout: post
-title: <블로그> 태그 활용해보기
+title: (Jekyll Blog) 태그 활용해보기
 date: 2021-04-11 12:11:25 +0900
 category2: blog
 category: Study Note
-tag: [blog , jekyll]
+tag: [jekyll]
 
 ---
 <br>  

@@ -8,7 +8,7 @@ tag: [넥슨, 인턴지원]
 postimg: nexonresult.PNG
 ---
 
-   <em>fire합격</em>
+
 <br>
 
 
@@ -45,7 +45,6 @@ postimg: nexonresult.PNG
 > 서류 : 합격 (2021.01.21)  
 > 과제 : 불합격 (2021.02.10)  
 
-![](/assets/img/seoryuhab.jpg){: width="180" height="360 "}![뜨겁다!](/assets/img/fire.jpg){: width="180" height="360 "}
 
 
 <br>

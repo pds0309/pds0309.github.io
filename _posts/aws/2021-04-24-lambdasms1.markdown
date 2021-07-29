@@ -70,18 +70,18 @@ img: lambdaimg.png
   
 **(1) npm이 설치되어 있지 않다면 [node.js](https://nodejs.org/en/) 설치하기**  
  
-```linux  
+```bash
 C:\>npm -v
 6.14.11
 ```  
 
 **(2) 임의의 폴더 하나 생성 후 ``` npm init ```  후 모두 넘어가기**
   
-```linux  
+```bash
 C:\lambdacovidinfo>npm init
 ```
 **(3) 패키지 설치**
-```linux
+```bash
 C:\lambdacovidinfo>npm install moment  
 ...
 ...

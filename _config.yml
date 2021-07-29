@@ -20,8 +20,13 @@ social-email: ehd0309@naver.com
 # Tracker
 analytics: # Google Analytics
 
+
+
 # Build Settings
 markdown: kramdown
+ 
+highlighter: rouge
+
 plugins:
   - jekyll-sitemap
   - jekyll-paginate 	
