@@ -3,9 +3,9 @@ layout: post
 title: 뒤늦게쓰는 빅콘테스트 2019 퓨처스리그 참가 리뷰
 date: 2021-04-14 09:25:34 +0900
 category: Review
-img: bigcontest.PNG
+img: bigc.png
 tag: [빅콘테스트, 데이터분석]
-postimg: bigcontest.PNG
+postimg: bigc.png
 ---
 <br>  
 
