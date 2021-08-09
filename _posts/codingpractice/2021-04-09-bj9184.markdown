@@ -4,7 +4,7 @@ title: 백준-9184-신나는함수실행 (java)
 date: 2021-04-09 11:05:10 +0900
 category2: codingpractice
 category: Study Note
-tag: [백준 , dp , 재귀]
+tag: [백준 , dp]
 ---
 
 ## 백준-9184-신나는 함수 실행
@@ -13,7 +13,7 @@ tag: [백준 , dp , 재귀]
 ### [문제설명링크   ](https://www.acmicpc.net/problem/9184)
 <br>  
   
-* [풀이](#나의-풀이)
+* [풀이](#풀이)
 * [코드](#자바-풀이-코드)  
 
 <br>  

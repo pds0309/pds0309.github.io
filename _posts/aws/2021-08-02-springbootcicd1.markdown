@@ -12,21 +12,21 @@ img: travis.png
   
 ## Travis CI를 이용해 SpringBoot 서비스 빌드 자동화를 해보자  
   
- 
+----  
+
+**2편 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/springbootcicd2/)**
   
 <br>  
 
 
+[이 글](https://jojoldu.tistory.com/265)을 많이 참고하여 작성한 글입니다.
 
-<h3>최종 목표</h3>
 
-이미지
-
-<br>  
-  
-----
 
 <h3>현재 글에서의 목표 - CI</h3> 
+
+![2-2](https://user-images.githubusercontent.com/76927397/128457760-b18d14f1-b3ec-46d0-89c5-6cc6b69caf22.PNG)
+
 
 **<span style='color:blue'>Github - Travis CI - AWS S3</span> 를 연동해
   간단한 스프링부트 서비스를 깃허브에 푸쉬했을 때 Travis CI를 통해 테스트/빌드 하고 빌드 결과 파일을 S3로 전달한다.**  
@@ -142,7 +142,7 @@ ref : [Gradle Wrapper란?](https://jungseob86.tistory.com/21)
 <br>  
   
   
-**.travis.yml 에 해당 코드를 추가해줍니다.**  
+**.travis.yml 에 해당 코드를 추가해 실행권한을 얻어줍니다.**  
   
 ```yml
 before_install:
@@ -151,8 +151,8 @@ before_install:
 
 <br>  
   
-* 자~ Github와 Travis CI의 연동으로 이제 내가 작성,수정하는 Springboot 프로젝트를 커밋 푸쉬하면 자동으로 테스트/빌드를 진행해줍니다.  
-* 배포 자동화를 위한 빌드 결과물을 저장할 AWS S3 버킷을 만들고 연동하여 저장해는것 를! 해보겠습니다.  
+* 자~ Github와 Travis CI의 연동으로 이제 Springboot 프로젝트를 커밋 푸쉬하면 자동으로 테스트/빌드를 진행해줍니다.  
+* 배포 자동화를 위해 필요한 빌드 결과물을 저장할 AWS S3 버킷을 만들고 연동하여 저장하는것 를! 해보겠습니다.  
   
 <br>  
   
@@ -170,6 +170,8 @@ before_install:
 
 <br>  
   
+
+<span id="cicd1user" style="color:white">&nbsp;</span>
 <h3>Travis CI 연결 전용 AWS 사용자 생성 및 연결</h3>  
   
 * Travis CI에서(외부에서) AWS를 사용하기 위해서는 AWS에 대한 접근 권한(액세스 키 , 비밀 키)이 있어야 합니다. 
@@ -260,4 +262,8 @@ deploy:
 * [Gradle Wrapper란?](https://jungseob86.tistory.com/21)  
   
 
+<br>  
+  
+----
 
+**다음글 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/springbootcicd2/)**

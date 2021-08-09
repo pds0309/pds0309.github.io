@@ -196,7 +196,6 @@ public class TestCustomProjection {
     void errorCustomTest() {
         Exception e = assertThrows(Exception.class, () ->
                 userRepository.findUserNumByDivisionError());
-        assertFalse(e.getMessage().contains("정상"));
         System.out.println("에러메시지 : " + e.getMessage());
     }
 
