@@ -2,7 +2,7 @@
 layout: post
 title: Travis CI를 이용한 SpringBoot 서비스 빌드 자동화
 date: 2021-08-02 11:25:05 +0900
-category2: cloud
+category2: cloud/server
 category: Study Note
 tag: [aws,travisCI,CI/CD,spring]
 img: travis.png 

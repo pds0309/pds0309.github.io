@@ -2,9 +2,9 @@
 layout: post
 title: 메모이제이션 (Memoization)
 date: 2021-03-15 11:25:00 +0900
-category2: algorithm
+category2: etc
 category: Study Note
-tag: [dp]
+tag: [dp,algorithm]
 ---
 
 ## 메모이제이션이란?

@@ -2,7 +2,7 @@
 layout: post
 title: AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)
 date: 2021-04-25 22:01:21 +0900
-category2: cloud
+category2: cloud/server
 category: Study Note
 tag: [aws,lambda,nodejs]
 img: lambdaimg.png 

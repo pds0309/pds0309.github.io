@@ -2,9 +2,10 @@
 layout: post
 title: (Ubuntu 20.04) Swap공간 생성하기
 date: 2021-06-07 18:14:22 +0900
-category2: linux
+category2: cloud/server
 category: Study Note
-tag: [linux,cloud]
+tag: [linux]
+img: ubuntu.png
 ---
 <br>
 

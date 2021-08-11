@@ -2,7 +2,7 @@
 layout: post
 title: Lambda 기초활용 - API 만들기
 date: 2021-03-31 13:10:22 +0900
-category2: cloud
+category2: cloud/server
 category: Study Note
 tag: [aws,lambda]
 img: lambdaimg.png 

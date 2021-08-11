@@ -2,7 +2,7 @@
 layout: post
 title: Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화 
 date: 2021-08-04 10:11:11 +0900
-category2: cloud
+category2: cloud/server
 category: Study Note
 tag: [aws,travisCI,CI/CD,linux,codedeploy,aws-cli]
 img: travis.png 
@@ -23,7 +23,7 @@ img: travis.png
 
 <br>  
 
-[이 글](https://jojoldu.tistory.com/265)을 많이 참고하여 작성한 글입니다.
+[이 글](https://jojoldu.tistory.com/265)을 참고하여 작성한 글입니다.
 
 <h3>1편에서 목표</h3>  
   
@@ -639,14 +639,14 @@ ubuntu    103588   97350  0 05:19 pts/0    00:00:00 grep --color=auto testcicd
 
 * 이제 스프링부트 프로젝트를 깃허브 레포지토리 master 브랜치로 푸쉬하기만 하면 빌드부터 배포까지 자동으로 진행됩니다.  
   
-* 새로운 배포 시 kill  로 기존 스프링부트 프로세스를 종료해주고 다시 실행시키기 때문에 배포하는 동안 서비스가 일시적으로 중단 된다는 점을 빼면 목표를 달성하였습니다!
+* 새로운 배포 시 kill  로 기존 스프링부트 프로세스를 종료해주고 다시 실행시키기 때문에 배포하는 동안 서비스가 일시적으로 중단 된다는 점을 빼면 목표를 달성하였습니다! 자연스럽게 다음 글은 이를 해결하는 방법이 되겠군요!
 
 * **길고 부족한 내용의 글 읽어주셔서 감사합니다!**
   
 <br>  
 
 ----  
-  
+    
 
 **Reference**  
 
@@ -664,5 +664,16 @@ ubuntu    103588   97350  0 05:19 pts/0    00:00:00 grep --color=auto testcicd
 
 * [aws/aws-codedeploy-agent - High memory consumption](https://github.com/aws/aws-codedeploy-agent/issues/32) (나중에 읽어보기 위해 기록) 
 
+  
+<br>  
+  
 
+  
+----  
+
+**이전글 - [Travis CI를 이용한 SpringBoot 서비스 빌드 자동화](/springbootcicd1/)**    
+
+**다음글 - [Nginx를 이용해 Springboot 서비스를 중단 없이 배포해보자!](/springbootnginx/)**  
+
+----
  

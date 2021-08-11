@@ -2,7 +2,7 @@
 layout: post
 title: Github Actions를 이용해 람다 서비스 배포 자동화를 해보자
 date: 2021-06-21 19:31:05 +0900
-category2: cloud
+category2: cloud/server
 category: Study Note
 tag: [aws,lambda,github,CI/CD]
 img: githubactions.png 
