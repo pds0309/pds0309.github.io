@@ -157,14 +157,14 @@ analytics: # Google Analytics
 </urlset>
 {% endraw %}
 ```  
-  
+    
 <br>  
   
-**(4) 루트 디렉터리에 robot.txt 파일을 추가합니다.**
+**(4) 루트 디렉터리에 robots.txt 파일을 추가합니다.**
 
 > 내 웹사이트를 검색엔진 로봇들이 웹 크롤링 할 수 있게 하여 노출시켜주는 역할을 한다고 합니다. 설정을 통해 특정 검색엔진, 특정 컨텐츠에 대한 접근에 대해 지정할 수 있습니다.
 
->robot.txt 
+>robots.txt 
 
 ```txt
 User-agent: *
@@ -196,7 +196,7 @@ url: "https://pds0309.github.io"
   
 * [Robots.txt와 Sitemap.xml 알아보기](https://www.twinword.co.kr/blog/basic-technical-seo/)
 
-
+* [Sitemaps for Jekyll sites](https://joelglovier.com/writing/sitemaps-for-jekyll-sites)
 
 
 
