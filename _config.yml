@@ -19,6 +19,9 @@ social-email: ehd0309@naver.com
 
 # Tracker
 analytics: # Google Analytics
+  provider: "google-gtag"
+  google:
+    g_id: "G-PJT01GDQYD"
 
 
 
