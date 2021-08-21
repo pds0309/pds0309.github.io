@@ -148,7 +148,7 @@ template: |
   
 * 각각 템플릿 이름과 태그로 MAJOR.MINOR.PATCH 중 어떤 버전을 올릴 것인가를 정의합니다.  
   
-* v$NEXT_PATCH_VERSION,v$NEXT_MINOR_VERSION,v$NEXT_MAJOR_VERSION
+* v$NEXT_PATCH_VERSION, v$NEXT_MINOR_VERSION, v$NEXT_MAJOR_VERSION
  
 * v$RESOLVED_VERSION - ```version-resolver``` 옵션에 정의한 레이블에 따라 버전을 올릴 수 있습니다. 
 

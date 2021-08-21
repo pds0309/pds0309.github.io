@@ -98,7 +98,7 @@ layout: default
         {% endif %}
         {% endfor %}
         
-      </div><br><br>
+      </div><br>
       <div style="margin-left: 15px;">
         <h4>모든 태그</h4>
         <div id="right-tags">
@@ -222,10 +222,13 @@ layout: default
   });
   function filterTag(id) {
     let tag = id.split('-')[1];
+    let url = window.location.href.toString();
+    if(url.indexOf('category')!=-1){
+	window.location.href = url.split("category/")[0]+"#"+tag;
+    }
     // 태그 선택 시 타이틀을 태그이름으로 변경
     $('#id-post-title').empty();
     $('#id-post-title').append(tag);
-    // 페이지네이션은 우선 비활성화 하자! - 추후 수정할 예정
     $('#id-mypagenation').hide();
     // 선택한 태그를 가진 모든 글만 나타나게 합니다.
     let items = $('.post').each((i, e) => {

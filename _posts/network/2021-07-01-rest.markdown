@@ -1,0 +1,199 @@
+---
+layout: post
+title: Rest, Rest API
+date: 2021-07-01 12:55:45 +0900
+category2: network
+category: Study Note
+tag: [rest]
+img: rest.png
+---
+<br>
+
+
+
+
+
+## Rest와 Rest API 에 대해서 간단하게 알아봅시다!  
+
+----
+  
+<small>&nbsp;</small>
+
+  
+<br>  
+
+  
+
+
+<h3>REST(Representational State Transfer)?</h3>
+
+* 웹에서 데이터를 HTTP 위에서 별도의 전송 계층 없이 전송하기 위한 인터페이스
+
+* 자원을 이름으로 구분하여 자원의 상태를 주고받는 모든 행위를 의미
+
+* 즉 HTTP URI를 통해 자원을 명시하고 HTTP Method를 통해 해당 자원의 CRUD Operation을 적용하는 것으로 네트워크 상 클라이언트 서버 간 통신 방식 중 하나입니다.  
+  
+<br>  
+
+
+**CRUD 동작**  
+ 
+> Create : 데이터 생성(POST)<br>
+Read : 데이터 읽기(GET)<br>
+Update :  데이터 수정(PUT)<br>
+Delete : 데이터 삭제(DELETE)  
+  
+<br>  
+
+**REST 구성**  
+  
+* Resource(자원) - 서버에 존재하는 특정 자원에 대한 식별가능한 ID(URI)
+  
+  * ex) 유저 데이터베이스에 대한 자원에 대해 /home/students 로 구별
+
+
+* Verb(행위) - HTTP Method (GET,POST,PUT,DELETE)  
+
+  * ex) 유저 데이터베이스에 대한 자원에 대해 조회 할 것인가 생성할 것인가 같은
+
+* Representation(표현) - 클라이언트가 자원에 대한 특정 조작 요청 시 서버의 응답.
+  
+  * ex) JSON , XML 형태의 데이터로 반환한다.
+
+  
+  
+<br>  
+
+**REST 특)**  
+  
+<span style="color:blue">Server-Client</span>
+
+<span style="color:blue">Cacheable</span>  
+  
+<span style="color:blue">Stateless</span>
+  
+* 세션,쿠키 같은 상태정보를 고려할 필요 없고 요청에 대한 처리만을 하기 때문에 서비스 자유도가 높아지고 구현이 단순해집니다.
+    
+<span style="color:blue">Layered System</span>  
+
+* API는 순수하게 로직을 담당하고 REST 서버는 다중 계층으로 구성 가능하여 보안,암호화,인증 등의 계층을 추가하여 구조의 유연성을 보장해줍니다. 
+
+<span style="color:blue">Uniform Interface</span>  
+
+* URI로 지정한 리소스에 대한 조작을 통일되고 한정적인 인터페이스로 수행하는 아키텍처 스타일을 말합니다.
+ 
+  
+
+  
+<br> 
+
+**Why**  
+  
+* HTTP 표준 프로토콜을 따르는 모든 플랫폼에서 사용 가능하다.  
+  
+* 서버,클라이언트 역할을 명확하게 분리 가능하다.
+  
+  
+<br>  
+  
+<h3>REST API?</h3>
+
+ 
+* REST의 원리를 따르는 API(Application Programming Interface)를 의미합니다.
+  
+> API : 애플리케이션 소프트웨어 및 서비스를 통합하는 도구, 정의, 프로토콜의 세트로 프로그램 간의 상호작용을 위한 매개체를 말합니다.  
+  
+  
+<br>  
+  
+
+**REST API 설계 규칙**  
+  
+>아주 간단한 규칙에 대해서
+  
+* URI 는 명사, 소문자로 자원을 표현한다. 행위는 Http Method 로 표현  
+  
+* 슬래시는 계층관계를 나타낼 때 사용한다.  
+  
+* URI 마지막에 슬래시를 포함하지 않는다.  
+  
+* 밑줄 X  => 하이픈을 사용한다.  
+   
+* 파일확장자는 포함시키지 않는다.  
+    
+<br>  
+
+**Resource 형태에 따른 설계**  
+  
+* Document - 1개의 개체를 말함. (객체 인스턴스 , DB 레코드) 
+  
+> Collection 중 하나로 표현되며 일반적으로 Collection 뒤에 슬래시로 구분되며 단수로 표현한다. 
+<br>ex) http://abc.com/service1/users/admin
+  
+
+* Collection - Document 들의 묶음으로 복수로 표현한다.  
+  
+* Store - 클라이언트 입장에서의 저장소로 복수로 표현한다.   
+  
+<br>  
+  
+
+<h3>RESTful?</h3>  
+  
+* REST 의 원리를 따르는 시스템을 말합니다. REST API 의 설계 규칙을 잘 지킨 시스템을 RESTful 하다고 할 수 있습니다.  
+ 
+* 이해와 사용이 쉬운 REST API를 만드는 것이 목적이라고 할 수 있습니다.  
+  
+<br>  
+  
+<h3>HTTP 응답 상태 코드</h3>  
+  
+* 정확하고 적절한 응답 상태 코드를 잘 전달하는 것 또한 좋은 REST API의 조건이라고 합니다.  
+ 
+* <small>(공부하다니 스스로가 참 RESTless 하다는 생각이 든 나)</small>  RESTful 해지기 위해 스스로를 위해서 자주 사용되는 상태코드들을 정리해보았습니다.  
+  
+|상태|설명|
+|-----|-------------------------------|
+|<span style='color:blue'>200</span>|클라이언트의 요청을 정상적으로 수행|
+|<span style='color:blue'>201</span>|클라이언트의 리소스 요청 시 리소스가 성공적으로 생성(POST)|
+|<span style='color:red'>400</span>|클라이언트 요청이 부적절한 경우(이유 포함)|
+|<span style='color:red'>401</span>|클라이언트가 인증되지 않은 상태에서 보호된 리소스를 요청할 경우|
+|<span style='color:red'>403</span>|클라이언트가 응답하고 싶지 않은 리소스를 요청할 경우(리소스 존재 여부를 모를 수 있게 404 or 400 사용) |
+|<span style='color:red'>404</span>|클라이언트가 요청한 리소스가 존재하지 않을 경우 |
+|<span style='color:red'>500</span>|서버 오류일 경우 |
+
+
+<br>  
+  
+
+<h3>알아보며</h3>
+  
+* 자주 들어보기만 했던 REST 에 대해 간단하고 쉽게나마 알아보았습니다.   
+  휴식이라는 의미의 Rest 는 아니지만 휴식하는 것 마냥 편하게 설계되고 쉽게 활용될 수 있어야 한다는 것에서 어찌보면 일맥상통하지 않나 하는 생각이 듭니다.
+
+* REST에 대해서 알아가다보니 스프링부트로 간단한 서비스를 만들고 있는데 참 RESTful 하지 못하다는 생각이 들었습니다.  
+  GET POST 만 사용하였고 URI도 제 멋대로 지정해 API를 보고도 무슨 행위인지 직관적이도 않고 응답 상태전달 또한 잘 되어있지 않습니다.  
+  좀 더 RESTful 하게 재설계하고 문서화해보는 시간을 반드시 가져야 할 것 같습니다.  
+     
+  
+* **잘못되거나 부족한 내용은 꼭 지적해주시면 감사드리겠습니다!**   
+  
+  
+
+----
+
+<br>  
+
+	
+
+
+  
+
+
+#### Reference
+  
+* [REST API란? REST, RESTful이란?](https://gmlwjd9405.github.io/2018/09/21/rest-and-restful.html)
+
+* [REST API - REST에서의 리소스 이름 짓기](https://sabarada.tistory.com/28)
+
+* [REST API 제대로 알고 사용하기](https://meetup.toast.com/posts/92)

@@ -455,7 +455,7 @@ sudo service nginx reload
   
 > switch.sh 를 실행시켜주면 현재 물려있지 않은 Profile 로 전환되면서 포트도 변경됩니다.
 
-* ![3](https://user-images.githubusercontent.com/76927397/128835324-4b7013f7-846d-453f-8685-d84fa25c4363.PNG)
+![3](https://user-images.githubusercontent.com/76927397/128835324-4b7013f7-846d-453f-8685-d84fa25c4363.PNG)
  
 <br>  
   
@@ -475,13 +475,13 @@ sleep 10
 
 > deploy.sh 를 실행하여 최종적으로 모든 과정이 정상적으로 수행되는지 확인합니다. 아까 switch.sh 테스트로 현재 s2를 물고있으니 deploy.sh를 실행 한 후 접속을 요청했을 때 다시 s1을 물어주면 테스트 성공이겠죠?
  
-* ![4](https://user-images.githubusercontent.com/76927397/128836276-d650db5d-4869-4b47-a362-d67687026bd9.PNG)
+![4](https://user-images.githubusercontent.com/76927397/128836276-d650db5d-4869-4b47-a362-d67687026bd9.PNG)
 
 <br>  
   
 > 다행스럽게도 해치운 모습입니다.  
 
-* ![5](https://user-images.githubusercontent.com/76927397/128836843-8b66b46b-8912-4548-a571-dccf896279fd.PNG)
+![5](https://user-images.githubusercontent.com/76927397/128836843-8b66b46b-8912-4548-a571-dccf896279fd.PNG)
 
 
 
@@ -514,9 +514,9 @@ sleep 10
 
 ----  
    
-**번외 feat.Codedeploy**  
+**~~번외 feat.Codedeploy~~**  
   
-* 글 작성 전 테스트(삽질) 시 codedeploy-agent 사용 메모리가 계속 치솟았었는데 사용한 메모리 반환이 잘 안되는 문제가 있는지 싶습니다.  
+* ~~글 작성 전 테스트(삽질) 시 codedeploy-agent 사용 메모리가 계속 치솟았었는데 사용한 메모리 반환이 잘 안되는 문제가 있는지 싶습니다.~~  
   
 ```shell
 ubuntu@instance-deployinstance:/var/log/aws/codedeploy-agent$ ps -eo user,pid,ppid,rss,size,vsize,pmem,pcpu,time,cmd --sort -rss
@@ -524,7 +524,7 @@ USER         PID    PPID   RSS  SIZE    VSZ %MEM %CPU     TIME CMD
 root      113261  113259 58496 102664 184352  5.8 5.3 00:00:01 codedeploy-agent: InstanceAgent::Plugins::CodeDeployPlugin::CommandPoller of master 113259
 ```   
   
-* 요 녀석이었는데 저는 서비스 재시작하니 해결이 되었는데 [해당 내용을 다룬 이슈](https://github.com/aws/aws-codedeploy-agent/issues/32) 같은 것들을 참고하면서 왜때문에 그런것이고 어떻게 해결하면 좋을지, 그냥 리스타트 해도 되는 건지 시간이 나면 알아보아야겠습니다. 
+* ~~요 녀석이었는데 저는 서비스 재시작하니 해결이 되었는데 [해당 내용을 다룬 이슈](https://github.com/aws/aws-codedeploy-agent/issues/32) 같은 것들을 참고하면서 왜때문에 그런것이고 어떻게 해결하면 좋을지, 그냥 리스타트 해도 되는 건지 시간이 나면 알아보아야겠습니다.~~ 
   
 
 ----

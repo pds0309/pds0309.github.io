@@ -4,7 +4,7 @@ title: (SpringBoot) JPA로 페이징처리를 해보자
 date: 2021-07-19 14:10:46 +0900
 category2: spring
 category: Study Note
-tag: [spring, thymeleaf,jpa]
+tag: [spring , jpa]
 img: spring.png 
 ---
 <br>

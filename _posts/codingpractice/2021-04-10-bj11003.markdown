@@ -4,7 +4,7 @@ title: 백준-11003-최솟값 찾기 (java)
 date: 2021-04-10 17:05:10 +0900
 category2: codingpractice
 category: Study Note
-tag: [백준 , 자료구조]
+tag: [백준]
 ---
 
 ## 백준-11003-최솟값 찾기

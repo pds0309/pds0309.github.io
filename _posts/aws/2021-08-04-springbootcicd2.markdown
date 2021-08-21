@@ -4,7 +4,7 @@ title: Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화
 date: 2021-08-04 10:11:11 +0900
 category2: cloud/server
 category: Study Note
-tag: [aws,travisCI,CI/CD,linux,codedeploy,aws-cli]
+tag: [aws,travisCI,CI/CD,linux,codedeploy,awscli]
 img: travis.png 
 ---
 <br>  
@@ -171,18 +171,18 @@ Default output format [None]: json
   
 **온프레미스 인스턴스에 구성파일 추가하기**  
   
-* [1편에서 만들었던 사용자](/springbootcicd1#cicd1user)로 CodeDeploy 에 온프레미스 인스턴스 등록을 위해 conf.onpremises.yml 파일을 추가해야합니다.  
+* [1편에서 만들었던 사용자](/springbootcicd1#cicd1user)로 CodeDeploy 에 온프레미스 인스턴스 등록을 위해 codedeploy.onpremises.yml 파일을 추가해야합니다.  
 
 * EC2 같은 경우 EC2 인스턴스에 적절한 역할을 부여해준 후 태그를 통해 CodeDeploy 애플리케이션으로 연결할 수 있지만 온프레미스 또는 다른 클라우드 인스턴스의 경우 CodeDeploy의 온프레미스 인스턴스에 따로 인스턴스를 등록해주어야 합니다.    
 
 > Ubuntu 기준 설정 파일입니다. 다른 인스턴스의 경우 [참고](https://docs.aws.amazon.com/codedeploy/latest/userguide/register-on-premises-instance-iam-user-arn.html)  
     
 
-> conf.onpremises.yml 을 /etc/codedeploy-agent/conf 에 추가해줍니다.
+> codedeploy.onpremises.yml 을 /etc/codedeploy-agent/conf 에 추가해줍니다.
   
 
 ```shell  
-sudo vim /etc/codedeploy-agent/conf/conf.onpremises.yml
+sudo vim /etc/codedeploy-agent/conf/codedeploy.onpremises.yml
 ```
   
 ```yml
@@ -547,6 +547,8 @@ sudo cp $REPOSITORY/build/build/libs/*.jar $REPOSITORY/jar/
 JAR_NAME=$(ls $REPOSITORY/jar/ |grep 'testcicd' | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
+
+nohup java -jar $REPOSITORY/jar/$JAR_NAME &
 
 ```    
   
