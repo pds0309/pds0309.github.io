@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://pds0309.github.io/sitemap.xml
+Sitemap: http://pds0309.github.io/sitemap.xml

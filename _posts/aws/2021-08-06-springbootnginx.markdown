@@ -271,12 +271,6 @@ public class ProfileController {
 }
 ```    
   
-* 테스트 코드에서 default profile 이 test로 되지 않으면 ProfileController 빈 생성시 abc 관련 의존성 주입이 안되기 때문에 테스트 코드에 해당 어노테이션을 추가합니다.  
-  
-```java
-@ActiveProfiles("test")
-```
-
 <br>  
   
 <h3>배포 스크립트 만들기</h3>
