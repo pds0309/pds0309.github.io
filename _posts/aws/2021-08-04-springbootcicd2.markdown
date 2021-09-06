@@ -16,7 +16,7 @@ img: travis.png
 
 ----  
 
-**1편 - [Travis CI를 이용한 SpringBoot 서비스 빌드 자동화](/springbootcicd1/)**
+**1편 - [Travis CI를 이용한 SpringBoot 서비스 빌드 자동화](/study%20note/2021/08/02/springbootcicd1)**
   
 
 ---- 
@@ -155,7 +155,7 @@ sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
   
 **AWS 사용자 등록**  
   
->[1편에서 만들었던 사용자](/springbootcicd1#cicd1user)를 등록해줍니다.   
+>[1편에서 만들었던 사용자](/study%20note/2021/08/02/springbootcicd1#cicd1user)를 등록해줍니다.   
 
 ```shell  
 sudo aws configure
@@ -171,7 +171,7 @@ Default output format [None]: json
   
 **온프레미스 인스턴스에 구성파일 추가하기**  
   
-* [1편에서 만들었던 사용자](/springbootcicd1#cicd1user)로 CodeDeploy 에 온프레미스 인스턴스 등록을 위해 codedeploy.onpremises.yml 파일을 추가해야합니다.  
+* [1편에서 만들었던 사용자](/study%20note/2021/08/02/springbootcicd1#cicd1user)로 CodeDeploy 에 온프레미스 인스턴스 등록을 위해 codedeploy.onpremises.yml 파일을 추가해야합니다.  
 
 * EC2 같은 경우 EC2 인스턴스에 적절한 역할을 부여해준 후 태그를 통해 CodeDeploy 애플리케이션으로 연결할 수 있지만 온프레미스 또는 다른 클라우드 인스턴스의 경우 CodeDeploy의 온프레미스 인스턴스에 따로 인스턴스를 등록해주어야 합니다.    
 
@@ -673,9 +673,9 @@ ubuntu    103588   97350  0 05:19 pts/0    00:00:00 grep --color=auto testcicd
   
 ----  
 
-**이전글 - [Travis CI를 이용한 SpringBoot 서비스 빌드 자동화](/springbootcicd1/)**    
+**이전글 - [Travis CI를 이용한 SpringBoot 서비스 빌드 자동화](/study%20note/2021/08/02/springbootcicd1)**    
 
-**다음글 - [Nginx를 이용해 Springboot 서비스를 중단 없이 배포해보자!](/springbootnginx/)**  
+**다음글 - [Nginx를 이용해 Springboot 서비스를 중단 없이 배포해보자!](/study%20note/2021/08/06/springbootnginx)**  
 
 ----
  

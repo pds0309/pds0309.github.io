@@ -25,7 +25,7 @@ img: lambdaimg.png
 
 ----  
 
-**1편 - [AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(1)](/lambdasms1/)**
+**1편 - [AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(1)](/study%20note/2021/04/24/lambdasms1)**
 
 ----
   

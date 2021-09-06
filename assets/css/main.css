@@ -1375,6 +1375,13 @@ a.newer-posts:hover {
 @media only screen and (max-width: 480px) {
 
 
+  .wrap-content > ul{
+    padding-left: 10px;
+  }
+
+  .wrap-content > ol{
+    padding-left: 10px;
+  }
 
   .wrap-content li{
     padding-left: 6px;

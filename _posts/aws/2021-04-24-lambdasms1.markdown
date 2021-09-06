@@ -23,7 +23,7 @@ img: lambdaimg.png
 
 ----  
 
-**2편 - [AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)](/lambdasms2/)**
+**2편 - [AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)](/study%20note/2021/04/25/lambdasms2)**
 
 ----
 
@@ -190,6 +190,6 @@ exports.handler = async (event) => {
   
 ----  
 
-**2편보기 -[AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)](/lambdasms2/)**
+**2편보기 -[AWS Lambda로 만드는 초간단 코로나 정보 문자메시지 전송 서비스(2)](/study%20note/2021/04/25/lambdasms2)**
 
 ----

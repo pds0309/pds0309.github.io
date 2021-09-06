@@ -14,7 +14,7 @@ img: travis.png
   
 ----  
 
-**2편 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/springbootcicd2/)**
+**2편 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/study%20note/2021/08/04/springbootcicd2)**
   
 <br>  
 
@@ -266,4 +266,4 @@ deploy:
   
 ----
 
-**다음글 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/springbootcicd2/)**
+**다음글 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/study%20note/2021/08/04/springbootcicd2)**

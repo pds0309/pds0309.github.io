@@ -16,9 +16,9 @@ img: nginx.jpg
 
 ----  
 
-**1편 - [Travis CI를 이용한 SpringBoot 서비스 빌드 자동화](/springbootcicd1/)**  
+**1편 - [Travis CI를 이용한 SpringBoot 서비스 빌드 자동화](/study%20note/2021/08/02/springbootcicd1)**  
 
-**2편 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/springbootcicd2/)**  
+**2편 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/study%20note/2021/08/04/springbootcicd2)**  
 
 ---- 
 
@@ -481,7 +481,7 @@ sleep 10
 
 <h3>실제 배포를 위해 프로젝트 설정 파일 경로 수정하기</h3>
 
-* [2편](/springbootcicd2/)에서 만든 /home/ubuntu/springboot/deploy.sh 가 아닌 현재 글에서 만든 /home/ubuntu/springboot/nginx/deploy.sh를 실행시키게끔 경로만 수정해주시면 됩니다.  
+* [2편](/study%20note/2021/08/04/springbootcicd2)에서 만든 /home/ubuntu/springboot/deploy.sh 가 아닌 현재 글에서 만든 /home/ubuntu/springboot/nginx/deploy.sh를 실행시키게끔 경로만 수정해주시면 됩니다.  
 
 > 프로젝트 내부의 rundeploy.sh 수정  
   
@@ -556,6 +556,6 @@ root      113261  113259 58496 102664 184352  5.8 5.3 00:00:01 codedeploy-agent:
 
 ----
 
-**이전글 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/springbootcicd2/)**  
+**이전글 - [Travis CI, CodeDeploy를 이용한 온프레미스로의 배포 자동화](/study%20note/2021/08/04/springbootcicd2)**  
 
 ----
