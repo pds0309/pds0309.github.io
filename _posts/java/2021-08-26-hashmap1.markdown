@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 상황에 맞는 Map Iteration
+title: 나만 몰랐던 Java Map Iteration
 date: 2021-08-26 11:05:42 +0900
 category2: java
 category: Study Note

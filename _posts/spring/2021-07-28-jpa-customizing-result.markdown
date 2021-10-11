@@ -1,6 +1,6 @@
 ---
 layout: post
-title: (JPA) 특정 컬럼 조회 feat.ConverterNot FoundException 
+title: JPA 특정 컬럼 조회 feat.ConverterNot FoundException 
 date: 2021-07-28 10:08:15 +0900
 category2: spring
 category: Study Note

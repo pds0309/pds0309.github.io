@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Release Drafter로 깃허브 프로젝트 릴리즈 자동화하기
+title: Github Release Drafter - 깃허브 프로젝트 릴리즈 자동화
 date: 2021-08-11 10:44:25 +0900
 category2: etc
 category: Study Note
