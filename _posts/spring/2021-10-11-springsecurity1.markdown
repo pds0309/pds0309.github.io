@@ -55,7 +55,8 @@ img: security.jpg
 <br>  
 
 
-**아키텍쳐** [ref](https://springbootdev.com/2017/08/23/spring-security-authentication-architecture/#more-54)  
+
+**인증 아키텍쳐** [ref](https://springbootdev.com/2017/08/23/spring-security-authentication-architecture/#more-54)  
 
 ![](https://chathurangat.files.wordpress.com/2017/08/blogpost-spring-security-architecture.png)
 
