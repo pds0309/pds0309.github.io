@@ -1,0 +1,428 @@
+---
+layout: post
+title: 머신러닝 모델을 서버없이 api로 배포하기
+date: 2021-10-22 12:14:36 +0900
+category2: cloud/server
+category: Study Note
+tag: [python, lambda , aws]
+img: lambdaimg.png
+---
+<br>  
+
+  
+## AWS SAM , Lambda , S3 , API Gateway만 활용해 사이킷런 기계학습 모델을 api화 해보자 
+  
+
+
+
+<br>  
+
+---
+
+
+**[SAM 이란?](https://docs.aws.amazon.com/ko_kr/serverless-application-model/latest/developerguide/what-is-sam.html)**
+
+* AWS Serverless Application Model(SAM)은 aws에서 서버리스 애플리케이션 구축시 필요한 오픈소스 프레임워크로 로컬에서 직접 애플리케이션을 구성하고 서버리스로 배포할 수 있게 해줍니다.
+
+* 서버리스 애플리케이션 작동시 함께 작동해야하는 서버리스(lambda) 함수, 이벤트, 기타 리소스들을 쉽게 만들고 관리할 수 있게 해줍니다.
+
+* yaml 기반 템플릿으로 함수 , API , 이벤트 등을 정의하고 cli 를 통해 빌드,테스트,디버그,배포 작업을 가능하게 해줍니다.
+
+ 
+<br> 
+
+
+**과정 요약** 
+
+(0) aws sam-cli 설치하기
+
+(1) 로컬에서 학습시킨 머신러닝 모델을 S3에 업로드한다.
+
+(2) SAM으로 학습된 모델을 통해서 예측 결과를 보여주는 애플리케이션(s3->lambda->api gateway)을 빌드한다.
+
+(3) 로컬에서 빌드된 애플리케이션을 테스트한다.
+
+(4) aws에 배포
+
+(5) api를 통해 테스트
+
+
+<br>
+ 
+**테스트환경** 
+ 
+* 윈도우10 , python 3.9 설치된 상태
+* aws-cli 등을 통해  ~/.aws/credentials 에 적절한 권한이 있는 사용자가 등록이 되어있는 상태
+
+<br>
+
+--- 
+
+<br>  
+
+
+
+### AWS Sam-cli 설치하기
+
+
+[여기](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install-windows.html)서 윈도우용으로 받아서 설치해줍니다.
+
+
+**설치 확인!**
+
+![11](https://user-images.githubusercontent.com/76927397/138407485-3668824f-8c6a-4f28-bce4-689e75c767ae.PNG)
+
+이게뜨는데요?
+
+```shell
+bash: sam: command not found
+```
+
+다음과 같이 설정
+
+```shell
+$ alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd"
+```
+
+
+<br> 
+
+### 로컬에서 모델 만들고 S3에 업로드하기
+
+**모델 만들기**
+
+make_moons 예제 데이터를 이용해 매우 간단한 랜덤포레스트 분류 모델을 만들었고
+
+다음과 같은 코드로 만든 모델을 직렬화하고 이 파일을 S3에 업로드할 것입니다.
+
+어떤 데이터를 어떻게 모델링하든 크게 상관없고 직렬화 한 파일을 S3에 업로드 하기만 하면됩니다.
+
+```python
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_moons
+
+# 데이터 로드
+X, y = make_moons(n_samples=100, noise=0.25, random_state=3)
+X_train, X_test, y_train, y_test = train_test_split(X,y,stratify=y,random_state=42)
+
+# 모델 학습
+model = RandomForestClassifier(n_estimators=5, random_state=0)
+model.fit(X_train, y_train)
+
+#모델결과 저장
+import pickle
+pickle.dump( model, open( "pickled_rf_model.p", "wb" ))
+```
+
+예제와 상관없이 어떤 복잡한 모델이든  API화 할 때 인풋을 어떻게 줄 것인지(Post 방식 요청에 필요한)만 잘 고려하면 됩니다.
+
+테스트가 목적이라면 돌아다니는 아무 예제나 하나 만들어서 적용시키면 됩니다.
+
+
+
+
+<br> 
+ 
+
+**S3에 업로드하기** 
+ 
+버킷 생성
+
+```shell
+$ aws s3 mb s3://BUCKETNAME
+```
+
+해당 버킷에 모델 파일 저장
+
+```shell
+$ aws s3 cp pickled_rf_model.p s3://BUCKETNAME
+```
+
+aws-cli를 사용중이고 s3 액세스가 되는 계정이 등록되어있다면 다음과 같이 업로드할 수 있습니다. 
+
+그냥 콘솔에서 직접 업로드해도 상관없습니다.
+
+저는 버킷이름을 bucket-rf-model 이라고 정하고 진행해보겠습니다.
+
+<br> 
+
+
+### AWS SAM 으로 빌드하기
+
+원하는 디렉터리에서 다음과 같이 sam 애플리케이션을 실행시킵니다.
+
+```shell
+$ sam init
+```
+여러 선택지들이 나올텐데 다음과 같이 대답해줍니다.
+
+**Which template source would you like to use?**
+
+-> 1 - AWS Quick Start
+
+**What package type would you like to use?**
+
+-> 1 - Zip
+
+**Which runtie would you?** 
+
+-> Python 3.9
+
+**AWS quick start application templates:**
+
+-> 1 - Hello World Example
+
+
+<br> 
+
+모든 작업이 성공하고 디렉터리를 들어가보면 다음과 같이 구성되어있을 것입니다.
+
+![22](https://user-images.githubusercontent.com/76927397/138412179-e0500b38-c078-49bc-b27b-eaaeae095670.PNG)
+
+
+편의상 hello_world -> code 로 파일명을 바꾸고 진행하였습니다.
+
+우리가 여기서 수정해주어야 할 것들은 template.yaml - 설정파일과  
+
+hello_world 디렉터리의 app.py, requirements.txt 입니다.
+
+
+>template.yaml
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Serverless randomforest classifier'
+Globals:
+  Function:
+    Timeout: 60
+Resources:
+  # 람다함수 설정
+  RfClassifierFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # code/ 디렉터리의 app.py를 읽도록 설정
+      CodeUri: code/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      MemorySize: 1024
+      # 람다함수에서 S3에 접근하여 저장한 모델파일을 가져올수 있도록 역할 부여
+      # 최소한 이전에 만들었던 버킷에 대해 Read 할 수 있는 권한을 부여해야 한다.
+      Role: arn:aws:iam::********:role/lambdacanreads3
+      Environment:
+        Variables:
+          s3_bucket: bucket-rf-model
+          model_name: pickled_rf_model.p
+      Events:
+        RfClassifier:
+          Type: Api
+          Properties:
+            Path: /classify
+            Method: post
+# Api 생성 
+Outputs:
+  RfClassifierApi:
+    Description: API Gateway endpoint URL for Prod stage
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/classify/
+```
+
+설정파일을 통해 람다함수를 만들고 이를 호출하는 Api 까지 생성하는 것을 알 수 있습니다.
+
+현재 작업을 하고 있는 사용자의 권한과 상관없이 우리가 만들 람다함수에도 S3 접근 권한이 반드시 있어야 
+이전에 S3 버킷에 저장해둔 파일을 읽을 수 있습니다.
+
+<br>
+
+yaml 설정에서 적용한대로 code/app.py 를 호출하는 람다함수를 만들기 위해 해당 파이썬 파일을 수정해줍니다.
+
+> code/app.py 수정
+
+```python
+import json
+import sklearn
+import boto3
+import os
+import json
+import pickle
+s3 = boto3.client('s3')
+s3_bucket = os.environ['s3_bucket']
+model_name = os.environ['model_name']
+temp_file_path = '/tmp/' + model_name
+from sklearn.ensemble import RandomForestClassifier
+def lambda_handler(event, context):
+    # Parse input
+    body = event['body']
+    input1 = json.loads(body)['data1']
+    input1 = float(input1)
+    input2 = json.loads(body)['data2']
+    # Download pickled model from S3 and unpickle
+    s3.download_file(s3_bucket, model_name, temp_file_path)
+    with open(temp_file_path, 'rb') as f:
+        model = pickle.load(f)
+    # Predict class
+    prediction = model.predict([[input1,input2]])[0]
+    return {
+        "statusCode": 200,
+        "body": json.dumps({
+            "prediction": str(prediction),
+        }),
+    }
+```
+람다함수로서 직접 실행되어야 하는 파이썬 파일입니다.
+
+S3 버킷에 저장된 모델파일을 읽어오고 파라미터 2개(data1,data2)를 인자로 받아서  predict 한 후 결과 (0,1분류) 를 리턴할 것입니다.
+
+
+호출시킬 파이썬 함수에서 필요한 라이브러리 의존성 등록도 필요합니다.
+
+code/requirements.txt에 필요한 의존성을 추가해줍시다.
+
+```txt
+requests
+boto3
+sklearn
+```
+
+
+이제 빌드를 해봅시다.
+
+```shell
+$ sam build
+```
+
+
+이렇게 나오고 .aws-sam 디렉터리가 생성되면 성공입니다.
+
+![33](https://user-images.githubusercontent.com/76927397/138419250-1c1e8629-b1f4-444b-9f58-090a3eb0bec1.PNG)
+
+
+이제 빌드된 애플리케이션이 잘 작동하나 배포전에 먼저 테스트를 해봅시다.
+
+예상대로라면 POST 방식으로 data1 ,data2 수치를 전달하여 호출하면 0 또는 1 을 리턴해야 할 것입니다.
+
+주피터 노트북에서 만든 모델에 다음과 같은 인자로 예측을 수행했을 때의 결과입니다. 이 값들로 직접 테스트 해봅시다.
+
+![44](https://user-images.githubusercontent.com/76927397/138420377-42922d5e-7441-4cd4-a6a2-fed232f079b7.PNG)
+
+<br>
+
+
+### 로컬환경에서 테스트하기
+
+테스트 시에는 도커가 실행되어있어야 합니다.
+
+![55](https://user-images.githubusercontent.com/76927397/138421626-76f8b29c-fcd1-453a-895a-d2bd55139dc3.PNG)
+
+잘 되는군요 잘 된다면 된겁니다. 
+
+
+
+<br>
+
+
+### 배포전에..
+
+테스트도 성공했고 이제 배포해야할 차례이지만 그전에 requirements.txt 에서 boto3 라이브러리를 지워주고 다시 빌드합니다.
+
+**왜요?** 
+ 
+람다의 경우 260M 가 넘으면 사용이 불가능합니다. python 3.9 기준 사이킷런을 포함해 위의 라이브러리들을 추가했을 경우
+
+270메가가 훌쩍 넘어가는데 boto3을 지우면 약 230 메가가 되어 사용할 수 있게 됩니다.
+
+boto3 의 경우 aws 에 자체적으로 내장되어있기 때문에 실제로 애플리케이션을 배포하여 사용하는 것에는 지장이 없습니다.
+
+하위 버전의 파이썬의 경우 [이 글](https://ichi.pro/ko/awsui-maeu-gandanhan-scikit-learn-api-52898146506281)과 이 [arn](https://github.com/model-zoo/scikit-learn-lambda/blob/master/layers.csv)
+을 이용해 해결하면 될 것 같습니다.
+
+그냥 하면 이런 에러를 맛볼것입니다.
+
+```shell
+CREATE_FAILED            AWS::Lambda::Function    RfClassifierFunction   
+  Resource handler
+  returned message:
+  "Unzipped size must be smaller than 262144000 bytes (Service:
+   Lambda, Status Code: 400, Request ID: 1b57a 057-6b39-47d5-afcd-
+   ec3e1b010b08, Extended Request ID: null)"
+```
+---
+
+<br> 
+
+### 배포하기
+
+빌드를 통해 생성된 .aws-sam/build 디렉터리로 이동해줍니다.
+
+```shell
+$ cd .aws-sam/build
+```
+
+다음 코드로 배포를 진행해줍시다. 시간이 좀 걸릴 것입니다.
+
+```shell
+sam package --template-file template.yaml --s3-bucket bucket-rf-model --output-template-file packaged.yaml --region ap-northeast-2
+sam deploy --template-file packaged.yaml --stack-name rfmodelstack --capabilities CAPABILITY_IAM --region ap-northeast-2
+```
+
+이렇게 나오면 성공!
+
+![66](https://user-images.githubusercontent.com/76927397/138425393-8209d980-6532-405f-b072-233724dcde45.PNG)
+
+aws 람다 콘솔에도 api gateway 가 붙어있는 람다함수가 잘 생성된 것을 확인할 수 있습니다.  
+
+api gateway 콘솔에서도 우리가 지정한 스택이름으로 api가 생성된 것을 확인할 수 있습니다.
+
+![77](https://user-images.githubusercontent.com/76927397/138425705-dec2912f-7526-4ea3-b403-579d25fc01ed.PNG)
+
+
+
+### 배포 애플리케이션 테스트
+
+배포시 얻은 api url로 post 요청을 해서 응답해주면 성공입니다!
+
+
+![88](https://user-images.githubusercontent.com/76927397/138426265-e0482ba3-3521-4ad1-b271-3d488d2025a6.PNG)
+
+<br> 
+
+
+
+
+
+
+**번외**
+
+이대로면 모든 사람이 키 없이 이 머신러닝 모델 api를 사용할 수 있게 됩니다.
+
+따라서 특정 사용자 또는 특정 집단만 사용하게끔 한다면 api 키를 생성해서 인증을 받은 사용자만이 요청할 수 있게끔 설정해주어야 합니다.
+
+
+sam에서 애플리케이션 생성 하는 시점에 키 인증을 추가하는 방법은 [이 글](https://ichi.pro/ko/awsui-maeu-gandanhan-scikit-learn-api-52898146506281) 을 
+ 
+오픈으로 배포되어있는 api에서 키를 추가하여 인증을 받도록 하게끔 하는 방법은 [이 글](https://towardsdatascience.com/how-to-add-api-keys-to-your-aws-api-gateway-api-691bd17c5924) 을 참고하면 될 것 같습니다.
+
+글의 주제와 무관하기 때문에 따로 다루지는 않겠습니다.
+
+
+---
+
+
+**부족하고 긴 글 읽어주셔서 감사합니다 !**
+ 
+
+
+<br> 
+
+---
+
+
+**Reference**  
+
+* [SAM](https://aws.amazon.com/ko/blogs/korea/aws-serverless-application-model-sam-command-line-interface-build-test-and-debug-serverless-apps-locally/)
+
+* [AWS docs - AWS Serverless Application Model](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html)
+
+* [towardsdatascience - Deploying Sklearn Machine Learning on AWS Lambda with SAM](https://towardsdatascience.com/deploying-sklearn-machine-learning-on-aws-lambda-with-sam-8cc69ee04f47)
+  
