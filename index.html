@@ -3,6 +3,7 @@ layout: main
 ---
 
 
+
 {% for post in site.posts %}
 {% assign position = forloop.index0 | divided_by:8 | plus: 1 %}
 
@@ -38,4 +39,5 @@ layout: main
       }
     });
   }
+
 </script>

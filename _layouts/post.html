@@ -1,6 +1,36 @@
 ---
 layout: main
 ---
+
+<style>
+  .image-source-link {
+	color: #98C3D1;
+}
+
+.mfp-with-zoom .mfp-container,
+.mfp-with-zoom.mfp-bg {
+	opacity: 0;
+	-webkit-backface-visibility: hidden;
+	/* ideally, transition speed should match zoom duration */
+	-webkit-transition: all 0.3s ease-out; 
+	-moz-transition: all 0.3s ease-out; 
+	-o-transition: all 0.3s ease-out; 
+	transition: all 0.3s ease-out;
+}
+
+.mfp-with-zoom.mfp-ready .mfp-container {
+		opacity: 1;
+}
+.mfp-with-zoom.mfp-ready.mfp-bg {
+		opacity: 0.8;
+}
+
+.mfp-with-zoom.mfp-removing .mfp-container, 
+.mfp-with-zoom.mfp-removing.mfp-bg {
+	opacity: 0;
+}
+</style>
+
 <article class="article-page">
   <div class="page-content">
     <div class="wrap-content">
@@ -40,5 +70,38 @@ layout: main
 </article> <!-- End Article Page -->
 
 <script>
+$(document).ready(function() {
+  // 이미지를 magnific popup image viewer에 연결시킴
+  $('.wrap-content').magnificPopup({
+    delegate: '.mg-link',
+		type: 'image',
+		closeOnContentClick: false,
+		closeBtnInside: false,
+		mainClass: 'mfp-with-zoom mfp-img-mobile',
+		image: {
+			verticalFit: true
+		},
+		gallery: {
+			enabled: true
+		},
+		zoom: {
+			enabled: true,
+			duration: 300, // don't foget to change the duration also in CSS
+			opener: function(element) {
+				return element.find('img');
+			}
+		}
+});
+});
+  
   document.getElementById('myheader').style.display = 'none';
+// 이미지 alt 속 내용을 캡션으로 만들어줌
+$('.wrap-content > p > img[alt]').replaceWith(function () {
+console.log($(this));
+    return '<figure>'
+        + '<a href="' + $(this).attr('src') + '" class="mg-link">'
+        + '<img src="' + $(this).attr('src') + '"/></a>'
+        + '<figcaption class="caption">' + $(this).attr('alt') + '</figcaption>'
+        + '</figure>';
+});
 </script>
