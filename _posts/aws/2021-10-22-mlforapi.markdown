@@ -15,6 +15,7 @@ img: lambdaimg.png
 
 
 
+
 <br>  
 
 ---
@@ -163,6 +164,8 @@ $ sam init
 
 **What package type would you like to use?**
 
+우리는 컨테이너 없이 배포 할 것이기 때문에 1번을 선택해 줍니다.
+
 -> 1 - Zip
 
 **Which runtie would you?** 
@@ -202,7 +205,7 @@ Resources:
   RfClassifierFunction:
     Type: AWS::Serverless::Function
     Properties:
-      # code/ 디렉터리의 app.py를 읽도록 설정
+      # code/ 디렉터리의 app.py를 람다함수로 설정
       CodeUri: code/
       Handler: app.lambda_handler
       Runtime: python3.9
@@ -409,7 +412,6 @@ sam에서 애플리케이션 생성 하는 시점에 키 인증을 추가하는 
 ---
 
 
-**부족하고 긴 글 읽어주셔서 감사합니다 !**
  
 
 

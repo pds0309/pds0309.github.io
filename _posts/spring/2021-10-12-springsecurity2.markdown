@@ -146,7 +146,7 @@ http.sessionManageMent()
 **동작 원리 시나리오1 - 익명(인증이 안된) 사용자의 요청 시도** 
  
 
-![excep1](https://user-images.githubusercontent.com/76927397/136888429-127a29c5-bef9-4cf1-87c2-2a764922a4b2.PNG)
+![newauth1](https://user-images.githubusercontent.com/76927397/138623958-bf8b8717-8afe-467a-beee-a32c65da883c.PNG)
 
 
 <br>

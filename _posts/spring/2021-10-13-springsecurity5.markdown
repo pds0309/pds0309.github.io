@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 스프링 시큐리티 필터가 동작하기까지 1
+title: 스프링 시큐리티 필터가 동작하기까지
 date: 2021-10-13 12:05:41 +0900
 category2: spring
 category: Study Note
@@ -117,5 +117,3 @@ FilterChainProxy에서 10 여 개의 필터 작업을 모두 거치고 예외가
 **Reference**  
  
 * [스프링 시큐리티 - Spring Boot 기반으로 개발하는 Spring Security](https://www.inflearn.com/course/%EC%BD%94%EC%96%B4-%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0) 
-
-* [csrf](https://ko.wikipedia.org/wiki/%EC%82%AC%EC%9D%B4%ED%8A%B8_%EA%B0%84_%EC%9A%94%EC%B2%AD_%EC%9C%84%EC%A1%B0)
